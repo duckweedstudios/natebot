@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/coreybriscoe/natebot#readme",
   "dependencies": {
-    "discord.js": "^13.6.0"
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
+    "@discordjs/voice": "^0.9.0",
+    "discord-api-types": "^0.32.1",
+    "discord.js": "^13.6.0",
+    "ffmpeg": "^0.0.4",
+    "ytdl-core": "^4.11.0"
   }
 }

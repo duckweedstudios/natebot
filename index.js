@@ -10,15 +10,15 @@ const {
 	createAudioResource,
 	joinVoiceChannel,
     entersState,
-    VoiceConnection
+    VoiceConnection,
+    generateDependencyReport
 } = require('@discordjs/voice');
-
-const { generateDependencyReport } = require('@discordjs/voice');
+const player = createAudioPlayer();
 const { ConnectionVisibility } = require('discord-api-types/v10');
 console.log(generateDependencyReport());
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
 
 client.commands = new Collection(); // extends JavaScript's native Map class, incl more functionality
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -37,22 +37,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
-// Playing audio over voice
-// define connection
-// const connection = joinVoiceChannel({
-// 	channelId: channel.id,
-// 	guildId: channel.guild.id,
-// 	adapterCreator: channel.guild.voiceAdapterCreator,
-// });
-
-// connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
-// 	console.log('Connection is in the Ready state!');
-// });
-
-// player.on(AudioPlayerStatus.Playing, (oldState, newState) => {
-// 	console.log('Audio player is in the Playing state!');
-// });
 
 // Login to Discord with your client's token
 client.login(token);

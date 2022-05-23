@@ -6,6 +6,7 @@ const { clientId, guildId, token } = require('./config.json');
 const commands = [
 	new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
 	new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
+	new SlashCommandBuilder().setName('joinvoice').setDescription('Join and leave a voice channel for test purposes'),
 ]
 	.map(command => command.toJSON());
 

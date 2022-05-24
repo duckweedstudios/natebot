@@ -13,7 +13,6 @@ const {
     VoiceConnection,
     generateDependencyReport
 } = require('@discordjs/voice');
-const player = createAudioPlayer();
 const { ConnectionVisibility } = require('discord-api-types/v10');
 console.log(generateDependencyReport());
 

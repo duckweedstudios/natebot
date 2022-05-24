@@ -74,9 +74,9 @@ module.exports = {
 		// player.addListener('stateChange', (oldState, newState) => {
 		// 	console.log(`${oldState.status}, ${newState.status}`);
 		// })
-		// console.log(fs.existsSync(path.join(__dirname, '../resources/Bruh.mp3')));
+		// console.log(fs.existsSync(path.join(__dirname, '../resources/global/Bruh.mp3')));
 		// Create a resource
-		const resource = createAudioResource(path.join(__dirname, '../resources/Bruh.mp3'), {
+		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh.mp3'), {
 			metadata: {
 				title: 'Bruh!',
 			},
@@ -98,8 +98,8 @@ module.exports = {
 		// subscription could be undefined if the connection is destroyed!
 		if (subscription) {
 			// Unsubscribe after 5 seconds (stop playing audio on the voice connection)
-			setTimeout(() => subscription.unsubscribe(), 9_000);
-			setTimeout(() => connection.destroy(), 10_000);
+			setTimeout(() => subscription.unsubscribe(), 7_000);
+			setTimeout(() => connection.destroy(), 8_000);
 		}
 
 		//setTimeout(() => connection.destroy(), 10_000);

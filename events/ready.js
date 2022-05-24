@@ -1,4 +1,4 @@
-const joinOnInterval = require('./functions/joinOnInterval.js');
+//const joinOnInterval = require('./actions/joinOnInterval.js');
 module.exports = {
     name: 'ready',
     once: true,

@@ -17,6 +17,7 @@ const commands = [
 		.addUserOption(userOption => userOption
 			.setName('new-condemned')
 			.setDescription('The new condemned user')),
+	new SlashCommandBuilder().setName('help').setDescription('Display the bot\'s commands and other information.'),
 ]
 	.map(command => command.toJSON());
 

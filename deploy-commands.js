@@ -15,8 +15,11 @@ const commands = [
 	new SlashCommandBuilder().setName('resume').setDescription('[admin] Resume Natebot activities on the server'),
 	new SlashCommandBuilder().setName('makecondemned').setDescription('[admin] Force new user as Condemned Soul')
 		.addUserOption(userOption => userOption
-			.setName('new-condemned')
-			.setDescription('The new condemned user')),
+			.setName('new-condemned').setDescription('The new condemned user'))
+		.addIntegerOption(intOption => intOption 
+			.setName('mean-delay').setDescription('The mean delay between hauntings in minutes. Defaults to 1440 (24 hours).'))
+		.addIntegerOption(intOption => intOption
+			.setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.')),
 	new SlashCommandBuilder().setName('help').setDescription('Display the bot\'s commands and other information.'),
 ]
 	.map(command => command.toJSON());

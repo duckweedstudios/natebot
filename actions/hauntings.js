@@ -69,7 +69,7 @@ module.exports = {
 		// })
 		// console.log(fs.existsSync(path.join(__dirname, '../resources/global/Bruh.mp3')));
 		// Create a resource
-		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh.mp3'), {
+		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh2.mp3'), {
 			metadata: {
 				title: 'Bruh!',
 			},

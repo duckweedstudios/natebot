@@ -2,18 +2,10 @@
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('node:fs'); // Node's native file system module
-const ytdl = require('ytdl-core');
-const {
-	AudioPlayerStatus,
-	StreamType,
-	createAudioPlayer,
-	createAudioResource,
-	joinVoiceChannel,
-    entersState,
-    VoiceConnection,
-    generateDependencyReport
-} = require('@discordjs/voice');
+// const ytdl = require('ytdl-core');
+const { generateDependencyReport } = require('@discordjs/voice');
 const { ConnectionVisibility } = require('discord-api-types/v10');
+const testingHauntings = require('./actions/testingHauntings.js');
 console.log(generateDependencyReport());
 
 // Create a new client instance
@@ -36,6 +28,8 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+testingHauntings.beginIntervalTest(client, 20000);
 
 // Login to Discord with your client's token
 client.login(token);

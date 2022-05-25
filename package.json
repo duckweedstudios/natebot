@@ -22,6 +22,7 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.4.1",
     "@discordjs/voice": "^0.9.0",
+    "dayjs": "^1.11.2",
     "discord-api-types": "^0.32.1",
     "discord.js": "^13.7.0",
     "ffmpeg-static": "^4.4.1",

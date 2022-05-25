@@ -10,7 +10,9 @@ const {
 	joinVoiceChannel,
     //entersState,
     //VoiceConnection,
-	VoiceConnectionStatus
+	VoiceConnectionStatus,
+    getVoiceConnection,
+    getVoiceConnections
 } = require('@discordjs/voice');
 
 module.exports = {
@@ -91,10 +93,16 @@ module.exports = {
 		// subscription could be undefined if the connection is destroyed!
 		if (subscription) {
 			// Unsubscribe after 5 seconds (stop playing audio on the voice connection)
-			setTimeout(() => subscription.unsubscribe(), 7_000);
-			setTimeout(() => connection.destroy(), 8_000);
+			setTimeout(() => subscription.unsubscribe(), 6_000);
+			setTimeout(() => {
+                try {
+                    connection.destroy();
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 20_000);
 		}
+    },
 
-		//setTimeout(() => connection.destroy(), 10_000);
-    }
+
 }

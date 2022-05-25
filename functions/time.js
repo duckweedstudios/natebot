@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 const gaussianRandom = () => {
     let sum = 0;
     let numIterations = 10;
@@ -8,39 +10,53 @@ const gaussianRandom = () => {
     return 12 + (sum / numIterations) * (36 - 12 + 1);
 }
 
-module.exports = {
-    // now: a call to Date.now(), i.e. an epoch timestamp
-    // returns date object with randomized time on that date
-	getUniformRandomTimeOnDate: (now) => {
-        let todaysDate = new Date(now);
-        return new Date(todaysDate.getFullYear(),  // year as XXXX, .getYear() is deprecated
-                        todaysDate.getMonth(), // month as [0-11]
-                        todaysDate.getDate(), // day of the month as [1-31]
-                        Math.floor(Math.random() * 24), // hour as [0-23] 
-                        Math.floor(Math.random() * 60), // minute as [0-59]
-                        Math.floor(Math.random() * 60), // second as [0-59]
-                        0) // milliseconds as 0
-    },
-    // now: a call to Date.now(), i.e. an epoch timestamp
-    // returns a date object of some future date which is,
-    // on average, 24 hours from now, using a normal distribution
-    // mean 24 hrs, standard deviation 6 hours
-    getRandomizedNextTime: (now) => {
-        let todaysDate = new Date(now);
-        let mean = 24;
-        let stddev = 6;
+const getRandomizedNextTime = (now, mean = 1440, variation = 6) => {
+    let hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
+    //return hoursFromNow;
+    let nextAppearance = now.add(hoursFromNow, 'hour');
+    return {
+        nextAppearance: nextAppearance,
+        nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'),
+        msUntil: Math.abs(now.diff(nextAppearance)),
+    };
+}
 
-        let hoursFromNow
+module.exports = {
+    // now: a dayjs object made with dayjs(), which is 'right now' when it is constructed
+    // mean: minutes as integer
+    // variation: randomness score as integer (say 1-10 but technically works on all numbers on (0, inf) )
+    // returns an object containing
+    // nextAppearance: a dayjs of some future date which is,
+    //  on average, mean minutes from now, using a normal distribution, 
+    //  (use case: mean 1440 minutes/24 hrs, variation 6 hrs)
+    //  Note that variation does not correspond to variance or stddev
+    //  Stddev is around 18 however, or 6 before adding the mean
+    // msUntil: ms until the next appearance for queuing purposes
+    // This function will guarantee that the date is in the future
+    // and also not too soon from 'right now' to avoid duplicate destroy attempt errors
+    getRandomizedNextTimeInFuture: (now, mean = 1440, variation = 6) => {
+        let nextTimeObj = getRandomizedNextTime(now, mean, variation);
+        while (nextTimeObj.nextAppearance.isBefore(now) || nextTimeObj.msUntil < 40000) {
+            nextTimeObj = getRandomizedNextTime(now, mean, variation);
+        }
+        return nextTimeObj;
     }
 };
 
-const testRandom = () => {
-    let sum = 0;
-    for (let i = 0; i < 100; i++) {
-        sum += gaussianRandom();
-    }
-    console.log(sum / 100);
-}
-
-testRandom();
-console.log(gaussianRandom());
+// const testRandom = () => {
+//     let sum = 0;
+//     let rolls = [];
+//     let high = -999;
+//     let low = 999;
+//     for (let i = 0; i < 100; i++) {
+//         let roll = module.exports.getRandomizedNextTime(Date.now());
+//         sum += roll;
+//         if (roll > high) {high = roll;}
+//         if (roll < low) {low = roll;}
+//         rolls.push(roll);
+//     }
+//     console.log(`Mean: ${sum/100}, Std. dev: ${Math.sqrt(rolls.map(roll => Math.pow(roll - 6, 2)/100).reduce((prev, cur) => prev + cur))}, High: ${high}, Low: ${low}`);
+// }
+console.log(`It is now ${dayjs().format('MM/DD/YYYY hh:mm:ss A')}`);
+console.log(`The bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs()).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+console.log(`For short-duration testing, the bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs(), 5, 1).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);

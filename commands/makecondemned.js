@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { getServerDataFromMemory } = require('../functions/serverData.js');
+const { isMemberPrivileged } = require('../functions/privileges.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,15 +10,15 @@ module.exports = {
 		// 	.setName('first-condemned')
 		// 	.setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...')),
     async execute(interaction) {
-        // TODO: Check for admin status
-        if (false) {
-            interaction.reply('You must be an admin to use this command!');
-            return;
-        }
-        // TODO: Check whether Natebot has already been setup
+        // Check whether Natebot has already been setup
         let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
         if (serverDataObject === null) {
             interaction.reply('The Natebot has not yet been setup on the server.');
+            return;
+        }
+        // TODO: Check for admin status
+        if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+            interaction.reply('You must be an admin to use this command!');
             return;
         }
         //

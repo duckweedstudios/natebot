@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { initializeObject, getServerDataFromMemory } = require('../functions/serverData.js');
+const { initializeObject, getServerDataFromMemory} = require('../functions/serverData.js');
 const { guildHauntDriver } = require('../actions/testingHauntings.js');
+const { isMemberPrivileged } = require('../functions/privileges.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,15 +14,15 @@ module.exports = {
         .addIntegerOption(intOption => intOption
             .setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.')),
     async execute(interaction) {
-        // TODO: Check for admin status
-        if (false) {
-            interaction.reply('You must be an admin to use this command!');
+        // Check whether Natebot has already been setup
+        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
+        if (serverDataObject === null) {
+            interaction.reply('The Natebot has not yet been setup on the server.');
             return;
         }
-        // TODO: Check whether Natebot has already been setup
-        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
-        if (serverDataObject !== null) {
-            interaction.reply('Too late, the Natebot has already been unleashed on this server!');
+        // TODO: Check for admin status
+        if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+            interaction.reply('You must be an admin to use this command!');
             return;
         }
         // Check if arguments are valid

@@ -1,18 +1,21 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { getServerDataFromMemory } = require('../functions/serverData.js');
+const { isMemberPrivileged } = require('../functions/privileges.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('resume')
         .setDescription('[admin] Resume Natebot activities on this server'),
     async execute(interaction) {
-        // TODO: Check for admin status
-        if (false) {
-            interaction.reply('You must be an admin to use this command!');
+        // Check whether Natebot has already been setup
+        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
+        if (serverDataObject === null) {
+            interaction.reply('The Natebot has not yet been setup on the server.');
             return;
         }
-        // TODO: Check whether Natebot has already been setup
-        if (false) {
-            interaction.reply('The Natebot has not yet been setup on the server.');
+        // TODO: Check for admin status
+        if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+            interaction.reply('You must be an admin to use this command!');
             return;
         }
         // TODO: Check whether Natebot is already unpaused on this server

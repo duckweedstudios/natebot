@@ -5,7 +5,7 @@ const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
 	new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
-	new SlashCommandBuilder().setName('joinvoice').setDescription('Join and leave a voice channel for test purposes'),
+	new SlashCommandBuilder().setName('joinvoice').setDescription('[dev] Join and leave a voice channel for test purposes'),
 	new SlashCommandBuilder().setName('setup').setDescription('[admin] Setup the Natebot on the server as desired')
 		.addUserOption(userOption => userOption
 			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...'))

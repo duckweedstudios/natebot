@@ -18,7 +18,7 @@ module.exports = {
             return;
         }
         // TODO: Check whether Natebot has already been setup
-        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild);
+        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
         if (serverDataObject !== null) {
             interaction.reply('Too late, the Natebot has already been unleashed on this server!');
             return;

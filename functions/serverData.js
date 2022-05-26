@@ -14,12 +14,12 @@ module.exports = {
         }
     },
 
-    getServerDataFromMemory: (client, guild) => {
+    getServerDataFromMemory: (client, guildIdString) => {
         if (client.nateBotData === null) { 
             return null;
         }
-        if (guild.id.toString() in client.nateBotData) {
-            return client.nateBotData[guild.id.toString()];
+        if (guildIdString in client.nateBotData) {
+            return client.nateBotData[guildIdString];
         } else {
             return null;
         }

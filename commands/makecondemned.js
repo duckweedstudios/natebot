@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { getServerDataFromMemory } = require('../functions/serverData.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,14 +15,17 @@ module.exports = {
             return;
         }
         // TODO: Check whether Natebot has already been setup
-        if (false) {
+        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
+        if (serverDataObject === null) {
             interaction.reply('The Natebot has not yet been setup on the server.');
             return;
         }
         //
         const memberTarget = interaction.options.getMember('new-condemned');
+        interaction.client.nateBotData[interaction.guild.id.toString()].condemnedSoul = memberTarget.user.id;
         // TODO: Everything relevant, likely duplicate behavior from setup.js
         // TODO: Insert user tag into string below
-        interaction.reply('The user is now the new Condemned Soul.');
+        console.log(interaction.client.nateBotData);
+        interaction.reply(`${memberTarget.user.tag} is now the Condemned Soul. Kind of... (wip)`);
     }
 }

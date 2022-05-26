@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { initializeObject } = require('../functions/initializeServerTemp.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,18 +18,39 @@ module.exports = {
             return;
         }
         // TODO: Check whether Natebot has already been setup
-        if (false) {
+        if (interaction.client.nateBotData !== null && interaction.guild.id.toString() in interaction.client.nateBotData) {
             interaction.reply('Too late, the Natebot has already been unleashed on this server!');
             return;
         }
-        // Assign first condemned
+        // Check if arguments are valid
+        let meanDelay = interaction.options.getInteger('mean-delay');
+        if (!meanDelay) {
+            meanDelay = 1440;
+        } else if (meanDelay < 2) {
+            interaction.reply('The mean delay must be at least two minutes.');
+            return;
+        }
+        let randomness = interaction.options.getInteger('randomness');
+        if (!randomness) {
+            randomness = 5;
+        } else if (randomness < 1 || randomness > 10) {
+            interaction.reply('Randomness must be an integer between 1 and 10.');
+            return;
+        }
+        // Assign first condemned (save user id)
         let memberTarget;
-        if (!interactions.options.getMember('first-condemned')) {
-            memberTarget = interaction.member;
+        if (!interaction.options.getMember('first-condemned')) {
+            memberTarget = interaction.member.user.id;
         } else {
-            memberTarget = interaction.options.getMember('first-condemned');
+            memberTarget = interaction.options.getMember('first-condemned').user.id;
         }
         // TODO: actually assign the role
+
+        // For now, save server info object to client
+        let serverDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
+        let serverIdString = interaction.guild.id.toString();
+        interaction.client.nateBotData = { [serverIdString] : serverDataObject, ...interaction.client.nateBotData };
+        console.log(interaction.client.nateBotData);
 
         // TODO: Save to database that this server is setup (by its ID, so it can be accessed)
         interaction.reply('I hope you know what you\'ve begun...');

@@ -29,5 +29,7 @@ for (const file of eventFiles) {
 	}
 }
 
+client.nateBotData = null;
+
 // Login to Discord with your client's token
 client.login(token);

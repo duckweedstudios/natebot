@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { initializeObject, getServerDataFromMemory } = require('../functions/serverData.js');
+const { guildHauntDriver } = require('../actions/testingHauntings.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -54,6 +55,10 @@ module.exports = {
         console.log(interaction.client.nateBotData);
 
         // TODO: Save to database that this server is setup (by its ID, so it can be accessed)
+
+        // Start the hauntings!
+        guildHauntDriver(interaction.client, interaction.guild);
+
         interaction.reply('I hope you know what you\'ve begun...');
     }
 }

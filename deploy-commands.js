@@ -17,7 +17,7 @@ const commands = [
 	new SlashCommandBuilder().setName('resume').setDescription('[admin] Resume Natebot activities on the server'),
 	new SlashCommandBuilder().setName('makecondemned').setDescription('[admin] Force new user as Condemned Soul')
 		.addUserOption(userOption => userOption
-			.setName('new-condemned').setDescription('The new condemned user')),
+			.setName('new-condemned').setDescription('The new condemned user').setRequired(true)),
 	new SlashCommandBuilder().setName('help').setDescription('Display the bot\'s commands and other information.'),
 ]
 	.map(command => command.toJSON());

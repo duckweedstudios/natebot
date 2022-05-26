@@ -7,6 +7,7 @@ A JSON object containing all the information we need about a server could be as 
     setup: <boolean, iff setup command has been used>,
     schedule: {
         nextAppearance: <Date>,
+        pastAppearance: <Date>,
         meanDelay: <avg minutes after appearance before the next as decimal number>,
         variation: <affects how much appearance times can vary from mean>,
     },
@@ -31,6 +32,7 @@ module.exports = {
             setup: false,
             schedule: {
                 nextAppearance: null,
+                pastAppearance: null,
                 meanDelay: -1,
                 variation: -1,
             },

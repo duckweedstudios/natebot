@@ -1,5 +1,6 @@
 const { joinBruhTest } = require('./hauntings.js');
 const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
+const { getServerDataFromMemory, updateAppearancesWith } = require('../functions/serverData.js');
 const dayjs = require('dayjs');
 
 const hauntTestAllActiveServers = async (client, guilds) => {
@@ -20,13 +21,8 @@ const hauntTestAllActiveServers = async (client, guilds) => {
 }
 
 const hauntGuildAndScheduleNext = (guild) => {
-    let nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), -5, .05);
-    console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
-    // TODO: check if server has it paused before performing
-    setTimeout(() => {
-        joinBruhTest(guild);
-        hauntGuildAndScheduleNext(guild);
-    }, nextTimeObj.msUntil);
+    joinBruhTest(guild);
+    return getRandomizedNextTimeInFuture(dayjs(), -5, .05);
 }
 
 module.exports = {
@@ -55,7 +51,20 @@ module.exports = {
         }
         for (let guild of guilds.values()) {
             let trueGuild = await guild.fetch();
-            hauntGuildAndScheduleNext(trueGuild);
+            guildHauntDriver(client, trueGuild);
         }
     },
+
+    guildHauntDriver: (client, guild) => {
+        let guildIdString = guild.id.toString();
+        let serverDataObject = getServerDataFromMemory(client, guildIdString);
+        if (serverDataObject === null) throw new Error(`Error in guildHauntDriver: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.nateBotData}`);
+        let nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), serverDataObject.schedule.meanDelay, serverDataObject.schedule.variation);
+        console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
+        setTimeout(() => {
+            let nextAppearance = hauntGuildAndScheduleNext(guild);
+            updateAppearancesWith(nextAppearance, client, guildIdString);
+            if (!serverDataObject.paused) module.exports.guildHauntDriver(client, guild);
+        }, nextTimeObj.msUntil);
+    }
 }

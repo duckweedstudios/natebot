@@ -6,7 +6,7 @@ module.exports = {
     execute(client) {
         console.log(`Ready! Logged in as ${client.user.tag}`);
         //setInterval(joinOnInterval(client), 45000);
-        testingHauntings.beginRepeatingTest(client);
+        //testingHauntings.beginRepeatingTest(client);
 
         // Deleting a command
         //console.log(client.application);

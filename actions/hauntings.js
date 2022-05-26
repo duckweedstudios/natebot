@@ -35,9 +35,9 @@ module.exports = {
 		});
 
 		// Report ready status
-		connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
-			console.log('Connection is in the Ready state!');
-		});
+		// connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
+		// 	console.log('Connection is in the Ready state!');
+		// });
 
 		// ---------------------------------------------------------------------------
 		// This is how you would access a created connection elsewhere in code without
@@ -59,12 +59,12 @@ module.exports = {
 
 		// Report playing status
 		player.on(AudioPlayerStatus.Playing, (oldState, newState) => {
-			console.log('Audio player is in the Playing state!');
+			console.log(`Haunting ${guild.name}`);
 		});
 
-		player.on(AudioPlayerStatus.Idle, (oldState, newState) => {
-			console.log('Audio player is idle...');
-		});
+		// player.on(AudioPlayerStatus.Idle, (oldState, newState) => {
+		// 	console.log('Audio player is idle...');
+		// });
 
 		// player.addListener('stateChange', (oldState, newState) => {
 		// 	console.log(`${oldState.status}, ${newState.status}`);

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { initializeObject } = require('../functions/initializeServerTemp.js');
+const { initializeObject, getServerDataFromMemory } = require('../functions/serverData.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,7 +18,8 @@ module.exports = {
             return;
         }
         // TODO: Check whether Natebot has already been setup
-        if (interaction.client.nateBotData !== null && interaction.guild.id.toString() in interaction.client.nateBotData) {
+        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild);
+        if (serverDataObject !== null) {
             interaction.reply('Too late, the Natebot has already been unleashed on this server!');
             return;
         }
@@ -47,9 +48,9 @@ module.exports = {
         // TODO: actually assign the role
 
         // For now, save server info object to client
-        let serverDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
+        let newServerDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
         let serverIdString = interaction.guild.id.toString();
-        interaction.client.nateBotData = { [serverIdString] : serverDataObject, ...interaction.client.nateBotData };
+        interaction.client.nateBotData = { [serverIdString] : newServerDataObject, ...interaction.client.nateBotData };
         console.log(interaction.client.nateBotData);
 
         // TODO: Save to database that this server is setup (by its ID, so it can be accessed)

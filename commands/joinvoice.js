@@ -12,7 +12,7 @@ module.exports = {
 	async execute(interaction) {
 		// TODO: Check for admin status
 		if (isMemberDev(interaction.member.user.id)) {
-			interaction.reply('You must be a Natebot developer to use this command!');
+			interaction.reply({ content: 'You must be a Natebot developer to use this command!', ephemeral: true });
 			return;
 		}
 		joinBruhTest(interaction.member.guild);

@@ -10,17 +10,17 @@ module.exports = {
         // Check whether Natebot has already been setup
         let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
         if (serverDataObject === null) {
-            interaction.reply('The Natebot has not yet been setup on the server.');
+            interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
             return;
         }
         // Check for admin status
         if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
-            interaction.reply('You must be an admin to use this command!');
+            interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
             return;
         }
         // Check whether Natebot is already paused on this server
         if (serverDataObject.paused) {
-            interaction.reply('The Natebot is already paused.');
+            interaction.reply({ content: 'The Natebot is already paused.', ephemeral: true });
             return;
         }
         //

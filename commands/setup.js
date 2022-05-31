@@ -16,7 +16,7 @@ module.exports = {
     async execute(interaction) {
         // TODO: Check for admin status
         if (isMemberOwner(interaction.member, interaction.client, interaction.guild)) {
-            interaction.reply('You must be an admin to use this command!');
+            interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
             return;
         }
         // Check if arguments are valid
@@ -24,14 +24,14 @@ module.exports = {
         if (!meanDelay) {
             meanDelay = 1440;
         } else if (meanDelay < 2) {
-            interaction.reply('The mean delay must be at least two minutes.');
+            interaction.reply({ content: 'The mean delay must be at least two minutes.', ephemeral: true });
             return;
         }
         let randomness = interaction.options.getInteger('randomness');
         if (!randomness) {
             randomness = 5;
         } else if (randomness < 1 || randomness > 10) {
-            interaction.reply('Randomness must be an integer between 1 and 10.');
+            interaction.reply({ content: 'Randomness must be an integer between 1 and 10.', ephemeral: true });
             return;
         }
         // Assign first condemned (save user id)

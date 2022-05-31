@@ -13,13 +13,13 @@ module.exports = {
             interaction.reply('The Natebot has not yet been setup on the server.');
             return;
         }
-        // TODO: Check for admin status
+        // Check for admin status
         if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
             interaction.reply('You must be an admin to use this command!');
             return;
         }
-        // TODO: Check whether Natebot is already paused on this server
-        if (false) {
+        // Check whether Natebot is already paused on this server
+        if (serverDataObject.paused) {
             interaction.reply('The Natebot is already paused.');
             return;
         }

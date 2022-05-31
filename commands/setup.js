@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { initializeObject, getServerDataFromMemory} = require('../functions/serverData.js');
+const { initializeObject, getServerDataFromMemory } = require('../functions/serverData.js');
 const { guildHauntDriver } = require('../actions/testingHauntings.js');
-const { isMemberPrivileged } = require('../functions/privileges.js');
+const { isMemberOwner } = require('../functions/privileges.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('setup')
-        .setDescription('[admin] Setup the Natebot on the server as desired')
+        .setDescription('[owner] Setup the Natebot on the server as desired')
         .addUserOption(userOption => userOption
 			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...'))
         .addIntegerOption(intOption => intOption 
@@ -14,14 +14,8 @@ module.exports = {
         .addIntegerOption(intOption => intOption
             .setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.')),
     async execute(interaction) {
-        // Check whether Natebot has already been setup
-        let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
-        if (serverDataObject === null) {
-            interaction.reply('The Natebot has not yet been setup on the server.');
-            return;
-        }
         // TODO: Check for admin status
-        if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+        if (isMemberOwner(interaction.member, interaction.client, interaction.guild)) {
             interaction.reply('You must be an admin to use this command!');
             return;
         }
@@ -52,7 +46,7 @@ module.exports = {
         // For now, save server info object to client
         let newServerDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
         let serverIdString = interaction.guild.id.toString();
-        interaction.client.nateBotData = { [serverIdString] : newServerDataObject, ...interaction.client.nateBotData };
+        interaction.client.nateBotData = { ...interaction.client.nateBotData, [serverIdString] : newServerDataObject };
         console.log(interaction.client.nateBotData);
 
         // TODO: Save to database that this server is setup (by its ID, so it can be accessed)
@@ -60,6 +54,6 @@ module.exports = {
         // Start the hauntings!
         guildHauntDriver(interaction.client, interaction.guild);
 
-        interaction.reply('I hope you know what you\'ve begun...');
+        interaction.reply(`I hope you know what you've begun...\n${interaction.member.tag}, it's time to set your sound.`);
     }
 }

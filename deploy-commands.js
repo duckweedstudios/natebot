@@ -19,6 +19,15 @@ const commands = [
 		.addUserOption(userOption => userOption
 			.setName('new-condemned').setDescription('The new condemned user').setRequired(true)),
 	new SlashCommandBuilder().setName('help').setDescription('Display the bot\'s commands and other information.'),
+	new SlashCommandBuilder().setName('uploadhauntsound').setDescription('Attach a spooky sound.')
+		.addAttachmentOption(attachOption => attachOption
+			.setName('sound').setDescription('The haunting sound to be played').setRequired(true))
+		.addStringOption(stringOpt => stringOpt
+			.setName('soul-name').setDescription('A name for the soul you\'re creating').setRequired(true)) // TODO: what do we want these options to be?
+		.addIntegerOption(stringOpt => stringOpt
+			.setName('soul-rarity').setDescription('Rarer hauntings are worth more souls when fetched').setRequired(true))
+		.addStringOption(stringOpt => stringOpt
+			.setName('emoji').setDescription('Pick an emoji that represents this soul').setRequired(true)),
 ]
 	.map(command => command.toJSON());
 

@@ -4,11 +4,9 @@ const { isMemberPrivileged } = require('../functions/privileges.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('makecondemned')
-        .setDescription('[admin] Force new user as Condemned Soul'),
-        // .addUserOption(userOption => userOption
-		// 	.setName('first-condemned')
-		// 	.setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...')),
+        .setName('makecondemned').setDescription('[admin] Force new user as Condemned Soul')
+        .addUserOption(userOption => userOption
+			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...').setRequired(true)),
     async execute(interaction) {
         // Check whether Natebot has already been setup
         let serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());

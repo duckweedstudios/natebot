@@ -1,4 +1,3 @@
-// Require the necessary discord.js classes
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('node:fs'); // Node's native file system module

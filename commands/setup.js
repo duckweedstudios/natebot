@@ -14,7 +14,7 @@ module.exports = {
         .addIntegerOption(intOption => intOption
             .setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.')),
     async execute(interaction) {
-        // TODO: Check for admin status
+        // Check for admin status
         if (isMemberOwner(interaction.member, interaction.client, interaction.guild)) {
             interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
             return;

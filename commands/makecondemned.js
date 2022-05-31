@@ -14,7 +14,7 @@ module.exports = {
             interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
             return;
         }
-        // TODO: Check for admin status
+        // Check for admin status
         if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
             interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
             return;
@@ -23,7 +23,7 @@ module.exports = {
         const memberTarget = interaction.options.getMember('new-condemned');
         interaction.client.nateBotData[interaction.guild.id.toString()].condemnedSoul = memberTarget.user.id;
         // TODO: Everything relevant, likely duplicate behavior from setup.js
-        // TODO: Insert user tag into string below
+        // TODO: Insert appropriate user tag/nickname into string below
         console.log(interaction.client.nateBotData);
         interaction.reply(`${memberTarget.user.tag} is now the Condemned Soul. Kind of... (wip)`);
     }

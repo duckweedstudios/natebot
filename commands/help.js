@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
             /pause\n
             /resume\n
             /setup\n
-            `
+            `;
         interaction.reply(result);
-    }
-}
+    },
+};

@@ -25,6 +25,7 @@
     "dayjs": "^1.11.2",
     "discord-api-types": "^0.32.1",
     "discord.js": "^13.7.0",
+    "eslint": "^8.16.0",
     "ffmpeg-static": "^4.4.1",
     "ytdl-core": "^4.11.0"
   }

@@ -21,6 +21,7 @@ Then, using the server's ID, we can retrieve other information, such as its:
 */
 
 module.exports = {
+    // eslint-disable-next-line no-unused-vars
     getStatus: async (guild) => {
         // TODO: Get the information needed from the database
 
@@ -36,12 +37,12 @@ module.exports = {
                 meanDelay: -1,
                 variation: -1,
             },
-        }
+        };
     },
 
     getStatusAsString: async (guild) => {
-        const obj = await getStatus(guild);
-        let result = `Server status for ${servername}:\n`;
+        const obj = await module.exports.getStatus(guild);
+        let result = `Server status for ${guild.name}:\n`;
         if (!obj.setup) {
             result += 'This server has not been setup for the bot yet! Use /setup first.';
             return result;
@@ -57,5 +58,5 @@ module.exports = {
             result += `The server owner is the only one allowed to use the bot's admin commands now.\n`;
         }
         return result;
-    }
-}
+    },
+};

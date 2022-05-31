@@ -1,4 +1,4 @@
-const dayjs = require('dayjs');
+// const dayjs = require('dayjs');
 
 module.exports = {
     initializeObject: (condemnedMember, modRoles, meanDelay = 1440, variation = 5) => {
@@ -13,11 +13,11 @@ module.exports = {
                 meanDelay,
                 variation,
             },
-        }
+        };
     },
 
     getServerDataFromMemory: (client, guildIdString) => {
-        if (client.nateBotData === null) { 
+        if (client.nateBotData === null) {
             return null;
         }
         if (guildIdString in client.nateBotData) {
@@ -28,9 +28,9 @@ module.exports = {
     },
 
     updateAppearancesWith: (dayjsObj, client, guildIdString) => {
-        let serverDataObject = module.exports.getServerDataFromMemory(client, guildIdString);
+        const serverDataObject = module.exports.getServerDataFromMemory(client, guildIdString);
         if (serverDataObject === null) throw new Error(`Error in replaceEarlierAppearance: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.nateBotData}`);
-        client.nateBotData[guildIdString].schedule = { ...serverDataObject, nextAppearance: dayjsObj, pastAppearance: serverDataObject.nextAppearance};
+        client.nateBotData[guildIdString].schedule = { ...serverDataObject, nextAppearance: dayjsObj, pastAppearance: serverDataObject.nextAppearance };
         console.log(client.nateBotData);
     },
-}
+};

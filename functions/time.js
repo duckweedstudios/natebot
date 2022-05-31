@@ -1,25 +1,26 @@
 const dayjs = require('dayjs');
 
+// eslint-disable-next-line no-unused-vars
 const gaussianRandom = () => {
     let sum = 0;
-    let numIterations = 10;
+    const numIterations = 10;
     for (let i = 0; i < numIterations; i++) {
         sum += Math.random();
     }
 
     return 12 + (sum / numIterations) * (36 - 12 + 1);
-}
+};
 
 const getRandomizedNextTime = (now, mean = 1440, variation = 6) => {
-    let hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
-    //return hoursFromNow;
-    let nextAppearance = now.add(hoursFromNow, 'hour');
+    const hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
+    // return hoursFromNow;
+    const nextAppearance = now.add(hoursFromNow, 'hour');
     return {
         nextAppearance: nextAppearance,
         nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'),
         msUntil: Math.abs(now.diff(nextAppearance)),
     };
-}
+};
 
 module.exports = {
     // now: a dayjs object made with dayjs(), which is 'right now' when it is constructed
@@ -27,7 +28,7 @@ module.exports = {
     // variation: randomness score as integer (say 1-10 but technically works on all numbers on (0, inf) )
     // returns an object containing
     // nextAppearance: a dayjs of some future date which is,
-    //  on average, mean minutes from now, using a normal distribution, 
+    //  on average, mean minutes from now, using a normal distribution,
     //  (use case: mean 1440 minutes/24 hrs, variation 6 hrs)
     //  Note that variation does not correspond to variance or stddev
     //  Stddev is around 18 however, or 6 before adding the mean
@@ -40,7 +41,7 @@ module.exports = {
             nextTimeObj = getRandomizedNextTime(now, mean, variation);
         }
         return nextTimeObj;
-    }
+    },
 };
 
 // const testRandom = () => {

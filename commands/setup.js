@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { initializeObject, getServerDataFromMemory } = require('../functions/serverData.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { initializeObject } = require('../functions/serverData.js');
 const { guildHauntDriver } = require('../actions/testingHauntings.js');
 const { isMemberOwner } = require('../functions/privileges.js');
 
@@ -8,8 +8,8 @@ module.exports = {
         .setName('setup')
         .setDescription('[owner] Setup the Natebot on the server as desired')
         .addUserOption(userOption => userOption
-			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...'))
-        .addIntegerOption(intOption => intOption 
+            .setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...'))
+        .addIntegerOption(intOption => intOption
             .setName('mean-delay').setDescription('The mean delay between hauntings in minutes. Defaults to 1440 (24 hours).'))
         .addIntegerOption(intOption => intOption
             .setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.')),
@@ -44,8 +44,8 @@ module.exports = {
         // TODO: actually assign the role
 
         // For now, save server info object to client
-        let newServerDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
-        let serverIdString = interaction.guild.id.toString();
+        const newServerDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
+        const serverIdString = interaction.guild.id.toString();
         interaction.client.nateBotData = { ...interaction.client.nateBotData, [serverIdString] : newServerDataObject };
         console.log(interaction.client.nateBotData);
 
@@ -55,5 +55,5 @@ module.exports = {
         guildHauntDriver(interaction.client, interaction.guild);
 
         interaction.reply(`I hope you know what you've begun...\n${interaction.member.tag}, it's time to set your sound.`);
-    }
-}
+    },
+};

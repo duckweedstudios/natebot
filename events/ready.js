@@ -1,4 +1,5 @@
 // const testingHauntings = require('../actions/testingHauntings.js');
+const { hauntSomeChannelWithRandomSound } = require('../actions/hauntings.js');
 
 module.exports = {
 	name: 'ready',
@@ -6,7 +7,10 @@ module.exports = {
 	execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 
-		// TODO: Read from database?
+		client.guilds.fetch('672609929495969813')
+			.then(guild => hauntSomeChannelWithRandomSound(guild));
+
+		// TODO: Read from database, if necessary? Loading all info into memory is impractical, though.
 
 
 		// setInterval(joinOnInterval(client), 45000);

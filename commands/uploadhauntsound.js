@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getServerDataFromMemory } = require('../functions/serverData.js');
 const { isMemberCondemnedSoul } = require('../functions/privileges.js');
+const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const fs = require('node:fs');
 const https = require('https');
 const path = require('path');
@@ -55,12 +56,21 @@ module.exports = {
 		// One thing to know is that unicode emojis are actually two characters that work together
 		// and are meaningless (for our purposes) when separated
 		// TODO: this (substring from 0,2 ) does not work with certain emojis such as country flags, eg flag_ru becomes R
-		const emoji = interaction.options.getString('emoji').trimStart(); // .substring(0, 2);
-		// Emoji here may be either custom Discord emojis, which begin with <: or Unicode(?) emojis
+		let emoji = interaction.options.getString('emoji').trimStart(); // .substring(0, 2);
+		// Emojis here may be either custom Discord emojis, which begin with <: or Unicode(?) emojis
 		console.log(emoji);
 		if (emoji.substring(0, 2) === '<:') {
-			
+			const [ _emojiName, emojiId ] = getDiscordEmojiNameAndId(emoji);
+			// let customEmoji = null;
+			try {
+				const _customEmoji = await interaction.guild.emojis.fetch(emojiId);
+			} catch (err) {
+				interaction.reply({ content: 'That emoji is not present on this server. Please choose another emoji.', ephemeral: true });
+				return;
+			}
+			// console.log(customEmoji.toString());
 		} else {
+			emoji = emoji.substring(0, 2); // this has problems for some emojis
 			// eslint-disable-next-line no-misleading-character-class
 			const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c\ude32-\ude3a]|[\ud83c\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/; // this should catch most emojis?
 			if (!emojiRegex.test(emoji)) {
@@ -106,7 +116,7 @@ module.exports = {
 		});
 
 		// Create entry in JSON file and save it.
-		soulsFileContents.souls.push({ 'name': soulName, 'rarity': soulRarity, 'emoji"': emoji/* , "audioPath": soulAudioPath*/ });
+		soulsFileContents.souls.push({ 'name': soulName, 'rarity': soulRarity, 'emoji': emoji/* , "audioPath": soulAudioPath*/ });
 		fs.writeFileSync(soulsFilePath, JSON.stringify(soulsFileContents));
 		interaction.reply({ content: `Congratulations, your soul ${emoji} is ready.`, ephemeral: true });
 		// TODO: Trim the sound effect to a valid size, e.g. 60 seconds.

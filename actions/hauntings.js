@@ -9,7 +9,7 @@ const {
 	joinVoiceChannel,
 	// entersState,
 	// VoiceConnection,
-	// VoiceConnectionStatus,
+	VoiceConnectionStatus,
 	// getVoiceConnection,
 	// getVoiceConnections,
 } = require('@discordjs/voice');
@@ -70,7 +70,7 @@ module.exports = {
 
 		// player.addListener('stateChange', (oldState, newState) => {
 		// 	console.log(`${oldState.status}, ${newState.status}`);
-		// })
+		// });
 		// console.log(fs.existsSync(path.join(__dirname, '../resources/global/Bruh.mp3')));
 		// Create a resource
 		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh.mp3'), {
@@ -156,27 +156,34 @@ module.exports = {
 
 		// Tramsitting audio
 		// Create a player instance
-		const player = await createAudioPlayer({
+		const player = createAudioPlayer({
 			behaviors: {
 				noSubscriber: NoSubscriberBehavior.Pause, // can be configured to either pause, stop, or continue when there are no active subscribers
 			},
 		});
 
-		// Report playing status
-		player.on(AudioPlayerStatus.Playing, () => {
-			console.log(`Haunting ${guild.name}`);
+		player.addListener('stateChange', (oldState, newState) => {
+			console.log(`${oldState.status}, ${newState.status}`);
 		});
-
 		// Subscribe the connection to the audio player (will play audio on the voice connection)
-		const subscription = await connection.subscribe(player);
+		const subscription = connection.subscribe(player);
 
-		// Play a resource
-		player.play(audioResourceToPlay, {
-			volume: 1,
+		console.log(`Haunting ${guild.name}`);
+
+		// Report playing status
+		// player.on(AudioPlayerStatus.Idle, () => {
+		// });
+
+		// Apparently this is necessary to avoid the start of the audio cutting off, making short sounds seem to "not play"
+		connection.on(VoiceConnectionStatus.Ready, () => {
+			player.play(audioResourceToPlay, {
+				volume: 1,
+			});
 		});
+		
 		// console.log(resource);
 		player.on('error', error => {
-			console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
+			throw new Error(`Error: ${error.message} with resource ${error.resource.metadata.title}`); // never seen this occur, I assume it's a connection problem thing?
 		});
 
 		// setTimeout(() => player.play(resource2), 2000);
@@ -184,14 +191,14 @@ module.exports = {
 		// subscription could be undefined if the connection is destroyed!
 		if (subscription) {
 			// Unsubscribe after 5 seconds (stop playing audio on the voice connection)
-			setTimeout(() => subscription.unsubscribe(), 6_000);
+			setTimeout(() => subscription.unsubscribe(), 19500);
 			setTimeout(() => {
 				try {
 					connection.destroy();
 				} catch (err) {
 					console.error(err);
 				}
-			}, 20_000);
+			}, 20000);
 		}
 	},
 };

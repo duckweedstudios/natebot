@@ -14,6 +14,7 @@ A JSON object containing all the information we need about a server could be as 
 			},
 			soulType: { // default null
 				name: <String>,
+				author: <id>,
 				rarity: <integer>,
 				emoji: <String>,
 				extension: <String>,
@@ -27,6 +28,7 @@ A JSON object containing all the information we need about a server could be as 
 			},
 			soulType: { // default null
 				name: <String>,
+				author: <id>,
 				rarity: <integer>,
 				emoji: <String>,
 				extension: <String>,

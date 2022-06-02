@@ -116,7 +116,7 @@ module.exports = {
 		});
 
 		// Create entry in JSON file and save it.
-		soulsFileContents.souls.push({ 'name': soulName, 'rarity': soulRarity, 'emoji': emoji, 'extension': fileExtension });
+		soulsFileContents.souls.push({ 'name': soulName, 'author': interaction.member.id, 'rarity': soulRarity, 'emoji': emoji, 'extension': fileExtension });
 		fs.writeFileSync(soulsFilePath, JSON.stringify(soulsFileContents));
 		interaction.reply({ content: `Congratulations, your soul ${emoji} is ready.`, ephemeral: true });
 		// TODO: Trim the sound effect to a valid size, e.g. 60 seconds.

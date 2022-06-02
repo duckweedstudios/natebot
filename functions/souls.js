@@ -9,6 +9,7 @@ module.exports = {
 			// No souls exist on the server. Play a default sound.
 			return {
 				'name': 'Bruh',
+				'author': 'OliGuzzler',
 				'rarity': 10, // fairly punishing for the condemned if they don't set a soul
 				'emoji': '<:oliguzzler:981630307662987344>',
 				'extension': 'mp3',

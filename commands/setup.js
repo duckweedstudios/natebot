@@ -37,9 +37,9 @@ module.exports = {
 		// Assign first condemned (save user id)
 		let memberTarget;
 		if (!interaction.options.getMember('first-condemned')) {
-			memberTarget = interaction.member.user.id;
+			memberTarget = interaction.member.id;
 		} else {
-			memberTarget = interaction.options.getMember('first-condemned').user.id;
+			memberTarget = interaction.options.getMember('first-condemned').id;
 		}
 		// TODO: actually assign the role
 
@@ -53,6 +53,6 @@ module.exports = {
 		// Start the hauntings!
 		guildHauntDriver(interaction.client, interaction.guild);
 
-		interaction.reply(`I hope you know what you've begun...\n${interaction.member.tag}, it's time to set your sound.`);
+		interaction.reply(`I hope you know what you've begun...\n<@${memberTarget}>, it's time to set your sound.`);
 	},
 };

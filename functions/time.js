@@ -2,7 +2,6 @@ const dayjs = require('dayjs');
 
 const getRandomizedNextTime = (now, mean = 1440, variation = 6) => {
 	const hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
-	// return hoursFromNow;
 	const nextAppearance = now.add(hoursFromNow, 'hour');
 	return {
 		nextAppearance: nextAppearance,
@@ -78,6 +77,6 @@ module.exports = {
 //     console.log(`Mean: ${sum/100}, Std. dev: ${Math.sqrt(rolls.map(roll => Math.pow(roll - 6, 2)/100).reduce((prev, cur) => prev + cur))}, High: ${high}, Low: ${low}`);
 // }
 console.log(`It is now ${dayjs().format('MM/DD/YYYY hh:mm:ss A')}`);
-console.log(`The bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs()).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-console.log(`For short-duration testing, the bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs(), 5, 1).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-console.log(`A vague time range for now using mean 1440 would be between ${module.exports.getVagueTimeRange(dayjs(), 1440).formatted}, or ${module.exports.getPartOfDay(dayjs())}`);
+// console.log(`The bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs()).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+// console.log(`For short-duration testing, the bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs(), 5, 1).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+// console.log(`A vague time range for now using mean 1440 would be between ${module.exports.getVagueTimeRange(dayjs(), 1440).formatted}, or ${module.exports.getPartOfDay(dayjs())}`);

@@ -23,6 +23,7 @@ module.exports = {
 			interaction.reply({ content: 'You must be the Condemned Soul to use this command.', ephemeral: true });
 			return;
 		}
+
 		// Argument 0: an attachment
 		// Will verify that it is the correct filetype
 		const soundAttachment = interaction.options.getAttachment('sound');
@@ -36,12 +37,14 @@ module.exports = {
 			interaction.reply({ content: 'The file must be .mp3 or .ogg for now.', ephemeral: true });
 			return;
 		}
+
 		// Argument 1: soul name, a string
-		// TODO: length limit?
+		// Has a 25 character length limit, but doesn't reject invalid names, just truncates them
 		// Replaces illegal filename characters with '-'
 		// If a server has a soul with that name already, reject the interaction (verified later)
 		// Notice that the name here also becomes the name of the file once downloaded, not the original uploaded filename
-		const soulName = interaction.options.getString('soul-name').replace(/[/\\?%*:|"<>]/g, '-'); // this regex should make it path safe
+		const soulName = interaction.options.getString('soul-name').substring(0, 25).replace(/[/\\?%*:|"<>]/g, '-'); // this regex should make it path safe
+
 		// Argument 2: soul rarity, an integer
 		// Must be between 1 and 666
 		const soulRarity = interaction.options.getInteger('soul-rarity');
@@ -50,6 +53,7 @@ module.exports = {
 			interaction.reply({ content: 'The soul rarity is too big or too small, please enter a value between 1 and 666', ephemeral: true });
 			return;
 		}
+
 		// Argument 3: emoji identifier, a string
 		// Working with emojis is kind of really annoying: https://thekevinscott.com/emojis-in-javascript/
 		// And for Discord emojis: https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/coding-guides/using-emojis.md 
@@ -58,19 +62,16 @@ module.exports = {
 		// TODO: this (substring from 0,2 ) does not work with certain emojis such as country flags, eg flag_ru becomes R
 		let emoji = interaction.options.getString('emoji').trimStart(); // .substring(0, 2);
 		// Emojis here may be either custom Discord emojis, which begin with <: or Unicode(?) emojis
-		// console.log(emoji);
 		if (emoji.substring(0, 2) === '<:') {
 			const [ _emojiName, emojiId ] = getDiscordEmojiNameAndId(emoji);
-			// let customEmoji = null;
 			try {
 				const _customEmoji = await interaction.guild.emojis.fetch(emojiId);
 			} catch (err) {
 				interaction.reply({ content: 'That emoji is not present on this server. Please choose another emoji.', ephemeral: true });
 				return;
 			}
-			// console.log(customEmoji.toString());
 		} else {
-			emoji = emoji.substring(0, 2); // this has problems for some emojis
+			emoji = emoji.substring(0, 2); // this has problems for some emojis (see above TODO)
 			// eslint-disable-next-line no-misleading-character-class
 			const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c\ude32-\ude3a]|[\ud83c\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/; // this should catch most emojis?
 			if (!emojiRegex.test(emoji)) {
@@ -95,7 +96,6 @@ module.exports = {
 			console.log('Error in reading or parsing file: ' + err);
 			return;
 		}
-		// console.log(soulsFileContents);
 		// Check for duplicates in name or emoji for the server
 		for (const soul of soulsFileContents.souls) {
 			if (soulName === soul.name || emoji === soul.emoji) {
@@ -111,7 +111,6 @@ module.exports = {
 			response.pipe(file);
 			file.on('finish', () => {
 				file.close();
-				// console.log('Download completed.');
 			});
 		});
 

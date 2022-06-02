@@ -21,11 +21,6 @@ const hauntTestAllActiveServers = async (client, guilds) => {
 	}
 };
 
-// const hauntGuildAndScheduleNext = (guild, soulObj) => {
-// 	hauntSomeChannelWithSoul(guild, soulObj);
-// 	return getRandomizedNextTimeInFuture(dayjs(), -5, 0.05);
-// };
-
 module.exports = {
 	beginIntervalTest: (client, timeInMs) => {
 		setInterval(() => hauntTestAllActiveServers(client), timeInMs);
@@ -65,8 +60,6 @@ module.exports = {
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, client, guildIdString);
 		setTimeout(() => {
-			// const _nextAppearance = hauntGuildAndScheduleNext(guild, upcomingSoulType);
-			// updateAppearancesWith(nextAppearance, getWeightedRandomSoulType(guild.id), client, guildIdString);
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!serverDataObject.paused) module.exports.guildHauntDriver(client, guild);
 		}, nextTimeObj.msUntil);

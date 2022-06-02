@@ -19,7 +19,7 @@ module.exports = {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}
-		//
+		
 		const memberTarget = interaction.options.getMember('new-condemned');
 		interaction.client.nateBotData[interaction.guild.id.toString()].condemnedSoul = memberTarget.user.id;
 		// TODO: Everything relevant, likely duplicate behavior from setup.js

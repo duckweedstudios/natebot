@@ -25,7 +25,6 @@ module.exports = {
 		}
 		//
 		// TODO: Save to database that this server is paused
-		// Perhaps via a flag, rather than removing from the database?
 		interaction.reply('All temporal Natebot functions (hauntings, soul decay) are paused.');
 	},
 };

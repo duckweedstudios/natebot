@@ -4,6 +4,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Display the bot\'s commands and other information.'),
+
+	// TODO: This should just display Zade's embed instead of the following.
 	async execute(interaction) {
 		// TODO
 		const result = `

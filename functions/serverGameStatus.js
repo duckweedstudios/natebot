@@ -45,6 +45,10 @@ Then, using the server's ID, we can retrieve other information, such as its:
 
 */
 
+// ========================================================================
+// The following code is unfinished and unused, and thus deprecated.
+// ========================================================================
+
 module.exports = {
 	// eslint-disable-next-line no-unused-vars
 	getStatus: async (guild) => {

@@ -162,17 +162,10 @@ module.exports = {
 			},
 		});
 
-		player.addListener('stateChange', (oldState, newState) => {
-			console.log(`${oldState.status}, ${newState.status}`);
-		});
 		// Subscribe the connection to the audio player (will play audio on the voice connection)
 		const subscription = connection.subscribe(player);
 
 		console.log(`Haunting ${guild.name}`);
-
-		// Report playing status
-		// player.on(AudioPlayerStatus.Idle, () => {
-		// });
 
 		// Apparently this is necessary to avoid the start of the audio cutting off, making short sounds seem to "not play"
 		connection.on(VoiceConnectionStatus.Ready, () => {
@@ -181,16 +174,13 @@ module.exports = {
 			});
 		});
 		
-		// console.log(resource);
 		player.on('error', error => {
 			throw new Error(`Error: ${error.message} with resource ${error.resource.metadata.title}`); // never seen this occur, I assume it's a connection problem thing?
 		});
 
-		// setTimeout(() => player.play(resource2), 2000);
-
+		// Unsubscribe.
 		// subscription could be undefined if the connection is destroyed!
 		if (subscription) {
-			// Unsubscribe after 5 seconds (stop playing audio on the voice connection)
 			setTimeout(() => subscription.unsubscribe(), 19500);
 			setTimeout(() => {
 				try {

@@ -18,15 +18,13 @@ module.exports = {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}
-		// TODO: Check whether Natebot is already unpaused on this server
-		// eslint-disable-next-line no-constant-condition
-		if (false) {
+		// Check whether Natebot is already unpaused on this server
+		if (serverDataObject.paused) {
 			interaction.reply({ content: 'The Natebot is already unpaused.', ephemeral: true });
 			return;
 		}
 		//
 		// TODO: Save to database that this server is setup
-		// Perhaps by modifying a flag rather than adding to the database
 
 		// TODO: Check whether hauntings have been skipped while paused
 		// We will not make up for missed hauntings or soul decay,

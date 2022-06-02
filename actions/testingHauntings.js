@@ -1,6 +1,7 @@
-const { joinBruhTest } = require('./hauntings.js');
+const { joinBruhTest, hauntSomeChannelWithSoul } = require('./hauntings.js');
 const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
 const { getServerDataFromMemory, updateAppearancesWith } = require('../functions/serverData.js');
+const { getWeightedRandomSoulType } = require('../functions/souls.js');
 const dayjs = require('dayjs');
 
 const hauntTestAllActiveServers = async (client, guilds) => {
@@ -20,10 +21,10 @@ const hauntTestAllActiveServers = async (client, guilds) => {
 	}
 };
 
-const hauntGuildAndScheduleNext = (guild) => {
-	joinBruhTest(guild);
-	return getRandomizedNextTimeInFuture(dayjs(), -5, 0.05);
-};
+// const hauntGuildAndScheduleNext = (guild, soulObj) => {
+// 	hauntSomeChannelWithSoul(guild, soulObj);
+// 	return getRandomizedNextTimeInFuture(dayjs(), -5, 0.05);
+// };
 
 module.exports = {
 	beginIntervalTest: (client, timeInMs) => {
@@ -59,11 +60,14 @@ module.exports = {
 		const guildIdString = guild.id.toString();
 		const serverDataObject = getServerDataFromMemory(client, guildIdString);
 		if (serverDataObject === null) throw new Error(`Error in guildHauntDriver: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.nateBotData}`);
-		const nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), serverDataObject.schedule.meanDelay, serverDataObject.schedule.variation);
+		const nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), -5, 0.05/* serverDataObject.schedule.meanDelay, serverDataObject.schedule.variation*/);
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
+		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
+		updateAppearancesWith(nextTimeObj, upcomingSoulType, client, guildIdString);
 		setTimeout(() => {
-			const nextAppearance = hauntGuildAndScheduleNext(guild);
-			updateAppearancesWith(nextAppearance, client, guildIdString);
+			// const _nextAppearance = hauntGuildAndScheduleNext(guild, upcomingSoulType);
+			// updateAppearancesWith(nextAppearance, getWeightedRandomSoulType(guild.id), client, guildIdString);
+			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!serverDataObject.paused) module.exports.guildHauntDriver(client, guild);
 		}, nextTimeObj.msUntil);
 	},

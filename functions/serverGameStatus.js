@@ -1,17 +1,40 @@
 /*
 A JSON object containing all the information we need about a server could be as follows:
 {
-    condemnedMember: <null | user ID>, // must be tracked in case condemned roles are manually assigned by server admins, which is not desired
-    modRoles: [<role that can use bot's admin commands>],
-    paused: <boolean>,
-    setup: <boolean, iff setup command has been used>,
+    condemnedMember: <id>, // default null
+    modRoles: [<id>], // unused for now. roles that can use bot's admin commands
+    paused: <boolean>, // default false
+    setup: <boolean>, // default false
     schedule: {
-        nextAppearance: <Date>,
-        pastAppearance: <Date>,
-        meanDelay: <avg minutes after appearance before the next as decimal number>,
-        variation: <affects how much appearance times can vary from mean>,
+        next: {
+			when: { // default null
+				time: <DayJS object OR String>, // Appears as "2022-06-02T13:22:22.465Z", and this string can construct dayjs objects
+				timeFormatted: <String>, // Appears as 06/02/2022 09:22:22 AM
+				msUntil: <integer>,
+			},
+			soulType: { // default null
+				name: <String>,
+				rarity: <integer>,
+				emoji: <String>,
+				extension: <String>,
+			},
+		},
+        past: {
+			when: { // default null
+				time: <DayJS object OR String>, // Appears as "2022-06-02T13:22:22.465Z", and this string can construct dayjs objects
+				timeFormatted: <String>, // Appears as 06/02/2022 09:22:22 AM
+				msUntil: <integer>,
+			},
+			soulType: { // default null
+				name: <String>,
+				rarity: <integer>,
+				emoji: <String>,
+				extension: <String>,
+			},
+		},
+        meanDelay: <Number>, // default 1440 when setup, -1 otherwise. avg minutes after appearance before the next as decimal number
+        variation: <integer>, // default 5 when setup, -1 otherwise. affects how much appearance times can vary from mean
     },
-
 }
 
 Then, using the server's ID, we can retrieve other information, such as its:
@@ -48,7 +71,7 @@ module.exports = {
 			return result;
 		}
 		result += `Temporal actions (such as hauntings, soul decay) are ${obj.paused ? 'paused' : 'active'}.\n`;
-		result += `The next haunting is expected around ${obj.schedule.nextAppearance}. The mean haunting delay is ${obj.schedule.meanDelay} minutes and the variation setting is ${obj.schedule.variation}.\n`;
+		result += `The next haunting is expected at exactly ${obj.schedule.next.when.nextAppearanceFormatted }. The mean haunting delay is ${obj.schedule.meanDelay} minutes and the variation setting is ${obj.schedule.variation}.\n`;
 		result += `This server is ${obj.condemnedMember ? 'being haunted by ' + obj.condemnedMember : 'not currently haunted, somehow. Use /makecondemned to fix'}.\n`;
 		if (obj.modRoles.length > 0) {
 			result += `The roles which can interact with the bot's admin commands are: `;

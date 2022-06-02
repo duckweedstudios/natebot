@@ -58,7 +58,7 @@ module.exports = {
 		// TODO: this (substring from 0,2 ) does not work with certain emojis such as country flags, eg flag_ru becomes R
 		let emoji = interaction.options.getString('emoji').trimStart(); // .substring(0, 2);
 		// Emojis here may be either custom Discord emojis, which begin with <: or Unicode(?) emojis
-		console.log(emoji);
+		// console.log(emoji);
 		if (emoji.substring(0, 2) === '<:') {
 			const [ _emojiName, emojiId ] = getDiscordEmojiNameAndId(emoji);
 			// let customEmoji = null;

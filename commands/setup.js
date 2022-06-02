@@ -47,7 +47,6 @@ module.exports = {
 		const newServerDataObject = initializeObject(memberTarget, [], meanDelay, randomness);
 		const serverIdString = interaction.guild.id.toString();
 		interaction.client.nateBotData = { ...interaction.client.nateBotData, [serverIdString] : newServerDataObject };
-		console.log(interaction.client.nateBotData);
 
 		// TODO: Save to database that this server is setup (by its ID, so it can be accessed)
 

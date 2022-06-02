@@ -13,7 +13,7 @@ const {
 	// getVoiceConnection,
 	// getVoiceConnections,
 } = require('@discordjs/voice');
-const { getSoulTypesJSON } = require('../functions/serverData.js');
+const { getAudioResourceFromSoul, getWeightedRandomSoulType } = require('../functions/souls.js');
 
 // TODO: Stability testing across different connection problem scenarios.
 
@@ -73,7 +73,7 @@ module.exports = {
 		// })
 		// console.log(fs.existsSync(path.join(__dirname, '../resources/global/Bruh.mp3')));
 		// Create a resource
-		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh2.mp3'), {
+		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh.mp3'), {
 			metadata: {
 				title: 'Bruh!',
 			},
@@ -107,7 +107,7 @@ module.exports = {
 		}
 	},
 
-	hauntSomeChannelWithRandomSound: async (guild) => {
+	hauntSomeChannelWithSoul: async (guild, soulObjToPlay) => {
 		const guildChannels = await guild.channels.fetch();
 		const guildAFKChannel = guild.afkChannel;
 		const guildVoiceChannels = guildChannels.filter((v) => v.isVoice() && v.joinable && v !== guildAFKChannel);
@@ -117,7 +117,7 @@ module.exports = {
 			return;
 		}
 
-		// Find the VC with the most active users. Arbitrarily break ties. 
+		// Find the VC with the most active users. Arbitrarily break ties -- just join the one first in the list
 		let winningIdAndCount = [guildVoiceChannels.at(0).id, guildVoiceChannels.at(0).members.size];
 		for (const voiceChannelKV of guildVoiceChannels.entries()) {
 			// voiceChannelKV is (or can be used as) an array, where index 0 is the key (a string of the channel ID)
@@ -128,40 +128,21 @@ module.exports = {
 			}
 		}
 
-		// Before connecting, determine which soul type will appear
-		// (TODO: store only in memory the most recent soul type for the server. This is where it'd be set.)
-		const soulsFileContents = getSoulTypesJSON(guild.id);
-		let audioResourceToPlay;
-		if (!soulsFileContents) {
-			// No souls exist on the server. Play the default Bruh sound. 
-			const pathOfFileToPlay = path.join(__dirname, '../resources/global/Bruh2.mp3');
-			// Create a resource
-			audioResourceToPlay = await createAudioResource(pathOfFileToPlay), {
-				metadata: {
-					title: 'Bruh!',
-				},
-			};
-		} else {
-			const soulRaritySum = soulsFileContents.souls.reduce((prev, curr) => prev + (1 / curr.rarity), 0);
-			const randomNumber = Math.random() * soulRaritySum; // floats on [0, soulRaritySum)
-			let runningSum = 0;
-			for (const soulType of soulsFileContents.souls) {
-				if (randomNumber < (1 / soulType.rarity) + runningSum) {
-					const pathOfFileToPlay = path.join(__dirname, `../resources/guilds/${guild.id}/${soulType.name}.${soulType.extension}`);
-					console.log(pathOfFileToPlay);
-					audioResourceToPlay = await createAudioResource(pathOfFileToPlay, {
-						metadata: {
-							title: soulType.name,
-						},
-					});
-					break;
-				} else {
-					runningSum += 1 / soulType.rarity;
-				}
-			}
-			if (!audioResourceToPlay) throw new Error(`Error in hauntSomeChannelWithRandomSound: No audio resource was defined. Tried ${randomNumber} of ${soulRaritySum}`);
-			console.log(audioResourceToPlay);
+		// We know which soul type is meant to play because it's predetermined
+		// HOWEVER, when the bot is first setup, it's queued to play the default global sound no matter what bc no other sounds exist.
+		// Therefore, we need to check if it is the default global sound about to be played. If so, try to "reroll"
+		// Either the condemned still hasn't set a sound, in which case nothing changes,
+		// or they did set a sound, and that will, as a guarantee, be played instead. 
+		if (soulObjToPlay.global) {
+			soulObjToPlay = getWeightedRandomSoulType(guild.id);
 		}
+
+		// Actually getting the audio resource, given the soul info, is deferred until the last minute
+		// In theory I thought this might avoid problems from paths changing, etc. but realistically I'm not sure if it matters.
+		// No harm no foul.
+		// Throws error if the audio resource cannot be located.
+		const audioResourceToPlay = getAudioResourceFromSoul(soulObjToPlay, guild.id);
+
 		// Connect to a voice channel
 		const connection = await joinVoiceChannel({
 			channelId: winningIdAndCount[0],

@@ -5,4 +5,4 @@ module.exports = {
 	},
 };
 
-console.log(module.exports.getDiscordEmojiNameAndId('<:okdoit:981272703552077954>'));
+// console.log(module.exports.getDiscordEmojiNameAndId('<:okdoit:981272703552077954>'));

@@ -1,16 +1,5 @@
 const dayjs = require('dayjs');
 
-// eslint-disable-next-line no-unused-vars
-const gaussianRandom = () => {
-	let sum = 0;
-	const numIterations = 10;
-	for (let i = 0; i < numIterations; i++) {
-		sum += Math.random();
-	}
-
-	return 12 + (sum / numIterations) * (36 - 12 + 1);
-};
-
 const getRandomizedNextTime = (now, mean = 1440, variation = 6) => {
 	const hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
 	// return hoursFromNow;
@@ -42,6 +31,36 @@ module.exports = {
 		}
 		return nextTimeObj;
 	},
+
+	// time: time of the haunting as dayjs object
+	// meanDelay: the server's mean delay setting in minutes. will be used to vary how precise the results are
+	// spread: divisor for meanDelay to set max one way difference interval
+	// For example, a 24 hour mean delay should have a wider timeframe than a 6 hour mean delay
+	getVagueTimeRange: (time, meanDelay = 1440, spread = 6) => {
+		const maxOneWayDifference = meanDelay / spread;
+		const earlierInterval = Math.floor(Math.random() * maxOneWayDifference);
+		const laterInterval = Math.floor(Math.random() * maxOneWayDifference);
+		const earlierTime = time.subtract(earlierInterval, 'minute');
+		const laterTime = time.add(laterInterval, 'minute');
+		return {
+			'formatted': `${earlierTime.format('MM/DD/YYYY hh:mm A')} and ${laterTime.format('MM/DD/YYYY hh:mm A')}`,
+			earlierTime,
+			laterTime,
+		};
+	},
+
+	getPartOfDay: (time) => {
+		const hour = time.hour();
+		if (hour < 6) {
+			return 'dusk';
+		} else if (hour < 12) {
+			return 'dawn';
+		} else if (hour < 18) {
+			return 'afternoon';
+		} else {
+			return 'evening';
+		}
+	},
 };
 
 // const testRandom = () => {
@@ -61,3 +80,4 @@ module.exports = {
 console.log(`It is now ${dayjs().format('MM/DD/YYYY hh:mm:ss A')}`);
 console.log(`The bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs()).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
 console.log(`For short-duration testing, the bot will next appear ${module.exports.getRandomizedNextTimeInFuture(dayjs(), 5, 1).nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+console.log(`A vague time range for now using mean 1440 would be between ${module.exports.getVagueTimeRange(dayjs(), 1440).formatted}, or ${module.exports.getPartOfDay(dayjs())}`);

@@ -2,6 +2,8 @@
 A JSON object containing all the information we need about a server could be as follows:
 {
     condemnedMember: <id>, // default null
+	condemnedRoleId: <id>, // default null
+	hellspeakChannelId: <id>, // default null
     modRoles: [<id>], // unused for now. roles that can use bot's admin commands
     paused: <boolean>, // default false
     setup: <boolean>, // default false

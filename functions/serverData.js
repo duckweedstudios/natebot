@@ -1,9 +1,11 @@
 // const dayjs = require('dayjs');
 
 module.exports = {
-	initializeObject: (condemnedMember, modRoles, meanDelay = 1440, variation = 5) => {
+	initializeObject: (condemnedMember, condemnedRoleId, hellspeakChannelId, modRoles, meanDelay = 1440, variation = 5) => {
 		return {
 			condemnedMember,
+			condemnedRoleId,
+			hellspeakChannelId,
 			modRoles,
 			paused: false,
 			setup: true,

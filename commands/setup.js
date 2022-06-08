@@ -36,6 +36,16 @@ module.exports = {
 			interaction.reply({ content: 'Randomness must be an integer between 1 and 10.', ephemeral: true });
 			return;
 		}
+		// Ensure target isn't a bot
+		if (interaction.options.getMember('first-condemned') && interaction.options.getMember('first-condemned').user.bot) {
+			if (interaction.options.getMember('first-condemned').id === '974345779349184542') {
+				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
+				return;
+			} else {
+				interaction.reply({ content: 'A puny bot cannot bear the mantle of Condemned Soul. Choose a user instead.', ephemeral: true });
+				return;
+			}
+		}
 
 		// Create the condemned soul role on the server (assuming it doesn't exist)
 		let condemnedRole;
@@ -56,7 +66,7 @@ module.exports = {
 			memberTarget = interaction.options.getMember('first-condemned').id;
 			interaction.options.getMember('first-condemned').roles.add((await condemnedRole));
 		}
-		console.log((await condemnedRole));
+
 		// Create the HELLSPEAK voice channel
 		// TODO: configure permissions so it is only visible to the condemned soul and server moderators
 		let hellspeakChannel;
@@ -77,7 +87,7 @@ module.exports = {
 		
 
 		// For now, save server info object to client
-		const newServerDataObject = initializeObject(memberTarget, await condemnedRole.id, hellspeakChannel.id, [], meanDelay, randomness);
+		const newServerDataObject = initializeObject(memberTarget, (await condemnedRole.id), hellspeakChannel.id, [], meanDelay, randomness);
 		const serverIdString = interaction.guild.id.toString();
 		interaction.client.nateBotData = { ...interaction.client.nateBotData, [serverIdString] : newServerDataObject };
 

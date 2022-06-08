@@ -20,6 +20,16 @@ module.exports = {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}
+		// Ensure target isn't a bot
+		if (interaction.options.getMember('new-condemned').user.bot) {
+			if (interaction.options.getMember('new-condemned').id === '974345779349184542') {
+				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
+				return;
+			} else {
+				interaction.reply({ content: 'A puny bot cannot bear the mantle of Condemned Soul. Choose a user instead.', ephemeral: true });
+				return;
+			}
+		}
 		
 		// Erase the condemned role from all who have it
 		const condemnedRole = await getCondemnedRoleOnServer(interaction.client, interaction.guild);

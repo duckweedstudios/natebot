@@ -10,11 +10,11 @@ module.exports = {
 			paused: false,
 			setup: true,
 			schedule: {
-				nextAppearance: {
+				next: {
 					time: null,
 					soulType: null,
 				},
-				pastAppearance: {
+				past: {
 					time: null,
 					soulType: null,
 				},

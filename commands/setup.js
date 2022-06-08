@@ -1,9 +1,9 @@
-const { Permissions } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { initializeObject } = require('../functions/serverData.js');
 const { guildHauntDriver } = require('../actions/testingHauntings.js');
 const { isMemberOwner } = require('../functions/privileges.js');
 const { createCondemnedRole } = require('../functions/roles.js');
+const { createHellspeakChannel } = require('../functions/channels.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -71,17 +71,10 @@ module.exports = {
 		// TODO: configure permissions so it is only visible to the condemned soul and server moderators
 		let hellspeakChannel;
 		try {
-			hellspeakChannel = await interaction.guild.channels.create('HELLSPEAK', {
-				type: 'GUILD_VOICE',
-				permissionOverwrites: [
-					{
-						id: interaction.member.id,
-						deny: [Permissions.FLAGS.VIEW_CHANNEL],
-					},
-				],
-			});
+			hellspeakChannel = createHellspeakChannel(interaction.guild, condemnedRole);
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
+			interaction.reply({ content: `Setup failed (could not create a voice channel), please try again later.`, ephemeral: true });
 			return;
 		}
 		

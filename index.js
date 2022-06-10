@@ -49,14 +49,14 @@ for (const file of buttonFiles) {
 // MONGOOSE PORT
 mongoose.connect(mongodbsrv, {
 	useNewUrlParser: true,
-	useUnifiedTopology: true
+	useUnifiedTopology: true,
 })
-.then(()=>{
-	console.log('Connected to the Database');
-})
-.catch((err) => {
-	console.log(err)
-})
+	.then(()=>{
+		console.log('Connected to the Database');
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 
 client.usersCurrentMenuToken = [null];
 client.usersCurrentTarget = [null];

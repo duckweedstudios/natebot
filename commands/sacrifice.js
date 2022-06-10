@@ -14,12 +14,12 @@ module.exports = {
 
 		const favoriteColorInput = new TextInputComponent()
 			.setCustomId('favoriteColorInput')
-			.setLabel("What's your favorite color?")
+			.setLabel('What\'s your favorite color?')
 			.setStyle('SHORT');
 
 		const hobbiesInput = new TextInputComponent()
 			.setCustomId('hobbiesInput')
-			.setLabel("What's some of your favorite hobbies?")
+			.setLabel('What\'s some of your favorite hobbies?')
 			.setStyle('PARAGRAPH');
 
 		const firstActionRow = new MessageActionRow().addComponents(favoriteColorInput);
@@ -27,6 +27,6 @@ module.exports = {
 
 		giftModal.addComponents(firstActionRow, secondActionRow);
 		
-		await interaction.showModal(giftModal)
+		await interaction.showModal(giftModal);
 	},
 };

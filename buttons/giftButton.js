@@ -1,13 +1,12 @@
-const { Modal, TextInputComponent, MessageEmbed, Message, MessageActionRow, MessageButton } = require('discord.js');
-const { ButtonBuilder } = require("@discordjs/builders");
-const { lastInteraction } = require('../events/lastInteraction')
+const { Modal, TextInputComponent, MessageActionRow, MessageButton } = require('discord.js');
+
 
 module.exports = {
 	name: 'giftButton',
 	data: new MessageButton()
-	.setCustomId('giftButton')
-	.setLabel('Send a Gift! 🎁')
-	.setStyle('SUCCESS'),
+		.setCustomId('giftButton')
+		.setLabel('Send a Gift! 🎁')
+		.setStyle('SUCCESS'),
 	
 	async execute(interaction) {
 		const giftModal = new Modal()
@@ -16,13 +15,13 @@ module.exports = {
 
 		const giftInput = new TextInputComponent()
 			.setCustomId('giftInput')
-			.setLabel("How many souls would you like to give?")
+			.setLabel('How many souls would you like to give?')
 			.setStyle('SHORT');
 
 		const firstActionRow = new MessageActionRow().addComponents(giftInput);
 
 		giftModal.addComponents(firstActionRow);
 
-		await interaction.showModal(giftModal)
+		await interaction.showModal(giftModal);
 	},
 };

@@ -22,11 +22,13 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.4.1",
     "@discordjs/voice": "^0.9.0",
+    "axios": "^0.27.2",
     "dayjs": "^1.11.2",
     "discord-api-types": "^0.32.1",
     "discord.js": "^13.7.0",
     "eslint": "^8.16.0",
     "ffmpeg-static": "^4.4.1",
+    "mongoose": "^6.3.6",
     "ytdl-core": "^4.11.0"
   }
 }

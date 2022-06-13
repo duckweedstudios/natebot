@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const profileSchema = new mongoose.Schema({
 	fetcherTag:{ type: String, require: true },
-	fetcherID: { type: String, require: true, unique: false },
+	fetcherID: { type: String, require: true, unique: true },
 	serverID:{ type: String, require:true, unique: false },
 	// Souls is the amount of souls a user has
 	souls:{ type: Number, default: 0 },

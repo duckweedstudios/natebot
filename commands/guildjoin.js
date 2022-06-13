@@ -94,7 +94,10 @@ module.exports = {
 		} catch (error) {
 			console.log(error);
 			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
+			// return; // for testing purposes leave this in
 		}
+
+		interaction.client.nateBotData = { ... interaction.client.nateBotData, [interaction.guild.id] : { membersWhoFetched: [] } };
 
 		// Start the hauntings!
 		guildHauntDriver(interaction.client, interaction.guild);

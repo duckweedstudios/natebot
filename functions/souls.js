@@ -3,19 +3,23 @@ const path = require('path');
 const { createAudioResource } = require('@discordjs/voice');
 
 module.exports = {
+	getDefaultSoul: () => {
+		return {
+			'id': -1,
+			'name': 'Bruh',
+			'author': 'OliGuzzler',
+			'rarity': 10, // fairly punishing for the condemned if they don't set a soul. TODO this needs revision for the rarity system overhaul
+			'emoji': '<:oliguzzler:981630307662987344>',
+			'extension': 'mp3',
+			'global': true,
+		};
+	},
+
 	getWeightedRandomSoulType: (guildId) => {
 		const soulsFileContents = module.exports.getSoulTypesJSON(guildId);
 		if (!soulsFileContents) {
 			// No souls exist on the server. Play a default sound.
-			return {
-				'id': -1,
-				'name': 'Bruh',
-				'author': 'OliGuzzler',
-				'rarity': 10, // fairly punishing for the condemned if they don't set a soul. TODO this needs revision for the rarity system overhaul
-				'emoji': '<:oliguzzler:981630307662987344>',
-				'extension': 'mp3',
-				'global': true,
-			};
+			return module.exports.getDefaultSoul();
 		} else {
 			const soulRaritySum = soulsFileContents.souls.reduce((prev, curr) => prev + (1 / curr.rarity), 0);
 			const randomNumber = Math.random() * soulRaritySum; // floats on [0, soulRaritySum)
@@ -64,8 +68,29 @@ module.exports = {
 				return soulsFileContents;
 			}
 		} catch (err) {
-			console.log(`Warning in getSoulTypesJSON: No entry for ${guildId}`);
+			// console.log(`Warning in getSoulTypesJSON: No entry for ${guildId}`);
 			return false;
 		}
+	},
+
+	getSoulById: (soulTypeId, guildId) => {
+		const soulsFileContents = module.exports.getSoulTypesJSON(guildId);
+		if (!soulsFileContents) {
+			return -1;
+		}
+
+		for (const soulType of soulsFileContents.souls) {
+			if (soulType.id === soulTypeId) {
+				return soulType;
+			}
+		}
+
+		console.log(`Warning in getSoulById: Found a non-empty souls file, but did not find a soul with id ${soulTypeId} in server ${guildId}`);
+		return false;
+	},
+
+	// TODO: revise soul value calculation method
+	getSoulValue: (soul) => {
+		return soul.rarity;
 	},
 };

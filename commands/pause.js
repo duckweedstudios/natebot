@@ -25,7 +25,7 @@ module.exports = {
 			return;
 		}
 		// Check for admin status
-		if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+		if (!isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}

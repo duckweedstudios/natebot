@@ -25,12 +25,12 @@ module.exports = {
 			return;
 		}
 		// Check for admin status
-		if (isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
+		if (!isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}
 		// Check whether Natebot is already unpaused on this server
-		if (guildData.settings.paused) {
+		if (!guildData.settings.paused) {
 			interaction.reply({ content: 'The Natebot is already unpaused.', ephemeral: true });
 			return;
 		}

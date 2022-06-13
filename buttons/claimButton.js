@@ -10,6 +10,6 @@ module.exports = {
 		.setDisabled(true),
 
 	async execute(interaction) {
-		await interaction.reply({ content:'Will claim condemned soul role', ephemeral:true });
+		await interaction.reply({ content:`${interaction.user.tag} IS THE NEW CONDEMNED SOUL!!` });
 	},
 };

@@ -56,7 +56,6 @@ module.exports = {
 	// than the alternative of saving it to the database (which would be wasteful)
 	getMutedRoleOnServer: async (guild) => {
 		let mutedRole = guild.roles.cache.find((role) => role.name === 'CS-MUTED');
-		// if there is no `Muted` role, send an error
 		if (!mutedRole) {
 			mutedRole = guild.roles.create({
 				name: 'CS-MUTED',

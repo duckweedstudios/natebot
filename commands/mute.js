@@ -11,5 +11,12 @@ module.exports = {
 		setTimeout(() => {
 			member.roles.remove(mutedRole);
 		}, 150000);
+
+		for (const channel of interaction.guild.channels.cache.values().filter(chan => chan.isVoice())) {
+			if (channel.members.has(member.id)) {
+				channel.members.get(member.id).voice.setMute(true);
+				break;
+			}
+		}
 	},
 };

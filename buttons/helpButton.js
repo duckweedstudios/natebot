@@ -14,7 +14,7 @@ module.exports = {
 			.setColor('BLUE')
 			.setTitle(`__***NEED HELP?***__`)
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-			.setDescription('*There will be help stuff here*')
+			.setDescription('*Figure it the fuck out retard*')
 			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg');
 
 		const finalComponents = await getActionRow(interaction);

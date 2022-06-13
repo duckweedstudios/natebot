@@ -1,5 +1,7 @@
 const { MessageActionRow } = require('discord.js');
 const { getGuildData } = require('../events/guildquery');
+const { getSoulData } = require('../events/query');
+const profileModel = require ('../models/profileSchema');
 
 module.exports = {
 	getActionRow : async (interaction, target) => {
@@ -18,6 +20,9 @@ module.exports = {
 		let targetIsCondemned = false;
 		let userIsCondemned = false;
 		const guildData = await getGuildData(guild.id);
+		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
+		const userData = await getSoulData(interaction, interaction.user.id);
+		const allFetchersData = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
@@ -63,10 +68,17 @@ module.exports = {
 					.addComponents(serverStatsButton.data);
 				break;
 			} else if (targetIsCondemned) {
-				returnedActionRow = new MessageActionRow()
-					.addComponents(claimButton.data)
-					.addComponents(serverStatsButton.data)
-					.addComponents(helpButton.data);
+				if (condemnedData.souls <= 0 && allFetchersData[0].souls === userData.souls) {
+					returnedActionRow = new MessageActionRow()
+						.addComponents(claimButton.data.setDisabled(false))
+						.addComponents(serverStatsButton.data)
+						.addComponents(helpButton.data);
+				} else {
+					returnedActionRow = new MessageActionRow()
+						.addComponents(claimButton.data)
+						.addComponents(serverStatsButton.data)
+						.addComponents(helpButton.data);
+				}
 				break;
 			} else {
 				returnedActionRow = new MessageActionRow()

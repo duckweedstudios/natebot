@@ -55,6 +55,7 @@ module.exports = {
 		// console.log(client.nateBotData['672609929495969813'].schedule);
 	},
 
+	// TODO: check on the database results for this operation
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
 		try {
 			const guildData = getGuildData(guildIdString);
@@ -71,7 +72,6 @@ module.exports = {
 					},
 				},
 			});
-
 		} catch (err) {
 			console.error(`Error in replaceEarlierAppearance: Could not update information in database for server ${guildIdString}: ${err}`);
 		}

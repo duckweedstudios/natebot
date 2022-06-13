@@ -11,17 +11,26 @@ module.exports = {
 		let soulData;
 		let guildData;
 		try {
-			soulData = await getSoulData(target.id);
+			guildData = await getGuildData(guild.id);
+			if (!guildData) {
+				interaction.reply({ content:'This guild has not set up the bot yet', ephemeral: true });
+				return;
+			}
 		} catch (err) {
 			interaction.reply({ content: err, ephemeral: true });
 			return;
 		}
 		try {
-			guildData = await getGuildData(guild.id);
+			soulData = await getSoulData(interaction, target.id);
+			if (!soulData) {
+				interaction.reply({ content:'This user has not joined the soul fetchers', ephemeral: true });
+				return;
+			}
 		} catch (err) {
 			interaction.reply({ content: err, ephemeral: true });
 			return;
 		}
+
 		// Determinations
 		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
@@ -47,10 +56,13 @@ module.exports = {
 			.addFields(
 				{ name: '\u200B', value: '\u200B' },
 				{ name: '__Your Souls Left__', value: `*${soulData.souls}*` },
-				{ name: '__Spent Souls__', value: `*${(100 - soulData.souls)}*`, inline: true },
-				{ name: '__Caught Souls__', value: `*${soulData.careersouls}*`, inline: true },
+				{ name: '__Spent Souls__', value: `*${(100 - soulData.soulsCaught - soulData.souls)}*`, inline: true },
+				{ name: '__Souls Stolen__', value: `*${soulData.soulsCaught}*`, inline: true },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__**Soul You Created**__', value: `🍌 Banana soul worth 2 souls ` },
+				{ name: '__**Condemned Career Stats**__', value: `\u200B` },
+				{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
+				{ name: '__Fetcher Rank__', value: `*${soulData.soulXP}*`, inline: true },
+				{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -60,14 +72,19 @@ module.exports = {
 			.setColor('DARK_ORANGE')
 			.setTitle(`__**${target.username}'s profile**__`)
 			.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
-			.setDescription('*Professional Soul Fetcher*')
+			.setDescription('*//Professional Soul Fetcher//*')
 			.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 			.addFields(
+				{ name: 'XP:', value: `${soulData.soulXP}` },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__Current Souls Fetched:__', value: `*${soulData.souls}*` },
-				{ name: '__Career Souls:__', value: `*${soulData.careersouls}*` },
+				{ name: '__Current Souls:__', value: `*${soulData.souls}*` },
+				{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
+				{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__**Caught Soul Types:**__', value: `🍓 🥝 🍌 🍇 🍉` },
+				{ name: '__**Career Stats**:__', value: '\u200B' },
+				{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
+				{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
+				{ name: '__Rank:__', value: `*${soulData.soulXP}*` },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -80,11 +97,16 @@ module.exports = {
 			.setDescription('*Professional Soul Fetcher*')
 			.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 			.addFields(
+				{ name: 'Your XP:', value: `${soulData.soulXP}` },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__Current Souls Fetched:__', value: `*${soulData.souls}*` },
-				{ name: '__Career Souls:__', value: `*${soulData.careersouls}*` },
+				{ name: '__Your Current Souls:__', value: `*${soulData.souls}*` },
+				{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
+				{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__**Caught Soul Types:**__', value: `🍓 🥝 🍌 🍇 🍉` },
+				{ name: '__**Career Stats**:__', value: '\u200B' },
+				{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
+				{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
+				{ name: '__Your Rank:__', value: `*${soulData.soulXP}*` },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -97,11 +119,16 @@ module.exports = {
 			.setDescription('*Professional Soul Fetcher*')
 			.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 			.addFields(
+				{ name: 'XP:', value: `${soulData.soulXP}` },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__Current Souls Fetched:__', value: `*${soulData.souls}*` },
-				{ name: '__Career Souls:__', value: `*${soulData.careersouls}*` },
+				{ name: '__Current Souls:__', value: `*${soulData.souls}*` },
+				{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
+				{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__**Caught Soul Types:**__', value: `🍓 🥝 🍌 🍇 🍉` },
+				{ name: '__***  Career Stats  ***:__', value: '\u200B' },
+				{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
+				{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
+				{ name: '__Rank:__', value: `*${soulData.soulXP}*` },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -115,11 +142,13 @@ module.exports = {
 			.setThumbnail('https://imgur.com/MXLHd9R.png')
 			.addFields(
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__Souls Left__', value: `*${soulData.soulcage}*` },
-				{ name: '__Spent Souls__', value: `*${(100 - soulData.soulcage)}*`, inline: true },
-				{ name: '__Souls Stolen__', value: `*${soulData.careersouls}*`, inline: true },
+				{ name: '__Souls Left__', value: `*${soulData.souls}*` },
+				{ name: '__Souls Stolen__', value: `*${soulData.soulsCaught}*` },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__**Soul Created**__', value: `🍌 Banana soul worth 2 souls ` },
+				{ name: '__**Condemned Career Stats**__', value: `\u200B` },
+				{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
+				{ name: '__Fetcher Rank__', value: `*${soulData.soulXP}*`, inline: true },
+				{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });

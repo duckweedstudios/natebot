@@ -8,23 +8,39 @@ module.exports = {
 	async execute(interaction) {
 		try {
 			const profile = await profileModel.create({
-				serverName: interaction.guild.name,
-				serverID: interaction.guildId,
-				condemnedMember: '186517957210406912',
-				condemnedMemberTag: 'zade0123#3444',
-				paused: false,
-				setup: false,
+				serverId: interaction.guild.id,
+				condemnedMember: interaction.user.id,
+				newSoulMade: false,
+				settings: {
+					paused: false,
+					condemnedRoleId: '984925367070523423',
+					channelId: '981563688215523438',
+					modRoles: '974364005789487114',
+				},
 				schedule: {
-					nextAppearance: null,
-					pastAppearance: null,
-					meanDelay: -1,
-					variation: -1,
-				} });
+					next: {
+						time: null,
+						soulTypeId : null,
+					},
+					past: {
+						time: null,
+						soulTypeId : null,
+					},
+					meanDelay: 1440,
+					variaton: 5,
+				},
+				stats: {
+					serverSoulsCaught: 0,
+					hauntingsCount: 0,
+					soulsCreated: 0,
+					lastCondemnedMember: 0,
+				},
+			});
 			profile.save();
 			await interaction.reply({ content: 'setup success\nFETCH ME THEIR SOULS!', ephemeral: true });
 		} catch (error) {
 			console.log(error);
-			await interaction.reply({ content:'What are you doing? You\'re server is already setup!', ephemeral: true });
+			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 	},
 };

@@ -1,17 +1,32 @@
 const mongoose = require('mongoose');
 
 const profileSchemaGuild = new mongoose.Schema({
-	serverName: { type: String, require: true },
-	serverID: { type: String, require: true },
+	serverId: { type: String, require: true, unique: true },
 	condemnedMember: { type: String, require: true },
-	condemnedMemberTag: { type: String },
-	paused: { type: Boolean, default: false },
-	setup: { type: Boolean, default: false },
+	newSoulMade: { type: Boolean, default: false },
+	settings: {
+		paused: { type: Boolean, default: false },
+		condemnedRoleId: { type: String },
+		channelId: { type: String },
+		modRoles: { type: String },
+	},
 	schedule: {
-		nextAppearance: Date,
-		pastAppearance: Date,
-		meanDelay: Number,
-		variation: Number,
+		next: {
+			time: { type: Date },
+			soulTypeId : { type: String },
+		},
+		past: {
+			time: { type: Date },
+			soulTypeId : { type: String },
+		},
+		meanDelay: { type: Number, default: 1440 },
+		variaton: { type: Number, default: 5 },
+	},
+	stats: {
+		serverSoulsCaught: { type: Number, default: 0 },
+		hauntingsCount: { type: Number, default: 0 },
+		soulsCreated: { type: Number, default: 0 },
+		lastCondemnedMember: { type: Number, default: 0 },
 	},
 });
 

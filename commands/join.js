@@ -8,12 +8,18 @@ module.exports = {
 	async execute(interaction) {
 		try {
 			const profile = await profileModel.create({
-				fetcherTag: interaction.user.tag,
+				fetcherTag: interaction.user.username,
 				fetcherID: interaction.user.id,
-				serverID: interaction.guildId,
+				serverID:interaction.guild.id,
 				souls: 0,
-				soulcage: 0,
-				careersouls: 0,
+				soulsCaught: 0,
+				careerSouls: 0,
+				condemnedCount: 0,
+				soulXP: 0,
+				fetchCount: 0,
+				gotFooledCount: 0,
+				fooledCount: 0,
+				autoLure: false,
 			});
 			profile.save();
 			await interaction.reply({ content: 'FETCH ME THEIR SOULS!', ephemeral: true });

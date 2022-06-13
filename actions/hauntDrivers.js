@@ -3,6 +3,7 @@ const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
 const { getServerDataFromMemory, updateAppearancesWith } = require('../functions/serverData.js');
 const { getWeightedRandomSoulType } = require('../functions/souls.js');
 const dayjs = require('dayjs');
+const { getGuildData } = require('../events/guildquery');
 
 const hauntTestAllActiveServers = async (client, guilds) => {
 	console.log(guilds);
@@ -47,11 +48,11 @@ module.exports = {
 		}
 		for (const guild of guilds.values()) {
 			const trueGuild = await guild.fetch();
-			module.exports.guildHauntDriver(client, trueGuild);
+			module.exports.guildHauntDriverMemory(client, trueGuild);
 		}
 	},
 
-	guildHauntDriver: (client, guild) => {
+	guildHauntDriverMemory: (client, guild) => {
 		const guildIdString = guild.id.toString();
 		const serverDataObject = getServerDataFromMemory(client, guildIdString);
 		if (serverDataObject === null) throw new Error(`Error in guildHauntDriver: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.nateBotData}`);
@@ -61,7 +62,27 @@ module.exports = {
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, client, guildIdString);
 		setTimeout(() => {
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
-			if (!serverDataObject.paused) module.exports.guildHauntDriver(client, guild);
+			if (!serverDataObject.paused) module.exports.guildHauntDriverMemory(client, guild);
+		}, nextTimeObj.msUntil);
+	},
+
+	guildHauntDriver: (client, guild) => {
+		const guildIdString = guild.id.toString();
+		let guildData;
+		try {
+			guildData = getGuildData(guildIdString);
+		} catch (err) {
+			console.error(`Error in guildHauntDriver: Server data could not be retrieved from the database for guild ${guild.id}: ${err}`);
+			// TODO: set this server's status as paused, since no hauntings are occurring due to the error.
+			return;
+		}
+		const nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), -5, 0.05/* serverDataObject.schedule.meanDelay, serverDataObject.schedule.variation*/);
+		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
+		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
+		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
+		setTimeout(() => {
+			hauntSomeChannelWithSoul(guild, upcomingSoulType);
+			if (!guildData.paused) module.exports.guildHauntDriver(client, guild);
 		}, nextTimeObj.msUntil);
 	},
 };

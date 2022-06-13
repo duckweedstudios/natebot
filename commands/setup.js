@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { initializeObject } = require('../functions/serverData.js');
-const { guildHauntDriver } = require('../actions/testingHauntings.js');
+const { guildHauntDriverMemory: guildHauntDriver } = require('../actions/hauntDrivers.js');
 const { isMemberOwner } = require('../functions/privileges.js');
 const { createCondemnedRole } = require('../functions/roles.js');
 const { createHellspeakChannel } = require('../functions/channels.js');

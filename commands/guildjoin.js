@@ -1,9 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchemaGuild');
-const { isMemberOwner } = require('../functions.js');
+const { isMemberOwner } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
+const { guildHauntDriver } = require('../actions/hauntDrivers');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -94,5 +95,8 @@ module.exports = {
 			console.log(error);
 			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
 		}
+
+		// Start the hauntings!
+		guildHauntDriver(interaction.client, interaction.guild);
 	},
 };

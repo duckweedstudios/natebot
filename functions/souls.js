@@ -8,9 +8,10 @@ module.exports = {
 		if (!soulsFileContents) {
 			// No souls exist on the server. Play a default sound.
 			return {
+				'id': -1,
 				'name': 'Bruh',
 				'author': 'OliGuzzler',
-				'rarity': 10, // fairly punishing for the condemned if they don't set a soul
+				'rarity': 10, // fairly punishing for the condemned if they don't set a soul. TODO this needs revision for the rarity system overhaul
 				'emoji': '<:oliguzzler:981630307662987344>',
 				'extension': 'mp3',
 				'global': true,

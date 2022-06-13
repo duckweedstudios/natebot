@@ -1,7 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { getServerDataFromMemory } = require('../functions/serverData.js');
+// const { getServerDataFromMemory } = require('../functions/serverData.js');
+const { getGuildData } = require('../events/guildquery.js');
 const { isMemberPrivileged } = require('../functions/privileges.js');
 const { getCondemnedRoleOnServer } = require('../functions/roles.js');
+
+// The NCS command might do what this is doing already. 
+// TODO: combine them?
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,9 +14,18 @@ module.exports = {
 			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...').setRequired(true)),
 	async execute(interaction) {
 		// Check whether Natebot has already been setup
-		const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id);
-		if (serverDataObject === null) {
-			interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
+		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id);
+		// if (serverDataObject === null) {
+		// 	interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
+		// 	return;
+		// }
+		let guildData;
+		try {
+			guildData = getGuildData(interaction.guild.id);
+		} catch (err) {
+			// This will most often happen because the server has not been setup yet. 
+			// console.error(`Error in /makecondemned: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);
+			interaction.reply({ content: 'This command failed. Most likely, the Natebot has not yet been setup on the server. Use /guildjoin first.', ephemeral: true });
 			return;
 		}
 		// Check for admin status
@@ -39,9 +52,9 @@ module.exports = {
 		// Give the condemned role to the new target and update stored data
 		const memberTarget = interaction.options.getMember('new-condemned');
 		memberTarget.roles.add(condemnedRole);
-		interaction.client.nateBotData[interaction.guild.id].condemnedMember = memberTarget.id;
-		// TODO: Everything relevant, likely duplicate behavior from setup.js
-		// TODO: Insert appropriate user tag/nickname into string below
+		// interaction.client.nateBotData[interaction.guild.id].condemnedMember = memberTarget.id;
+		// TODO: Update all the database stuff
+		// Use the ncs command/method
 		interaction.reply(`<@${memberTarget.id}> is now the Condemned Soul.`);
 	},
 };

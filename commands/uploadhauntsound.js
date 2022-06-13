@@ -114,8 +114,17 @@ module.exports = {
 			});
 		});
 
+		// Find a unique ID for this soul to refer to it by. This serves two purposes:
+		// Names can be duplicated so long as one soul is inactive. In such cases, we need a unique identifier. 
+		// The database stores this id to identify which soul is upcoming/previous, rather than the entire soul.
+		// Then, the id can be used to lookup the soul in the JSON file using a method (TODO yet to be written).
+		const soulIds = [];
+		soulsFileContents.souls.forEach(soul => soulIds.push(soul.id));
+		let newSoulId = 0;
+		while (soulIds.includes(newSoulId)) newSoulId++;
+
 		// Create entry in JSON file and save it.
-		soulsFileContents.souls.push({ 'name': soulName, 'author': interaction.member.id, 'rarity': soulRarity, 'emoji': emoji, 'extension': fileExtension });
+		soulsFileContents.souls.push({ 'id': newSoulId, 'name': soulName, 'active': true, 'author': interaction.member.id, 'rarity': soulRarity, 'emoji': emoji, 'extension': fileExtension });
 		fs.writeFileSync(soulsFilePath, JSON.stringify(soulsFileContents));
 		interaction.reply({ content: `Congratulations, your soul ${emoji} is ready.`, ephemeral: true });
 		// TODO: Trim the sound effect to a valid size, e.g. 60 seconds.

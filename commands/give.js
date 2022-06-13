@@ -33,12 +33,12 @@ module.exports = {
 	
 				await profileModel.findOneAndUpdate({ fetcherID: recipient.id }, {
 					$inc: {
-						soulcage: value,
+						souls: value,
 					},
 				});
 				await profileModel.findOneAndUpdate({ fetcherID: interaction.user.id }, {
 					$inc: {
-						soulcage: -value,
+						souls: -value,
 					},
 				});
 				await interaction.reply({ content:`You have given ${recipient.username} ${value} ${plural}!`, ephemeral:true });

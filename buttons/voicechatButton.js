@@ -6,8 +6,9 @@ module.exports = {
 	data: new MessageButton()
 		.setCustomId('voicechatButton')
 		.setLabel('Lure/Dismiss 🔪')
-		.setStyle('DANGER'),
-    
+		.setStyle('DANGER')
+		.setDisabled(true),
+        
 	async execute(interaction) {
 		await interaction.reply({ content:'This will lure or dismiss users from Hellspeak', ephemeral: true });
 	},

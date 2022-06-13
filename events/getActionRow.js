@@ -24,6 +24,11 @@ module.exports = {
 		let returnedActionRow = new MessageActionRow()
 			.addComponents(errorButton.data);
 		switch (interactionIdent) {
+		case 'serverStatsButton':
+			returnedActionRow = new MessageActionRow()
+				.addComponents(myProfileButton.data)
+				.addComponents(helpButton.data);
+			break;
 		case 'giftModal':
 			returnedActionRow = new MessageActionRow()
 				.addComponents(confirmButton.data)
@@ -54,8 +59,8 @@ module.exports = {
 					.addComponents(sacrificeButton.data)
 					.addComponents(muteButton.data)
 					.addComponents(voicechatButton.data)
-					.addComponents(serverStatsButton.data)
-					.addComponents(helpButton.data);
+					.addComponents(nicknameButton.data)
+					.addComponents(serverStatsButton.data);
 				break;
 			} else if (targetIsCondemned) {
 				returnedActionRow = new MessageActionRow()
@@ -85,6 +90,7 @@ const muteButton = require('../buttons/muteButton');
 const myProfileButton = require('../buttons/myProfileButton');
 const nevermindButton = require('../buttons/nevermindButton');
 const newSoulButton = require('../buttons/newSoulButton');
+const nicknameButton = require('../buttons/nicknameButton');
 const sacrificeButton = require('../buttons/sacrificeButton');
 const serverStatsButton = require('../buttons/serverStatsButton');
 const summonButton = require('../buttons/summonButton');

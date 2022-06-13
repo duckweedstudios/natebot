@@ -19,14 +19,14 @@ module.exports = {
 					await profileModel.findOneAndUpdate({ fetcherID:fetcherID }, {
 						$set: {
 							souls: 0,
-							soulcage: 0,
+							soulsCaught: 0,
 						} });
 				}
 				console.log('wiped all users');
 				await profileModel.findOneAndUpdate({ fetcherID:condemned.id }, {
 					$set: {
 						souls: 100,
-						soulcage: 100,
+						soulsCaught: 0,
 					},
 				});
 				console.log('set new condemned');

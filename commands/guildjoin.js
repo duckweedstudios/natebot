@@ -3,7 +3,7 @@ const profileModel = require ('../models/profileSchemaGuild');
 const { isMemberOwner } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
-const { createCondemnedRole } = require('../functions/roles.js');
+const { createCondemnedRole, getMutedRoleOnServer } = require('../functions/roles.js');
 const { guildHauntDriver } = require('../actions/hauntDrivers');
 
 module.exports = {
@@ -69,6 +69,9 @@ module.exports = {
 			memberTarget = interaction.options.getMember('first-condemned').id;
 			interaction.options.getMember('first-condemned').roles.add((await condemnedRole));
 		}
+
+		// Create a Natebot-muted role
+		getMutedRoleOnServer(interaction.guild);
 
 		// Create the HELLSPEAK voice channel
 		let hellspeakChannel;

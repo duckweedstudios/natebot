@@ -48,4 +48,29 @@ module.exports = {
 			throw new Error(`Error in createCondemnedRole: Could not create role for guild ${guild.id}: ${err}`);
 		}
 	},
+
+	// Get a role to be assigned to members muted by the condemned soul
+	// If it does not exist, create it
+	// Importantly, this method simply finds a role with the name 'CS-MUTED'
+	// This may not be the best long-term solution but it may actually be better
+	// than the alternative of saving it to the database (which would be wasteful)
+	getMutedRoleOnServer: async (guild) => {
+		let mutedRole = guild.roles.cache.find((role) => role.name === 'CS-MUTED');
+		// if there is no `Muted` role, send an error
+		if (!mutedRole) {
+			mutedRole = guild.roles.create({
+				name: 'CS-MUTED',
+				color: 'WHITE',
+				reason: 'Members with this role are muted by the Condemned Soul',
+				permissions: [],
+			});
+			guild.channels.cache.forEach(async (channel) => {
+				await channel.permissionOverwrites.create((await mutedRole), {
+					SPEAK: false,
+				});
+			});
+		}
+
+		return await mutedRole;
+	},
 };

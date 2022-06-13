@@ -1,25 +1,34 @@
 // const dayjs = require('dayjs');
 
 module.exports = {
-	initializeObject: (condemnedMember, condemnedRoleId, hellspeakChannelId, modRoles, meanDelay = 1440, variation = 5) => {
+	initializeObject: (serverId, condemnedMember, condemnedRoleId, channelId, modRole, meanDelay = 1440, variation = 5) => {
 		return {
+			serverId,
 			condemnedMember,
-			condemnedRoleId,
-			hellspeakChannelId,
-			modRoles,
-			paused: false,
-			setup: true,
+			newSoulMade: false,
+			settings: {
+				paused: false,
+				condemnedRoleId,
+				channelId,
+				modRole,
+			},
 			schedule: {
 				next: {
 					time: null,
-					soulType: null,
+					soulTypeId: null,
 				},
 				past: {
 					time: null,
-					soulType: null,
+					soulTypeId: null,
 				},
 				meanDelay,
 				variation,
+			},
+			stats: {
+				serverSoulsCaught: 0,
+				hauntingsCount: 0,
+				soulsCreated: 0,
+				lastCondemnedMember: 0,
 			},
 		};
 	},

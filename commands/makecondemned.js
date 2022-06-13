@@ -19,9 +19,9 @@ module.exports = {
 		// 	interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
 		// 	return;
 		// }
-		let guildData;
+		let _guildData;
 		try {
-			guildData = getGuildData(interaction.guild.id);
+			_guildData = getGuildData(interaction.guild.id);
 		} catch (err) {
 			// This will most often happen because the server has not been setup yet. 
 			// console.error(`Error in /makecondemned: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);

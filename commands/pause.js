@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 // const { getServerDataFromMemory } = require('../functions/serverData.js');
 const { getGuildData } = require('../events/guildquery.js');
 const { isMemberPrivileged } = require('../functions/privileges.js');
-const profileModelGuild = require('../models/profileSchemaGuild.js');
+// const profileModelGuild = require('../models/profileSchemaGuild.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

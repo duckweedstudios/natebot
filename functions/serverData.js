@@ -59,19 +59,24 @@ module.exports = {
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
 		try {
 			const guildData = getGuildData(guildIdString);
-			await profileModelGuild.findOneAndUpdate({
-				serverID: guildIdString,
-			}, {
-				$set: {
-					schedule: {
-						next: {
-							time: dayjsObj,
-							soulTypeId: soulType.id,
-						},
-						past: guildData.schedule.next,
-					},
-				},
-			});
+			console.log(dayjsObj);
+			guildData.schedule.past = guildData.schedule.next;
+			guildData.schedule.next.time = dayjsObj;
+			guildData.schedule.next.soulTypeId = soulType.id;
+			guildData.save();
+			// await profileModelGuild.findOneAndUpdate({
+			// 	serverID: guildIdString,
+			// }, {
+			// 	$set: {
+			// 		schedule: {
+			// 			next: {
+			// 				time: dayjsObj,
+			// 				soulTypeId: soulType.id,
+			// 			},
+			// 			past: guildData.schedule.next,
+			// 		},
+			// 	},
+			// });
 		} catch (err) {
 			console.error(`Error in replaceEarlierAppearance: Could not update information in database for server ${guildIdString}: ${err}`);
 		}

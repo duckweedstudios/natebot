@@ -1,7 +1,7 @@
 // const dayjs = require('dayjs');
 
 const { getGuildData } = require('../events/guildquery.js');
-const profileModelGuild = require('../models/profileSchemaGuild.js');
+// const profileModelGuild = require('../models/profileSchemaGuild.js');
 
 module.exports = {
 	initializeObject: (serverId, condemnedMember, condemnedRoleId, channelId, modRole, meanDelay = 1440, variation = 5) => {

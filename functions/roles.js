@@ -8,7 +8,7 @@ module.exports = {
 		// TODO: use database rather than memory
 		let guildData;
 		try {
-			guildData = getGuildData(guild.id);
+			guildData = await getGuildData(guild.id);
 		} catch (err) {
 			console.error(`Error in getCondemnedRoleOnServer: Server data could not be retrieved from the database for guild ${guild.id}: ${err}`);
 			return;

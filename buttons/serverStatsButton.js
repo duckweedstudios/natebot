@@ -12,7 +12,7 @@ module.exports = {
 		.setStyle('SECONDARY'),
     
 	async execute(interaction) {
-		const guildData = getGuildData(interaction);
+		const guildData = await getGuildData(interaction);
 		const condemnedData = getSoulData(interaction, guildData.condemnedMember);
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')

@@ -66,11 +66,11 @@ module.exports = {
 		}, nextTimeObj.msUntil);
 	},
 
-	guildHauntDriver: (client, guild) => {
+	guildHauntDriver: async (client, guild) => {
 		const guildIdString = guild.id.toString();
 		let guildData;
 		try {
-			guildData = getGuildData(guildIdString);
+			guildData = await getGuildData(guildIdString);
 		} catch (err) {
 			console.error(`Error in guildHauntDriver: Server data could not be retrieved from the database for guild ${guild.id}: ${err}`);
 			// TODO: set this server's status as paused, since no hauntings are occurring due to the error.

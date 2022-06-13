@@ -21,7 +21,7 @@ module.exports = {
 		// }
 		let _guildData;
 		try {
-			_guildData = getGuildData(interaction.guild.id);
+			_guildData = await getGuildData(interaction.guild.id);
 		} catch (err) {
 			// This will most often happen because the server has not been setup yet. 
 			// console.error(`Error in /makecondemned: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);

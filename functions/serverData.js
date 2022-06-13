@@ -58,10 +58,9 @@ module.exports = {
 	// TODO: check on the database results for this operation
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
 		try {
-			const guildData = getGuildData(guildIdString);
-			console.log(dayjsObj.nextAppearance.toString());
+			const guildData = await getGuildData(guildIdString);
 			guildData.schedule.past = guildData.schedule.next;
-			guildData.schedule.next.time = dayjsObj.nextAppearance.toString();
+			guildData.schedule.next.time = dayjsObj.nextAppearance.toDate();
 			guildData.schedule.next.soulTypeId = soulType.id;
 			guildData.save();
 			// await profileModelGuild.findOneAndUpdate({

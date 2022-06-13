@@ -5,8 +5,9 @@ module.exports = {
 	data: new MessageButton()
 		.setCustomId('muteButton')
 		.setLabel('Mute 🤬')
-		.setStyle('SECONDARY'),
-
+		.setStyle('SECONDARY')
+		.setDisabled(true),
+        
 	async execute(interaction) {
 		await interaction.reply({ content:'This will mute the selected user', ephemeral:true });
 	},

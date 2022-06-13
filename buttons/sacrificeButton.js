@@ -6,7 +6,8 @@ module.exports = {
 	data: new MessageButton()
 		.setCustomId('sacrificeButton')
 		.setLabel('Sacrifice 🩸')
-		.setStyle('DANGER'),
+		.setStyle('DANGER')
+		.setDisabled(true),
     
 	async execute(interaction) {
 		await interaction.reply({ content:'This will bring up the Sacrifice Menu', ephemeral: true });

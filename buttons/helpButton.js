@@ -17,12 +17,8 @@ module.exports = {
 			.setDescription('*There will be help stuff here*')
 			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg');
 
-		const _testButton = new MessageButton()
-			.setCustomId('testButton')
-			.setLabel('testing')
-			.setStyle('PRIMARY');
-
 		const finalComponents = await getActionRow(interaction);
+        
 		const data = { embeds : [helpEmbed], components: [finalComponents] };
 
 		try {

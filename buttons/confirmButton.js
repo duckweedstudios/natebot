@@ -1,8 +1,7 @@
 const { MessageButton } = require('discord.js');
 const { editPrompt } = require('../events/editPrompt');
 const { editInteraction } = require('../events/editInteraction');
-// const { increaseValue } = require('../events/inc');
-// const { setValue } = require('../events/set');
+const { increaseValue } = require('../events/inc');
 const { getSoulData } = require('../events/query');
 
 module.exports = {
@@ -27,16 +26,17 @@ module.exports = {
 		try {
 			if (value > senderSouls.souls) {
 				await editPrompt(interaction, failData);
-				await editInteraction(interaction);
 				await interaction.deferUpdate();
 			} else {
+				await increaseValue(interaction, target, 'souls', value);
+				await increaseValue(interaction, interaction.user, 'souls', -value);
 				await editPrompt(interaction, data);
-				await editInteraction(interaction);
 				await interaction.deferUpdate();
 			}
 		} catch (error) {
 			console.log(error);
-			interaction.reply({ content: 'There was an error sending this gift', ephemeral: true });
+			await editPrompt(interaction, { content: `ERROR: Database operations error!`, components : [] });
+			await editInteraction(interaction);
 		}
 	},
 };

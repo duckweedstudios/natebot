@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchemaGuild');
-const { isMemberOwner } = require('../functions.js');
+const { isMemberOwner } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');

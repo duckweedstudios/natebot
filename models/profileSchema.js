@@ -32,8 +32,6 @@ const profileSchema = new mongoose.Schema({
 	autoLure: { type: Boolean, default: false },
 });
 
-profileSchema.index({ fetcherID: 1, serverID: 1 }, { unique: true });
-
 const model = mongoose.model('ProfileModels', profileSchema);
 
 module.exports = model;

@@ -38,15 +38,8 @@ module.exports = {
 		// TODO: Save to database that this server is setup
 		// TODO: ensure no other settings are lost
 		try {
-			await profileModelGuild.findOneAndUpdate({
-				serverID: interaction.guild.id,
-			}, {
-				$set: {
-					settings: {
-						paused: false,
-					},
-				},
-			});
+			guildData.settings.paused = false;
+			await guildData.save();
 		} catch (err) {
 			console.error(`Error in /resume: Could not update information in database for server ${interaction.guild.id}: ${err}`);
 			interaction.reply({ content: 'This command failed. Possibly, the Natebot has not yet been setup on the server. Use /guildjoin first.', ephemeral: true });

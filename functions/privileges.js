@@ -1,6 +1,7 @@
 const { getServerDataFromMemory } = require('./serverData.js');
 
 module.exports = {
+	// Deprecated warning: checks for data in memory rather than database
 	isMemberPrivileged: (member, client, guild) => {
 		const serverDataObject = getServerDataFromMemory(client, guild.id.toString());
 		if (serverDataObject === null) throw new Error(`Error in isMemberPrivileged: Server data object does not exist in memory: key ${guild.id.toString()} in data:\n${client.nateBotData}`);
@@ -15,6 +16,7 @@ module.exports = {
 		return member.user.id === guild.ownerId;
 	},
 
+	// Deprecated warning: checks for data in memory rather than database
 	isMemberCondemnedSoul: (member, client, guild) => {
 		const serverDataObject = getServerDataFromMemory(client, guild.id.toString());
 		if (serverDataObject === null) throw new Error(`Error in isMemberCondemned: Server data object does not exist in memory: key ${guild.id.toString()} in data:\n${client.nateBotData}`);

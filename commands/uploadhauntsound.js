@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { getServerDataFromMemory } = require('../functions/serverData.js');
-const { isMemberCondemnedSoul } = require('../functions/privileges.js');
+// const { getServerDataFromMemory } = require('../functions/serverData.js');
+const { getGuildData } = require('../events/guildquery.js');
+// const { isMemberCondemnedSoul } = require('../functions/privileges.js');
 const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const fs = require('node:fs');
 const https = require('https');
@@ -13,13 +14,22 @@ module.exports = {
 			.setName('sound').setDescription('The haunting sound to be played').setRequired(true)),
 	async execute(interaction) {
 		// Check whether Natebot has already been setup
-		const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
-		if (serverDataObject === null) {
-			interaction.reply('The Natebot has not yet been setup on the server.');
+		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
+		// if (serverDataObject === null) {
+		// 	interaction.reply('The Natebot has not yet been setup on the server.');
+		// 	return;
+		// }
+		let guildData;
+		try {
+			guildData = getGuildData(interaction.guild.id);
+		} catch (err) {
+			// This will most often happen because the server has not been setup yet. 
+			// console.error(`Error in /pause: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);
+			interaction.reply({ content: 'This command failed. Most likely, the Natebot has not yet been setup on the server. Use /guildjoin first.', ephemeral: true });
 			return;
 		}
 		// Check whether user is the condemned soul
-		if (isMemberCondemnedSoul(interaction.member, interaction.client, interaction.guild)) {
+		if (interaction.member.id !== guildData.condemnedMember) {
 			interaction.reply({ content: 'You must be the Condemned Soul to use this command.', ephemeral: true });
 			return;
 		}

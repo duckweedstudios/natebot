@@ -45,7 +45,7 @@ module.exports = {
 		}
 		
 		// Erase the condemned role from all who have it
-		const condemnedRole = await getCondemnedRoleOnServer(interaction.client, interaction.guild);
+		const condemnedRole = await getCondemnedRoleOnServer(interaction.guild);
 		for (const condemnedSoul of condemnedRole.members.entries()) {
 			condemnedSoul[1].roles.remove(condemnedRole, 'Condemned role was force removed by an admin');
 		}

@@ -32,8 +32,8 @@ module.exports = {
 			}
 			// Check that the bot has permissions to mute the target
 			// Moderatable vs manageable - I think the former is sufficient
-			if (!canModerateMember(member)) {
-				interaction.reply({ content: 'The bot does not have permission to mute this user.', ephemeral: true });
+			if (!member.moderatable) {
+				interaction.reply({ content: 'Nice Try Buddy', ephemeral: true });
 				return;
 			}
 			// Check whether target is already muted

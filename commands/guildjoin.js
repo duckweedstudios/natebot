@@ -103,7 +103,7 @@ module.exports = {
 			await interaction.reply({ content: `Server setup.
 				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true });
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
 			// return; // for testing purposes leave this in
 		}

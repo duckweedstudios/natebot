@@ -24,15 +24,14 @@ module.exports = {
 				} else {
 					try {
 						member.voice.setMute(true);
-					}
-					catch (err) {
+					} catch (err) {
 						console.error(err);
 						return;
 					}
 					setTimeout(() => {
 						member.voice.setMute(false);
 					}, 30000);
-					await interaction.reply({ content:`You spent 1 soul to mute ${target.username} for 150 seconds`, ephemeral: true });
+					await interaction.reply({ content:`You spent 1 soul to mute ${target.username} for 30 seconds`, ephemeral: true });
 				}
 			}
 		} catch (err) {

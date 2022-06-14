@@ -41,7 +41,7 @@ module.exports = {
 			// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 			let _csSoulsRemaining;
 			try {
-				/* await */ profileModel.findOneAndUpdate({
+				await profileModel.findOneAndUpdate({
 					fetcherID: interaction.user.id,
 				}, {
 					$inc: {
@@ -57,6 +57,7 @@ module.exports = {
 				}, {
 					$inc: {
 						souls: -soulValue,
+						soulsCaught: soulValue,
 					},
 				});
 			} catch (err) {

@@ -36,8 +36,13 @@ module.exports = {
 						soulsCaught: 0,
 					},
 				});
+				await profileModel.findOneAndUpdate({ fetcherID: condemned.id }, {
+					$inc: {
+						condemnedCount: 1,
+					},
+				});
 				console.log('set new condemned');
-				interaction.reply(`${condemned.tag} has become the CONDEMNED`);
+				interaction.reply(`${condemned.tag} has become the CONDEMNED\nFETCH ME THEIR SOULS!`);
 			} catch (error) {
 				console.log(error);
 				interaction.reply('There was an error');

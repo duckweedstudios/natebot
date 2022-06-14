@@ -4,6 +4,7 @@ const { getGuildData } = require('../events/guildquery.js');
 // const profileModelGuild = require('../models/profileSchemaGuild.js');
 const dayjs = require('dayjs');
 const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
+const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,7 +26,7 @@ module.exports = {
 		}
 
 		// Check if the member is the condemned soul
-		if (interaction.member.id === guildData.condemnedMember) {
+		if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) {
 			interaction.reply({ content: 'Try as you might, you cannot fetch a soul while you yourself are condemned.', ephemeral: true });
 			return;
 		}

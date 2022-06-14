@@ -30,12 +30,12 @@ module.exports = {
 			// This will most often happen because the server has not been setup yet. 
 			throw new Error(`Error in /pause: Server data could not be retrieved from the database for guild ${guild.id}: ${err}`);
 		}
-		return member.user.id === guildData.condemnedMember;
+		return module.exports.isMemberCondemnedSoulWithGuildQuery(member, guildData);
 	},
 
-	// TODO: passing in the result of getGuildData, returns true iff the member is condemned
+	// Passing in the result of getGuildData, returns true iff the member is condemned
 	// This reduces redundant queries for optimization purposes
-	isMemberCondemnedSoulWithGuildQuery: () => {
-
-	}
+	isMemberCondemnedSoulWithGuildQuery: (member, guildData) => {
+		return member.user.id === guildData.condemnedMember;
+	},
 };

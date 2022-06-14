@@ -6,6 +6,7 @@ const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const fs = require('node:fs');
 const https = require('https');
 const path = require('path');
+const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -30,7 +31,7 @@ module.exports = {
 			return;
 		}
 		// Check whether user is the condemned soul
-		if (interaction.member.id !== guildData.condemnedMember) {
+		if (!isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) {
 			interaction.reply({ content: 'You must be the Condemned Soul to use this command.', ephemeral: true });
 			return;
 		}

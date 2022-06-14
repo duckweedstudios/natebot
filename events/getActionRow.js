@@ -25,7 +25,7 @@ module.exports = {
 		const allFetchersData = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
-		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
+		if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) { userIsCondemned = true; }
 		let returnedActionRow = new MessageActionRow()
 			.addComponents(errorButton.data);
 		switch (interactionIdent) {
@@ -107,3 +107,4 @@ const sacrificeButton = require('../buttons/sacrificeButton');
 const serverStatsButton = require('../buttons/serverStatsButton');
 const summonButton = require('../buttons/summonButton');
 const voicechatButton = require('../buttons/voicechatButton');
+const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges');

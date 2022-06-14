@@ -2,7 +2,7 @@ const { MessageButton } = require('discord.js');
 const { getTarget } = require('../events/getTarget');
 const { increaseValue } = require('../events/inc');
 const { getSoulData } = require('../events/query');
-const { isMemberCondemnedSoul } = require('../functions/privileges');
+const { isMemberCondemnedSoul, canModerateMember } = require('../functions/privileges');
 
 module.exports = {
 	name: 'muteButton',
@@ -32,7 +32,7 @@ module.exports = {
 			}
 			// Check that the bot has permissions to mute the target
 			// Moderatable vs manageable - I think the former is sufficient
-			if (!member.moderatable) {
+			if (!canModerateMember(member)) {
 				interaction.reply({ content: 'The bot does not have permission to mute this user.', ephemeral: true });
 				return;
 			}

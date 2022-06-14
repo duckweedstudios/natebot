@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchemaGuild');
-const { isMemberOwner } = require('../functions/privileges.js');
+const { isMemberOwner, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
@@ -61,15 +61,23 @@ module.exports = {
 				return;
 			}
 		}
-		
+		let roleAssignmentSuccess = true;
 		// Assign first condemned (save user id) and assign the role
 		let memberTarget;
 		if (!interaction.options.getMember('first-condemned')) {
-			memberTarget = interaction.member.id;
-			interaction.member.roles.add((await condemnedRole));
+			memberTarget = interaction.member;
+			if (!canModerateMember(memberTarget)) {
+				roleAssignmentSuccess = false;
+			} else {
+				memberTarget.roles.add((await condemnedRole));
+			}
 		} else {
-			memberTarget = interaction.options.getMember('first-condemned').id;
-			interaction.options.getMember('first-condemned').roles.add((await condemnedRole));
+			memberTarget = interaction.options.getMember('first-condemned');
+			if (!canModerateMember(memberTarget)) {
+				roleAssignmentSuccess = false;
+			} else {
+				memberTarget.roles.add((await condemnedRole));
+			}
 		}
 
 		// Create the HELLSPEAK voice channel
@@ -85,14 +93,15 @@ module.exports = {
 		try {
 			const profile = await profileModel.create(
 				initializeObject(interaction.guild.id,
-					memberTarget,
+					memberTarget.id,
 					(await condemnedRole.id),
 					hellspeakChannel.id,
 					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),
 					meanDelay,
 					randomness));
 			profile.save();
-			await interaction.reply({ content: 'setup success\nFETCH ME THEIR SOULS!', ephemeral: true });
+			await interaction.reply({ content: `Server setup.
+				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true });
 		} catch (error) {
 			console.log(error);
 			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });

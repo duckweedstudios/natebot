@@ -38,4 +38,8 @@ module.exports = {
 	isMemberCondemnedSoulWithGuildQuery: (member, guildData) => {
 		return member.user.id === guildData.condemnedMember;
 	},
+
+	canModerateMember: (member) => {
+		return member.moderatable;
+	},
 };

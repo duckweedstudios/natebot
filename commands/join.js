@@ -24,7 +24,7 @@ module.exports = {
 			profile.save();
 			await interaction.reply({ content: 'FETCH ME THEIR SOULS!', ephemeral: true });
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 			await interaction.reply({ content:'What are you doing? You\'re already a soul fetcher! FETCH ME THEIR SOULS!', ephemeral: true });
 		}
 	},

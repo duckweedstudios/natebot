@@ -92,7 +92,7 @@ module.exports = {
 			profile.save();
 			await interaction.reply({ content: 'setup success\nFETCH ME THEIR SOULS!', ephemeral: true });
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
 			// return; // for testing purposes leave this in
 		}

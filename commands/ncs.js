@@ -53,7 +53,6 @@ module.exports = {
 			try {
 				for (const tempfetcherID of allfetchers) {
 					const fetcherID = tempfetcherID['fetcherID'];
-					console.log(fetcherID);
 					await profileModel.findOneAndUpdate({ fetcherID:fetcherID }, {
 						$set: {
 							souls: 0,
@@ -64,7 +63,7 @@ module.exports = {
 					$set: {
 						condemnedMember: condemned.id,
 					} });
-				console.log('wiped all users');
+				console.log('Wiped the data of all Users');
 				await profileModel.findOneAndUpdate({ fetcherID:condemned.id }, {
 					$set: {
 						souls: 100,
@@ -76,16 +75,15 @@ module.exports = {
 						condemnedCount: 1,
 					},
 				});
-				console.log('Updated condemned profile');
+				console.log('Updated Condemned profile');
 				// Erase the condemned role from all who have it
-				console.log(condemned);
 				const member = interaction.guild.members.cache.get(condemned.id);
 				for (const condemnedSoul of condemnedRole.members.entries()) {
 					condemnedSoul[1].roles.remove(condemnedRole, 'Condemned role was force removed by an admin');
 				}
 				// Give the condemned role to the new target and update stored data;
 				member.roles.add(condemnedRole);
-				console.log('set new condemned');
+				console.log('Updated Condemned Role');
 				interaction.reply(`${condemned.tag} has become the CONDEMNED\nFETCH ME THEIR SOULS!`);
 			} catch (error) {
 				console.log(error);

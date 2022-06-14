@@ -5,6 +5,7 @@ const { getGuildData } = require('../events/guildquery.js');
 const dayjs = require('dayjs');
 const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
 const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
+const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -68,8 +69,9 @@ module.exports = {
 			}
 			// Track who has already claimed this soul
 			interaction.client.nateBotData[interaction.guild.id].membersWhoFetched.push(interaction.member.id);
-
-			interaction.reply({ content: `You have fetched a ${soulCaught.emoji} ${soulCaught.name} ${soulCaught.emoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}`, ephemeral: true });
+			const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
+			const soulEmoji = interaction.client.emojis.cache.get(emojiId);
+			interaction.reply({ content: `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}`, ephemeral: true });
 		} else {
 			interaction.reply({ content: `There were no souls to be fetched.`, ephemeral: true });
 		}

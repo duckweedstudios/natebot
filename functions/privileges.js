@@ -1,4 +1,3 @@
-const { getServerDataFromMemory } = require('./serverData.js');
 const { getGuildData } = require('../events/guildquery.js');
 
 module.exports = {
@@ -23,10 +22,20 @@ module.exports = {
 		return member.user.id === guild.ownerId;
 	},
 
-	// Deprecated warning: checks for data in memory rather than database
-	isMemberCondemnedSoul: (member, client, guild) => {
-		const serverDataObject = getServerDataFromMemory(client, guild.id.toString());
-		if (serverDataObject === null) throw new Error(`Error in isMemberCondemned: Server data object does not exist in memory: key ${guild.id.toString()} in data:\n${client.nateBotData}`);
-		return member.user.id === serverDataObject.condemnedSoul;
+	isMemberCondemnedSoul: async (member, guild) => {
+		let guildData;
+		try {
+			guildData = await getGuildData(guild.id);
+		} catch (err) {
+			// This will most often happen because the server has not been setup yet. 
+			throw new Error(`Error in /pause: Server data could not be retrieved from the database for guild ${guild.id}: ${err}`);
+		}
+		return module.exports.isMemberCondemnedSoulWithGuildQuery(member, guildData);
+	},
+
+	// Passing in the result of getGuildData, returns true iff the member is condemned
+	// This reduces redundant queries for optimization purposes
+	isMemberCondemnedSoulWithGuildQuery: (member, guildData) => {
+		return member.user.id === guildData.condemnedMember;
 	},
 };

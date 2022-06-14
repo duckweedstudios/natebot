@@ -2,6 +2,7 @@ const { MessageButton } = require('discord.js');
 const { getTarget } = require('../events/getTarget');
 const { increaseValue } = require('../events/inc');
 const { getSoulData } = require('../events/query');
+const { isMemberCondemnedSoul } = require('../functions/privileges');
 
 module.exports = {
 	name: 'muteButton',
@@ -11,30 +12,42 @@ module.exports = {
 		.setStyle('SECONDARY'),
         
 	async execute(interaction) {
+		const muteDurationSec = 30;
+		const soulCost = 1;
 		try {
 			const target = getTarget(interaction);
 			const member = interaction.guild.members.cache.get(target.id);
 			const soulData = getSoulData(interaction, interaction.user.id);
-			if (soulData.souls <= 1) {
-				await interaction.reply({ content: 'You do not have enough souls left', ephemeral: true });
-			} else {
-				increaseValue(interaction, interaction.user, 'souls', -1);
-				if (member.voice.serverMute) {
-					await interaction.reply({ content: 'This user is already Muted', ephemeral: true });
-				} else {
-					try {
-						member.voice.setMute(true);
-					}
-					catch (err) {
-						console.error(err);
-						return;
-					}
-					setTimeout(() => {
-						member.voice.setMute(false);
-					}, 30000);
-					await interaction.reply({ content:`You spent 1 soul to mute ${target.username} for 150 seconds`, ephemeral: true });
-				}
+			// Check that member is CS
+			// This check *should* be unnecessary, but...
+			if (!isMemberCondemnedSoul(interaction.member, interaction.guild)) {
+				console.log(`Warning in muteButton: A member attempted to mute without being CS: ${interaction.member.username} in ${interaction.guild.id}`);
+				interaction.reply({ content: 'You must be the Condemned Soul to use this power.', ephemeral: true });
+				return;
 			}
+			// Check that member can afford the mute
+			if (soulData.souls <= 1) {
+				interaction.reply({ content: 'You do not have enough souls left', ephemeral: true });
+				return;
+			}
+			// Check that the bot has permissions to mute the target
+			// Moderatable vs manageable - I think the former is sufficient
+			if (!member.moderatable) {
+				interaction.reply({ content: 'The bot does not have permission to mute this user.', ephemeral: true });
+				return;
+			}
+			// Check whether target is already muted
+			if (member.voice.serverMute) {
+				await interaction.reply({ content: 'This user is already Muted', ephemeral: true });
+				return;
+			}
+
+			increaseValue(interaction, interaction.user, 'souls', -1);
+			member.voice.setMute(true);
+			setTimeout(() => {
+				member.voice.setMute(false);
+			}, muteDurationSec * 1000);
+			await interaction.reply({ content:`You spent ${soulCost} soul to mute ${target.username} for ${muteDurationSec} seconds`, ephemeral: true });
 		} catch (err) {
 			console.error(err);
 		}

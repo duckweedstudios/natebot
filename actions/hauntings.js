@@ -22,14 +22,14 @@ module.exports = {
 		// Goal: Playing audio over voice
 		// Define connection
 		const guildChannels = await guild.channels.fetch();
-		const guildVoiceChannels = guildChannels.filter((v) => v.type === 'GUILD_VOICE');
+		const guildAFKChannel = guild.afkChannel;
+		const guildVoiceChannels = guildChannels.filter((v) => v.isVoice() && v.joinable && v !== guildAFKChannel);
 		// guildVoiceChannels.forEach((v,k,m) => console.log(`${v.name}, ${v.id}`));
-		// console.log(guildVoiceChannels.at(1));
 
 		// console.log(`${guildVoiceChannels.at(0).id}, ${interaction.guildId}, ${interaction.member.guild.voiceAdapterCreator}`);
 		// Connect to a voice channel
 		const connection = joinVoiceChannel({
-			channelId: guildVoiceChannels.at(0).id,
+			channelId: guildVoiceChannels.at(1).id,
 			guildId: guild.id,
 			adapterCreator: guild.voiceAdapterCreator,
 			selfDeaf: false,

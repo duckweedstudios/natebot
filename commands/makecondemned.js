@@ -13,6 +13,7 @@ module.exports = {
 		.addUserOption(userOption => userOption
 			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...').setRequired(true)),
 	async execute(interaction) {
+		return;
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id);
 		// if (serverDataObject === null) {

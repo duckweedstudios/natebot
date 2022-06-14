@@ -9,6 +9,7 @@ module.exports = {
 		.setName('resume')
 		.setDescription('[admin] Resume Natebot activities on this server'),
 	async execute(interaction) {
+		return;
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
 		// if (serverDataObject === null) {

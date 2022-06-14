@@ -80,7 +80,7 @@ module.exports = {
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		// OVERRIDE the nextTimeObj
 		if (override) {
-			const nextAppearance = dayjs().add(40, 'minute');
+			const nextAppearance = dayjs().add(5, 'minute');
 			nextTimeObj = { nextAppearance, nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'), msUntil: Math.abs(dayjs().diff(nextAppearance)) };
 			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		}

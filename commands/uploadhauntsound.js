@@ -13,6 +13,7 @@ module.exports = {
 		.addAttachmentOption(attachOption => attachOption
 			.setName('sound').setDescription('The haunting sound to be played').setRequired(true)),
 	async execute(interaction) {
+		return;
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
 		// if (serverDataObject === null) {

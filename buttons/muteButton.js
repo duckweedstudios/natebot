@@ -31,7 +31,7 @@ module.exports = {
 					}
 					setTimeout(() => {
 						member.voice.setMute(false);
-					}, 150000);
+					}, 30000);
 					await interaction.reply({ content:`You spent 1 soul to mute ${target.username} for 150 seconds`, ephemeral: true });
 				}
 			}

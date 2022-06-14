@@ -51,7 +51,7 @@ mongoose.connect(mongodbsrv, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 })
-	.then(()=>{
+	.then(() => {
 		console.log('Connected to the Database');
 	})
 	.catch((err) => {

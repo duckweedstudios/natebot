@@ -14,7 +14,6 @@ module.exports = {
 			return;
 		}
 		try {
-			console.log(guildData.settings.condemnedRoleId);
 			return await guild.roles.fetch(guildData.settings.condemnedRoleId);
 		} catch (err) {
 			// A role with that ID does not exist, so we must make one and update data as necessary

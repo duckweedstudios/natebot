@@ -32,7 +32,7 @@ module.exports = {
 			}
 			// Check that the bot has permissions to mute the target
 			// Moderatable vs manageable - I think the former is sufficient
-			if (!member.moderatable) {
+			if (!canModerateMember) {
 				interaction.reply({ content: 'Nice Try Buddy', ephemeral: true });
 				return;
 			}

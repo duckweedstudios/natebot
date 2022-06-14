@@ -87,7 +87,6 @@ module.exports = {
 			// Depending on permissions, this may fail for certain users
 			// Notify the admin using this command when this has happened so they can manually adjust roles
 			const roleUpdateFailedIds = [];
-			console.log((await condemnedRole.members));
 			for (const oldCSRoleMember of condemnedRole.members.entries()) {
 				console.log(`Trying to remove from ${oldCSRoleMember[1].user.tag}`);
 				// Check if the bot is allowed to remove this person's roles first
@@ -100,7 +99,7 @@ module.exports = {
 			// Give the condemned role to the new target and update stored data
 			// TODO: Check if the bot is allowed to add to this person's roles first
 			if (roleAssignmentSuccess) {
-				condemnedTarget.roles.add(condemnedRole);
+				await condemnedTarget.roles.add(condemnedRole);
 			}
 			// Print message with appropriate information
 			interaction.reply({ content: `${condemnedTarget.user.tag} has become the CONDEMNED\n

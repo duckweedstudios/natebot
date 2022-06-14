@@ -50,14 +50,16 @@ module.exports = {
 			}
 		}
 
-		// Create the condemned soul role on the server (assuming it doesn't exist)
-		let condemnedRole;
-		try {
-			condemnedRole = await createCondemnedRole(interaction.guild);
-		} catch (err) {
-			console.error(err);
-			interaction.reply({ content: 'Setup failed (could not create role), please try again later.', ephemeral: true });
-			return;
+		// Create the condemned soul role on the server (or check if it exists)
+		let condemnedRole = interaction.guild.roles.cache.find((role) => role.name === 'Condemned Soul');
+		if (!condemnedRole) {
+			try {
+				condemnedRole = await createCondemnedRole(interaction.guild);
+			} catch (err) {
+				console.error(err);
+				interaction.reply({ content: 'Setup failed (could not create role), please try again later.', ephemeral: true });
+				return;
+			}
 		}
 		
 		// Assign first condemned (save user id) and assign the role

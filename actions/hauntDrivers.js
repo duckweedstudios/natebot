@@ -66,7 +66,7 @@ module.exports = {
 		}, nextTimeObj.msUntil);
 	},
 
-	guildHauntDriver: async (client, guild) => {
+	guildHauntDriver: async (client, guild, override = false) => {
 		const guildIdString = guild.id.toString();
 		let guildData;
 		try {
@@ -76,8 +76,14 @@ module.exports = {
 			// TODO: set this server's status as paused, since no hauntings are occurring due to the error.
 			return;
 		}
-		const nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), -5, 0.05/* serverDataObject.schedule.meanDelay, serverDataObject.schedule.variation*/);
+		let nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), guildData.schedule.meanDelay, guildData.schedule.variation);
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
+		// OVERRIDE the nextTimeObj
+		if (override) {
+			const nextAppearance = dayjs().add(150, 'minute');
+			nextTimeObj = { nextAppearance, nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'), msUntil: Math.abs(dayjs().diff(nextAppearance)) };
+			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
+		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
 		setTimeout(() => {

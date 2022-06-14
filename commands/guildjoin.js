@@ -103,6 +103,6 @@ module.exports = {
 		interaction.client.nateBotData = { ... interaction.client.nateBotData, [interaction.guild.id] : { membersWhoFetched: [] } };
 
 		// Start the hauntings!
-		guildHauntDriver(interaction.client, interaction.guild);
+		guildHauntDriver(interaction.client, interaction.guild, true);
 	},
 };

@@ -32,13 +32,18 @@ module.exports = {
 			}
 			// Check that the bot has permissions to mute the target
 			// Moderatable vs manageable - I think the former is sufficient
-			if (!canModerateMember) {
-				interaction.reply({ content: 'Nice Try Buddy', ephemeral: true });
+			// if (!canModerateMember(target)) {
+			// 	interaction.reply({ content: 'Nice Try Buddy', ephemeral: true });
+			// 	return;
+			// }
+			// Check that the target is in voice
+			if (!member.voice.channel) { // <- not sure the best way to do this? seems to work
+				interaction.reply({ content: 'This user might not be in a voice channel.', ephemeral: true });
 				return;
 			}
 			// Check whether target is already muted
 			if (member.voice.serverMute) {
-				await interaction.reply({ content: 'This user is already Muted', ephemeral: true });
+				await interaction.reply({ content: 'This user is already muted', ephemeral: true });
 				return;
 			}
 

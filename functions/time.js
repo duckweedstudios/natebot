@@ -31,11 +31,14 @@ module.exports = {
 		return nextTimeObj;
 	},
 
-	// time: time of the haunting as dayjs object
+	// time: time of the haunting as dayjs object OR native Date
 	// meanDelay: the server's mean delay setting in minutes. will be used to vary how precise the results are
 	// spread: divisor for meanDelay to set max one way difference interval
 	// For example, a 24 hour mean delay should have a wider timeframe than a 6 hour mean delay
 	getVagueTimeRange: (time, meanDelay = 1440, spread = 6) => {
+		if (time instanceof Date) {
+			time = dayjs(time);
+		}
 		const maxOneWayDifference = meanDelay / spread;
 		const earlierInterval = Math.floor(Math.random() * maxOneWayDifference);
 		const laterInterval = Math.floor(Math.random() * maxOneWayDifference);

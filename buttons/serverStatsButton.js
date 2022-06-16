@@ -61,7 +61,7 @@ module.exports = {
 			await editInteraction(interaction, data);
 			await interaction.deferUpdate();
 		} catch (error) {
-			await interaction.reply({ content: 'There was an error', ephemeral: true });
+			// await interaction.reply({ content: 'There was an error', ephemeral: true });
 			console.log(error);
 		}
 	},

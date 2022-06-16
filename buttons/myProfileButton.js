@@ -20,7 +20,8 @@ module.exports = {
 			await interaction.deferUpdate();
 			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.user.id };
 		} catch (error) {
-			await interaction.reply({ content: 'Didnt work', ephemeral: true });
+			console.error('Error in myProfileButton.js: ' + error);
+			return;
 		}
 	},
 };

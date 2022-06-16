@@ -8,7 +8,7 @@ module.exports = {
 			'id': -1,
 			'name': 'Bruh',
 			'author': 'OliGuzzler',
-			'rarity': 10, // fairly punishing for the condemned if they don't set a soul. TODO this needs revision for the rarity system overhaul
+			'rarity': 5, // fairly punishing for the condemned if they don't set a soul. TODO this needs revision for the rarity system overhaul
 			'emoji': '<:oliguzzler:981560015204798504>',
 			'extension': 'mp3',
 			'global': true,

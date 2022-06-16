@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { getSoulData } = require('../events/query');
 const { getGuildData } = require('../events/guildquery');
+const { getSoulTier } = require('../functions/tiers');
 
 module.exports = {
 	getEmbed : async (interaction, target) => {
@@ -90,23 +91,29 @@ module.exports = {
 			.setFooter({ text: 'Powered by Parkie LLC' });
 	
 		// Fetcher Self Embed
+		let soulTierData;
+		try {
+			soulTierData = getSoulTier(soulData.soulXP);
+		} catch (err) {
+			console.error('Error in getEmbed.js: Could not get soul tier data (eg fetcher tier): ' + err);
+			return;
+		}
 		const fetcherSelfEmbed = new MessageEmbed()
 			.setColor('RED')
 			.setTitle(`__**Your Profile**__`)
 			.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
-			.setDescription('*Professional Soul Fetcher*')
+			.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
 			.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 			.addFields(
-				{ name: 'Your XP:', value: `${soulData.soulXP}` },
-				{ name: '\u200B', value: '\u200B' },
+				{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
+				// { name: '\u200B', value: '\u200B' },
 				{ name: '__Your Current Souls:__', value: `*${soulData.souls}*` },
 				{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
 				{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
 				{ name: '\u200B', value: '\u200B' },
-				{ name: '__***       Career Stats       ***__', value: '\u200B' },
+				{ name: '__***       Career Stats       ***__', value: '\u200B' }, // don't know why just putting a space breaks this
 				{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 				{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
-				{ name: '__Your Rank:__', value: `*${soulData.soulXP}*` },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -116,11 +123,11 @@ module.exports = {
 			.setColor('DARK_ORANGE')
 			.setTitle(`__**The profile of ${target.username}**__`)
 			.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
-			.setDescription('*Professional Soul Fetcher*')
+			.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
 			.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 			.addFields(
-				{ name: 'XP:', value: `${soulData.soulXP}` },
-				{ name: '\u200B', value: '\u200B' },
+				{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
+				// { name: '\u200B', value: '\u200B' },
 				{ name: '__Current Souls:__', value: `*${soulData.souls}*` },
 				{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
 				{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
@@ -128,7 +135,6 @@ module.exports = {
 				{ name: '__***       Career Stats       ***__', value: '\u200B' },
 				{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 				{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
-				{ name: '__Rank:__', value: `*${soulData.soulXP}*` },
 			)
 			.setTimestamp()
 			.setFooter({ text: 'Powered by Parkie LLC' });
@@ -147,7 +153,7 @@ module.exports = {
 				{ name: '\u200B', value: '\u200B' },
 				{ name: '__**Condemned Career Stats**__', value: `\u200B` },
 				{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
-				{ name: '__Fetcher Rank__', value: `*${soulData.soulXP}*`, inline: true },
+				{ name: '__Fetcher Rank__', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)`, inline: true },
 				{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 			)
 			.setTimestamp()

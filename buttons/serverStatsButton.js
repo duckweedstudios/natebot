@@ -4,6 +4,7 @@ const { getActionRow } = require('../events/getActionRow');
 const { getSoulData } = require('../events/query');
 const { getGuildData } = require('../events/guildquery');
 const profileModel = require ('../models/profileSchema');
+const { getVagueTimeRange } = require('../functions/time');
 
 module.exports = {
 	name: 'serverStatsButton',
@@ -22,6 +23,13 @@ module.exports = {
 				allFetchersData.push(allFetchersDataOne[i]);
 			}
 		}
+		let nextTimeData;
+		try {
+			nextTimeData = getVagueTimeRange(guildData.schedule.next.time);
+		} catch (err) {
+			console.error('Error in serverStatsButton: could not get time range: ' + err);
+			return;
+		}
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')
 			.setTitle(`__***${interaction.guild.name}'s Stats***__`)
@@ -32,7 +40,7 @@ module.exports = {
 			)
 			.addFields(
 				{ name: '\u200B', value: '\u200B' },
-				{ name: 'Next Appearance', value: `*${guildData.schedule.next.time}*` },
+				{ name: 'Next Appearance', value: `Between ${nextTimeData.formatted}` },
 				{ name: 'Last Appearance', value: `*${guildData.schedule.past.time}*` },
 				{ name: '\u200B', value: '\u200B' });
 		

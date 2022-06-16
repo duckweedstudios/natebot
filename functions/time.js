@@ -42,7 +42,7 @@ module.exports = {
 		const earlierTime = time.subtract(earlierInterval, 'minute');
 		const laterTime = time.add(laterInterval, 'minute');
 		return {
-			'formatted': `${earlierTime.format('MM/DD/YYYY hh:mm A')} and ${laterTime.format('MM/DD/YYYY hh:mm A')}`,
+			'formatted': `*${earlierTime.format('MM/DD/YYYY hh:mm A')}* and *${laterTime.format('MM/DD/YYYY hh:mm A')}*`,
 			earlierTime,
 			laterTime,
 		};

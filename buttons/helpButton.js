@@ -10,6 +10,7 @@ module.exports = {
 		.setStyle('PRIMARY'),
     
 	async execute(interaction) {
+		await interaction.deferUpdate();
 		const helpEmbed = new MessageEmbed()
 			.setColor('BLUE')
 			.setTitle(`__***NEED HELP?***__`)
@@ -23,9 +24,8 @@ module.exports = {
 
 		try {
 			await editInteraction(interaction, data);
-			await interaction.deferUpdate();
 		} catch (error) {
-			await interaction.reply({ content: 'There was an error', ephemeral: true });
+			await editInteraction(interaction, { content: 'There was an error', ephemeral: true });
 			console.log(error);
 		}
 	},

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchemaGuild');
+const testprofileModelGuild = require ('../models/testprofileSchemaGuild');
 const { isMemberOwner, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
@@ -91,7 +91,7 @@ module.exports = {
 		}
 
 		try {
-			const profile = await profileModel.create(
+			const profile = await testprofileModelGuild.create(
 				initializeObject(interaction.guild.id,
 					memberTarget.id,
 					(await condemnedRole.id),

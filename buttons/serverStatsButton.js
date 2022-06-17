@@ -3,7 +3,7 @@ const { editInteraction } = require('../events/editInteraction');
 const { getActionRow } = require('../events/getActionRow');
 const { getSoulData } = require('../events/query');
 const { getGuildData } = require('../events/guildquery');
-const profileModel = require ('../models/profileSchema');
+const testprofileModel = require ('../models/testprofileSchema');
 const { getVagueTimeRange } = require('../functions/time');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
 	async execute(interaction) {
 		const guildData = await getGuildData(interaction);
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
-		const allFetchersDataOne = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
+		const allFetchersDataOne = await testprofileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		const allFetchersData = [];
 		for (const i in allFetchersDataOne) {
 			if (allFetchersDataOne[i].fetcherID !== condemnedData.fetcherID) {
@@ -61,7 +61,6 @@ module.exports = {
 			await editInteraction(interaction, data);
 			await interaction.deferUpdate();
 		} catch (error) {
-			// await interaction.reply({ content: 'There was an error', ephemeral: true });
 			console.log(error);
 		}
 	},

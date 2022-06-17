@@ -1,10 +1,10 @@
-const profileModelGuild = require ('../models/profileSchemaGuild');
+const testprofileModelGuild = require ('../models/testprofileSchemaGuild');
 
 // 
 module.exports = {
 	getGuildData : async (tempServerId) => {
 		try {
-			const guildData = await profileModelGuild.findOne({ serverID: tempServerId });
+			const guildData = await testprofileModelGuild.findOne({ serverID: tempServerId });
 			return guildData;
 		} catch (err) {
 			console.log(err);

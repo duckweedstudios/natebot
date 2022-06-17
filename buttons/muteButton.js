@@ -2,7 +2,7 @@ const { MessageButton } = require('discord.js');
 const { getTarget } = require('../events/getTarget');
 const { increaseValue } = require('../events/inc');
 const { getSoulData } = require('../events/query');
-const { isMemberCondemnedSoul, canModerateMember } = require('../functions/privileges');
+const { isMemberCondemnedSoul } = require('../functions/privileges');
 
 module.exports = {
 	name: 'muteButton',

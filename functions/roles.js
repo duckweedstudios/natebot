@@ -1,6 +1,6 @@
 // const { getServerDataFromMemory } = require('./serverData.js');
 const { getGuildData } = require('../events/guildquery.js');
-const profileModelGuild = require('../models/profileSchemaGuild');
+const testprofileModelGuild = require('../models/testprofileSchemaGuild');
 
 module.exports = {
 	// Gets condemned role on server, handling cases when the role no longer exists (perhaps it was deleted)
@@ -20,7 +20,7 @@ module.exports = {
 			console.log(`Handled error in getCondemnedRoleOnServer: Role with id ${guildData.settings.condemnedRoleId} could not be fetched from guild ${guild.id}, creating new: ${err}`);
 			const condemnedRole = module.exports.createCondemnedRole(guild);
 			try {
-				await profileModelGuild.findOneAndUpdate({
+				await testprofileModelGuild.findOneAndUpdate({
 					serverID: guild.id,
 				}, {
 					$set: {

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema');
+const testprofileModel = require ('../models/testprofileSchema');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('join the soul fetchers'),
 	async execute(interaction) {
 		try {
-			const profile = await profileModel.create({
+			const profile = await testprofileModel.create({
 				fetcherTag: interaction.user.username,
 				fetcherID: interaction.user.id,
 				serverID:interaction.guild.id,

@@ -1,10 +1,10 @@
-const profileModel = require ('../models/profileSchema');
+const testprofileModel = require ('../models/testprofileSchema');
 
 // 
 module.exports = {
 	getSoulData : async (interaction, userId) => {
 		try {
-			const soulData = await profileModel.findOne({
+			const soulData = await testprofileModel.findOne({
 				fetcherID: userId,
 				serverID: interaction.guild.id,
 			});

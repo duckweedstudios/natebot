@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const profileSchemaGuild = new mongoose.Schema({
+const testprofileSchemaGuild = new mongoose.Schema({
 	serverId: { type: String, require: true, unique: true },
 	condemnedMember: { type: String, require: true },
 	newSoulMade: { type: Boolean, default: false },
@@ -30,6 +30,6 @@ const profileSchemaGuild = new mongoose.Schema({
 	},
 });
 
-const model = mongoose.model('ProfileModelsGuild', profileSchemaGuild);
+const model = mongoose.model('testProfileModelsGuild', testprofileSchemaGuild);
 
 module.exports = model;

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema');
-const profileModelGuild = require ('../models/profileSchemaGuild');
+const testprofileModel = require ('../models/testprofileSchema');
+const testprofileModelGuild = require ('../models/testprofileSchemaGuild');
 const { isMemberPrivileged, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = require('../functions/privileges.js');
 const { getGuildData } = require('../events/guildquery.js');
 const { getCondemnedRoleOnServer } = require('../functions/roles.js');
@@ -58,27 +58,27 @@ module.exports = {
 		}
 
 		const condemnedRole = await getCondemnedRoleOnServer(interaction.guild);
-		const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
+		const allfetchers = await testprofileModel.find({ serverID: interaction.guild.id });
 		try {
 			for (const tempfetcherID of allfetchers) {
 				const fetcherID = tempfetcherID['fetcherID'];
-				await profileModel.findOneAndUpdate({ fetcherID:fetcherID }, {
+				await testprofileModel.findOneAndUpdate({ fetcherID:fetcherID }, {
 					$set: {
 						souls: 0,
 						soulsCaught: 0,
 					} });
 			}
-			await profileModelGuild.findOneAndUpdate({ serverId: interaction.guild.id }, {
+			await testprofileModelGuild.findOneAndUpdate({ serverId: interaction.guild.id }, {
 				$set: {
 					condemnedMember: condemnedTarget.id,
 				} });
-			await profileModel.findOneAndUpdate({ fetcherID:condemnedTarget.id }, {
+			await testprofileModel.findOneAndUpdate({ fetcherID:condemnedTarget.id }, {
 				$set: {
 					souls: 100,
 					soulsCaught: 0,
 				},
 			});
-			await profileModel.findOneAndUpdate({ fetcherID: condemnedTarget.id }, {
+			await testprofileModel.findOneAndUpdate({ fetcherID: condemnedTarget.id }, {
 				$inc: {
 					condemnedCount: 1,
 				},
@@ -107,7 +107,6 @@ module.exports = {
 			${roleUpdateFailedIds.length > 0 ? `\nThese users could not have their roles removed by the bot, so you should do it manually: ${roleUpdateFailedIds}` : ''}`, ephemeral: true });
 		} catch (error) {
 			console.error(error);
-			interaction.reply({ content: 'There was an error', ephemeral: true });
 		}
 	},
 };

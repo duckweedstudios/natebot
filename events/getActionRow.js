@@ -1,7 +1,7 @@
 const { MessageActionRow } = require('discord.js');
 const { getGuildData } = require('../events/guildquery');
 const { getSoulData } = require('../events/query');
-const profileModel = require ('../models/profileSchema');
+const testprofileModel = require ('../models/testprofileSchema');
 
 module.exports = {
 	getActionRow : async (interaction, target) => {
@@ -22,7 +22,7 @@ module.exports = {
 		const guildData = await getGuildData(guild.id);
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
 		const userData = await getSoulData(interaction, interaction.user.id);
-		const allFetchersData = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
+		const allFetchersData = await testprofileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) { userIsCondemned = true; }

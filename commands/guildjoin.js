@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchemaGuild');
 const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
-const { createHellspeakChannel } = require('../functions/channels.js');
+const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
 const { guildHauntDriver } = require('../actions/hauntDrivers');
 const { Permissions } = require('discord.js');
@@ -83,7 +83,6 @@ module.exports = {
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
-		console.log(interaction.guild.me.permissions.toArray());
 		const botPermissions = interaction.guild.me.permissions;
 		if (!botPermissions.has(Permissions.FLAGS.MANAGE_CHANNELS) || !botPermissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
 			try {
@@ -95,7 +94,7 @@ module.exports = {
 		}
 		let hellspeakChannel;
 		try {
-			const hellspeakChannelsIfExists = (await interaction.guild.channels.fetch()).filter((channel) => channel.isVoice && channel.name === 'HELLSPEAK');
+			const hellspeakChannelsIfExists = getHellspeakChannelOnServer(interaction.guild);
 			if (hellspeakChannelsIfExists) {
 				hellspeakChannel = hellspeakChannelsIfExists[0];
 			} else {

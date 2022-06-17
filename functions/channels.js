@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	// TODO
-	getHellspeakChannelOnServer: () => {
-		return;
+	getHellspeakChannelOnServer: async (guild) => {
+		return (await guild.channels.fetch()).filter((channel) => channel.isVoice && channel.name === 'HELLSPEAK');
 	},
 };

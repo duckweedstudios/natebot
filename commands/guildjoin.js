@@ -5,6 +5,7 @@ const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
 const { guildHauntDriver } = require('../actions/hauntDrivers');
+const { Permissions } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -80,10 +81,27 @@ module.exports = {
 			}
 		}
 
-		// Create the HELLSPEAK voice channel
+		// Create the HELLSPEAK voice channel (or check if it exists)
+		// Check whether the bot has permission to do so (this doesn't seem to work)
+		console.log(interaction.guild.me.permissions.toArray());
+		const botPermissions = interaction.guild.me.permissions;
+		if (!botPermissions.has(Permissions.FLAGS.MANAGE_CHANNELS) || !botPermissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+			try {
+				await interaction.reply({ content: `Setup failed (did not have permission to create a private voice channel), please check bot permissions and try again later.`, ephemeral: true });
+			} catch (err) {
+				console.error(`Error in setup.js: Did not have permission to create HELLSPEAK channel for guild ${interaction.guild.id}: ${err}`);
+			}
+			return;
+		}
 		let hellspeakChannel;
 		try {
-			hellspeakChannel = createHellspeakChannel(interaction.guild, condemnedRole);
+			const hellspeakChannelsIfExists = (await interaction.guild.channels.fetch()).filter((channel) => channel.isVoice && channel.name === 'HELLSPEAK');
+			if (hellspeakChannelsIfExists) {
+				hellspeakChannel = hellspeakChannelsIfExists[0];
+			} else {
+				hellspeakChannel = createHellspeakChannel(interaction.guild, condemnedRole);
+			}
+			
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
 			interaction.reply({ content: `Setup failed (could not create a voice channel), please try again later.`, ephemeral: true });

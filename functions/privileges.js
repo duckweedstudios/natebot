@@ -15,7 +15,7 @@ module.exports = {
 	},
 
 	isMemberDev: (userId) => {
-		return userId === 177512311462821888 || userId === 186517957210406912;
+		return userId === '177512311462821888' || userId === '186517957210406912';
 	},
 
 	isMemberOwner: (member, guild) => {

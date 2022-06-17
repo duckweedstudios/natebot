@@ -11,8 +11,13 @@ module.exports = {
 					allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
 				},
 				{
+					id: guild.me.roles.botRole,
+					allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
+				},
+				{
 					id: guild.roles.everyone,
-					deny: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
+					allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
+					deny: [Permissions.FLAGS.CONNECT],
 				},
 			],
 			reason: 'HELLSPEAK is used by the condemned soul for profane purposes...',

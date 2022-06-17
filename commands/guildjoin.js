@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchemaGuild');
-const { isMemberOwner, canModerateMember } = require('../functions/privileges.js');
+const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
@@ -19,8 +19,8 @@ module.exports = {
 		.addRoleOption(roleOption => roleOption
 			.setName('mod-role').setDescription('The moderator role which can interact with the bot\'s settings.')),
 	async execute(interaction) {
-		// Check for admin status
-		if (isMemberOwner(interaction.member, interaction.client, interaction.guild)) {
+		// Check for admin status (for now only developers have access)
+		if (!isMemberDev(interaction.member.id)) {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}

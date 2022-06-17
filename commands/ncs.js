@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchema');
 const profileModelGuild = require ('../models/profileSchemaGuild');
-const { isMemberPrivileged, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = require('../functions/privileges.js');
+const { isMemberDev, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = require('../functions/privileges.js');
 const { getGuildData } = require('../events/guildquery.js');
 const { getCondemnedRoleOnServer } = require('../functions/roles.js');
 
@@ -11,10 +11,10 @@ module.exports = {
 		.setDescription('New condemned Soul')
 		.addUserOption(option => option.setName('target').setDescription('The New Condemned Soul')),
 	async execute(interaction) {
-		// Check for admin status
+		// Check for admin status (for now only developers have access)
 		const condemnedTarget = interaction.options.getMember('target');
-		if (!isMemberPrivileged(interaction.member, interaction.client, interaction.guild)) {
-			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
+		if (!isMemberDev(interaction.member.id)) {
+			interaction.reply({ content: 'You must be a developer to use this command!', ephemeral: true });
 			return;
 		}
 		let guildData;

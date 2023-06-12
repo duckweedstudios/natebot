@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchemaGuild');
+const profileModel = require('../models/profileSchemaGuild');
 const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
@@ -94,13 +94,14 @@ module.exports = {
 		}
 		let hellspeakChannel;
 		try {
-			const hellspeakChannelsIfExists = getHellspeakChannelOnServer(interaction.guild);
-			if (hellspeakChannelsIfExists) {
+			const hellspeakChannelsIfExists = await getHellspeakChannelOnServer(interaction.guild);
+			if (hellspeakChannelsIfExists && hellspeakChannelsIfExists.size > 0) {
 				hellspeakChannel = hellspeakChannelsIfExists[0];
 			} else {
 				hellspeakChannel = createHellspeakChannel(interaction.guild, condemnedRole);
 			}
-			
+			console.log(hellspeakChannel);
+
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
 			interaction.reply({ content: `Setup failed (could not create a voice channel), please try again later.`, ephemeral: true });
@@ -117,15 +118,16 @@ module.exports = {
 					meanDelay,
 					randomness));
 			profile.save();
-			await interaction.reply({ content: `Server setup.
-				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true });
+			await interaction.reply({
+				content: `Server setup.
+				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true,
+			});
 		} catch (error) {
-			// console.log(error);
-			await interaction.reply({ content:'What are you doing? Your server is already setup!', ephemeral: true });
-			// return; // for testing purposes leave this in
+			console.log(error);
+			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 
-		interaction.client.nateBotData = { ... interaction.client.nateBotData, [interaction.guild.id] : { membersWhoFetched: [] } };
+		interaction.client.nateBotData = { ...interaction.client.nateBotData, [interaction.guild.id]: { membersWhoFetched: [] } };
 
 		// Start the hauntings!
 		guildHauntDriver(interaction.client, interaction.guild, true);

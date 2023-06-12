@@ -11,7 +11,7 @@ module.exports = {
 					allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
 				},
 				{
-					id: guild.me.roles.botRole,
+					id: guild.members.me.roles.botRole,
 					allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK, Permissions.FLAGS.STREAM, Permissions.FLAGS.USE_VAD],
 				},
 				{

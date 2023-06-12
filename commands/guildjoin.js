@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema');
 const profileModelGuild = require('../models/profileSchemaGuild');
 const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
@@ -12,8 +11,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('guildjoin')
 		.setDescription('[owner] Setup the Natebot on the server as desired')
-		.addUserOption(userOption => userOption
-			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...'))
 		.addIntegerOption(intOption => intOption
 			.setName('mean-delay').setDescription('The mean delay between hauntings in minutes. Defaults to 1440 (24 hours).'))
 		.addIntegerOption(intOption => intOption
@@ -41,16 +38,6 @@ module.exports = {
 			interaction.reply({ content: 'Randomness must be an integer between 1 and 10.', ephemeral: true });
 			return;
 		}
-		// Ensure target isn't a bot
-		if (interaction.options.getMember('first-condemned') && interaction.options.getMember('first-condemned').user.bot) {
-			if (interaction.options.getMember('first-condemned').id === '974345779349184542') {
-				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
-				return;
-			} else {
-				interaction.reply({ content: 'A puny bot cannot bear the mantle of Condemned Soul. Choose a user instead.', ephemeral: true });
-				return;
-			}
-		}
 
 		// Create the condemned soul role on the server (or check if it exists)
 		let condemnedRole = interaction.guild.roles.cache.find((role) => role.name === 'Condemned Soul');
@@ -65,22 +52,7 @@ module.exports = {
 		}
 		let roleAssignmentSuccess = true;
 		// Assign first condemned (save user id) and assign the role
-		let memberTarget;
-		if (!interaction.options.getMember('first-condemned')) {
-			memberTarget = interaction.member;
-			if (!canModerateMember(memberTarget)) {
-				roleAssignmentSuccess = false;
-			} else {
-				memberTarget.roles.add((await condemnedRole));
-			}
-		} else {
-			memberTarget = interaction.options.getMember('first-condemned');
-			if (!canModerateMember(memberTarget)) {
-				roleAssignmentSuccess = false;
-			} else {
-				memberTarget.roles.add((await condemnedRole));
-			}
-		}
+
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -112,7 +84,7 @@ module.exports = {
 		try {
 			const profile = await profileModelGuild.create(
 				initializeObject(interaction.guild.id,
-					memberTarget.id,
+					"0",
 					(await condemnedRole.id),
 					hellspeakChannelString,
 					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),
@@ -120,34 +92,12 @@ module.exports = {
 					randomness));
 			profile.save();
 			await interaction.reply({
-				content: `Server setup.
-				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true,
+				content: `Server Setup Successful
+				${`\n*FETCH ME THEIR SOULS!* \n\nAssign the first condemned soul using the /ncs command!`}`, ephemeral: true,
 			});
 		} catch (error) {
 			console.log(error);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
-		}
-
-		try {
-			const profile = await profileModel.create({
-				fetcherTag: interaction.user.username,
-				fetcherID: interaction.user.id,
-				serverID:interaction.guild.id,
-				souls: 100,
-				soulsCaught: 0,
-				careerSouls: 0,
-				condemnedCount: 1,
-				soulXP: 0,
-				fetchCount: 0,
-				gotFooledCount: 0,
-				fooledCount: 0,
-				autoLure: false,
-			});
-			profile.save();
-			await interaction.reply({ content: 'FETCH ME THEIR SOULS!', ephemeral: true });
-		} catch (error) {
-			// console.log(error);
-			await interaction.reply({ content:'What are you doing? You\'re already a soul fetcher! FETCH ME THEIR SOULS!', ephemeral: true });
 		}
 
 		interaction.client.nateBotData = { ...interaction.client.nateBotData, [interaction.guild.id]: { membersWhoFetched: [] } };

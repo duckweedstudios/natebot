@@ -84,7 +84,7 @@ module.exports = {
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
-		const botPermissions = interaction.guild.me.permissions;
+		const botPermissions = interaction.guild.members.me.permissions;
 		if (!botPermissions.has(Permissions.FLAGS.MANAGE_CHANNELS) || !botPermissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
 			try {
 				await interaction.reply({ content: `Setup failed (did not have permission to create a private voice channel), please check bot permissions and try again later.`, ephemeral: true });
@@ -93,15 +93,15 @@ module.exports = {
 			}
 			return;
 		}
-		let hellspeakChannel;
+		let hellspeakChannelString;
 		try {
 			const hellspeakChannelsIfExists = await getHellspeakChannelOnServer(interaction.guild);
 			if (hellspeakChannelsIfExists && hellspeakChannelsIfExists.size > 0) {
-				hellspeakChannel = hellspeakChannelsIfExists[0];
+				hellspeakChannelString = hellspeakChannelsIfExists.keys[0];
 			} else {
-				hellspeakChannel = createHellspeakChannel(interaction.guild, condemnedRole);
+				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			console.log(hellspeakChannel);
+			console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
@@ -114,7 +114,7 @@ module.exports = {
 				initializeObject(interaction.guild.id,
 					memberTarget.id,
 					(await condemnedRole.id),
-					hellspeakChannel.id,
+					hellspeakChannelString,
 					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),
 					meanDelay,
 					randomness));

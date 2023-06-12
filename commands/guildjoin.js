@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModelGuild = require('../models/profileSchemaGuild');
-const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
+const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
@@ -50,7 +50,6 @@ module.exports = {
 				return;
 			}
 		}
-		let roleAssignmentSuccess = true;
 		// Assign first condemned (save user id) and assign the role
 
 
@@ -84,7 +83,7 @@ module.exports = {
 		try {
 			const profile = await profileModelGuild.create(
 				initializeObject(interaction.guild.id,
-					"0",
+					'0',
 					(await condemnedRole.id),
 					hellspeakChannelString,
 					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),

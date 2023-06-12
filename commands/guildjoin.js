@@ -100,7 +100,7 @@ module.exports = {
 			} else {
 				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
+			// console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
@@ -123,7 +123,7 @@ module.exports = {
 				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true,
 			});
 		} catch (error) {
-			console.log(error);
+			console.error(`Setup error: ${error}`);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 

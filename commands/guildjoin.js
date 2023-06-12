@@ -103,7 +103,7 @@ module.exports = {
 			console.log(hellspeakChannel);
 
 		} catch (err) {
-			// console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
+			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
 			interaction.reply({ content: `Setup failed (could not create a voice channel), please try again later.`, ephemeral: true });
 			return;
 		}
@@ -120,12 +120,11 @@ module.exports = {
 			profile.save();
 			await interaction.reply({
 				content: `Server setup.
-				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true
+				${roleAssignmentSuccess ? `\nFETCH ME THEIR SOULS!` : `\nRole could not be assigned to <@${memberTarget.id}>, so you should do it manually.`}`, ephemeral: true,
 			});
 		} catch (error) {
 			console.log(error);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
-			// return; // for testing purposes leave this in
 		}
 
 		interaction.client.nateBotData = { ...interaction.client.nateBotData, [interaction.guild.id]: { membersWhoFetched: [] } };

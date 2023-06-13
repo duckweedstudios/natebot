@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // const { getServerDataFromMemory } = require('../functions/serverData.js');
-// const { getGuildData } = require('../events/guildquery.js');
+const { getGuildData } = require('../events/guildquery.js');
 // const { isMemberCondemnedSoul } = require('../functions/privileges.js');
-// const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
-// const fs = require('node:fs');
-// const https = require('https');
-// const path = require('path');
-// const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
+const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
+const fs = require('node:fs');
+const https = require('https');
+const path = require('path');
+const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,15 +14,13 @@ module.exports = {
 		.addAttachmentOption(attachOption => attachOption
 			.setName('sound').setDescription('The haunting sound to be played').setRequired(true)),
 	async execute(interaction) {
-		await interaction.reply({ message: '🚧 this will be the uploadhauntsound embed 🚧', ephemeral: true });
+		return;
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
 		// if (serverDataObject === null) {
 		// 	interaction.reply('The Natebot has not yet been setup on the server.');
 		// 	return;
 		// }
-
-		/*
 		let guildData;
 		try {
 			guildData = await getGuildData(interaction.guild.id);
@@ -153,6 +151,5 @@ module.exports = {
 		// This will require some kind of audio manipulator integration
 		// Tone.js?
 
-        */
 	},
 };

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // const { getServerDataFromMemory } = require('../functions/serverData.js');
-// const { getGuildData } = require('../events/guildquery.js');
-// const { isMemberDev } = require('../functions/privileges.js');
+const { getGuildData } = require('../events/guildquery.js');
+const { isMemberDev } = require('../functions/privileges.js');
 // const profileModelGuild = require('../models/profileSchemaGuild.js');
 
 module.exports = {
@@ -9,18 +9,13 @@ module.exports = {
 		.setName('pause')
 		.setDescription('[admin] Pause Natebot activities on this server'),
 	async execute(interaction) {
-		// Not intended to be used yet
-		await interaction.reply({ message: '🚧 this will be the pause command 🚧', ephemeral: true });
-
-
+		return; // Not intended to be used yet
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
 		// if (serverDataObject === null) {
 		// 	interaction.reply({ content: 'The Natebot has not yet been setup on the server.', ephemeral: true });
 		// 	return;
 		// }
-
-		/*
 		let guildData;
 		try {
 			guildData = await getGuildData(interaction.guild.id);
@@ -53,6 +48,5 @@ module.exports = {
 		}
 
 		interaction.reply('All temporal Natebot functions (hauntings, soul decay) are paused.');
-        */
 	},
 };

@@ -73,7 +73,7 @@ module.exports = {
 			} else {
 				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			// console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
+			console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
@@ -96,7 +96,7 @@ module.exports = {
 				${`\n*FETCH ME THEIR SOULS!* \n\nAssign the first condemned soul using the /ncs command!`}`, ephemeral: true,
 			});
 		} catch (error) {
-			console.error(`Setup error: ${error}`);
+			console.log(error);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 

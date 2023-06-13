@@ -1,5 +1,5 @@
-// const { MessageEmbed, Message, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageEmbed, Message, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     
-};
+}

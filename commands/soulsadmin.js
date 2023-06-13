@@ -5,6 +5,7 @@ module.exports = {
 		.setName('soulsadmin')
 		.setDescription('server admin'),
 	async execute(interaction) {
-		await interaction.reply('🚧 this will be the admin embed 🚧');
+		return;
+		await interaction.reply('this will be the admin embed');
 	},
 };

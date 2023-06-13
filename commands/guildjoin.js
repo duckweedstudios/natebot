@@ -112,7 +112,8 @@ module.exports = {
 					));
 			guildProfile.save();
 			await interaction.reply({content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!`});
-
+			//Start the hauntings!
+			guildHauntDriver(interaction.client, interaction.guild, true);
 		} catch (error) {
 			console.error(`Setup error: ${error}`);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
@@ -125,8 +126,5 @@ module.exports = {
 				lastSummonTime: null,
 			},
 		};
-
-		// Start the hauntings!
-		guildHauntDriver(interaction.client, interaction.guild, true);
 	},
 };

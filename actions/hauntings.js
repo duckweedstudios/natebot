@@ -1,17 +1,11 @@
-// const fs = require('fs');
 const path = require('path');
 const {
 	AudioPlayerStatus,
-	// StreamType,
 	createAudioPlayer,
 	NoSubscriberBehavior,
 	createAudioResource,
 	joinVoiceChannel,
-	// entersState,
-	// VoiceConnection,
 	VoiceConnectionStatus,
-	// getVoiceConnection,
-	// getVoiceConnections,
 } = require('@discordjs/voice');
 const { getAudioResourceFromSoul, getWeightedRandomSoulType } = require('../functions/souls.js');
 
@@ -24,9 +18,7 @@ module.exports = {
 		const guildChannels = await guild.channels.fetch();
 		const guildAFKChannel = guild.afkChannel;
 		const guildVoiceChannels = guildChannels.filter((v) => v.isVoice() && v.joinable && v !== guildAFKChannel);
-		// guildVoiceChannels.forEach((v,k,m) => console.log(`${v.name}, ${v.id}`));
 
-		// console.log(`${guildVoiceChannels.at(0).id}, ${interaction.guildId}, ${interaction.member.guild.voiceAdapterCreator}`);
 		// Connect to a voice channel
 		const connection = joinVoiceChannel({
 			channelId: guildVoiceChannels.at(1).id,
@@ -35,11 +27,6 @@ module.exports = {
 			selfDeaf: false,
 			selfMute: false,
 		});
-
-		// Report ready status
-		// connection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
-		// 	console.log('Connection is in the Ready state!');
-		// });
 
 		// ---------------------------------------------------------------------------
 		// This is how you would access a created connection elsewhere in code without
@@ -64,14 +51,6 @@ module.exports = {
 			console.log(`Haunting ${guild.name}`);
 		});
 
-		// player.on(AudioPlayerStatus.Idle, () => {
-		// 	console.log('Audio player is idle...');
-		// });
-
-		// player.addListener('stateChange', (oldState, newState) => {
-		// 	console.log(`${oldState.status}, ${newState.status}`);
-		// });
-		// console.log(fs.existsSync(path.join(__dirname, '../resources/global/Bruh.mp3')));
 		// Create a resource
 		const resource = createAudioResource(path.join(__dirname, '../resources/global/Bruh.mp3'), {
 			metadata: {
@@ -108,6 +87,10 @@ module.exports = {
 	},
 
 	hauntSomeChannelWithSoul: async (guild, soulObjToPlay) => {
+		// Given a guild and a soul object:
+		// -- If the soul object is a global (i.e. default) soul,
+		// -- replace it with a soul from that guild's souls
+		// -- Then, play the sound in the guild's most active voice channel
 		const guildChannels = await guild.channels.fetch();
 		const guildAFKChannel = guild.afkChannel;
 		const guildVoiceChannels = guildChannels.filter((v) => v.isVoice() && v.joinable && v !== guildAFKChannel);
@@ -119,12 +102,11 @@ module.exports = {
 
 		// Find the VC with the most active users. Arbitrarily break ties -- just join the one first in the list
 		let winningIdAndCount = [guildVoiceChannels.at(0).id, guildVoiceChannels.at(0).members.size];
-		for (const voiceChannelKV of guildVoiceChannels.entries()) {
-			// voiceChannelKV is (or can be used as) an array, where index 0 is the key (a string of the channel ID)
-			// and index 1 is the VoiceChannel object from discordjs
-			// voiceChannelKV[1].members is a collection where the key is a member/user id and the key is a GuildMember djs object
-			if (voiceChannelKV[1].members.size > winningIdAndCount[1]) {
-				winningIdAndCount = [voiceChannelKV[0], voiceChannelKV[1].members.size];
+		for (const [voiceChannelId, voiceChannel] of guildVoiceChannels.entries()) {
+			// entries() returns a map:
+			// key (a string of the channel ID) -> the VoiceChannel object from discordjs
+			if (voiceChannel.members.size > winningIdAndCount[1]) {
+				winningIdAndCount = [voiceChannelId, voiceChannel.members.size];
 			}
 		}
 
@@ -138,8 +120,6 @@ module.exports = {
 		}
 
 		// Actually getting the audio resource, given the soul info, is deferred until the last minute
-		// In theory I thought this might avoid problems from paths changing, etc. but realistically I'm not sure if it matters.
-		// No harm no foul.
 		// Throws error if the audio resource cannot be located.
 		const audioResourceToPlay = getAudioResourceFromSoul(soulObjToPlay, guild.id);
 
@@ -167,7 +147,7 @@ module.exports = {
 
 		console.log(`Haunting ${guild.name}`);
 
-		// Apparently this is necessary to avoid the start of the audio cutting off, making short sounds seem to "not play"
+		// Wait to avoid the start of the audio cutting off
 		connection.on(VoiceConnectionStatus.Ready, () => {
 			player.play(audioResourceToPlay, {
 				volume: 1,

@@ -1,5 +1,4 @@
 const profileModel = require ('../models/profileSchema');
-const { editPrompt } = require('../events/editPrompt');
 
 module.exports = {
 	name: 'inc',

@@ -33,21 +33,21 @@ module.exports = {
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')
 			.setTitle(`__***${interaction.guild.name}'s Stats***__`)
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 			.setThumbnail(interaction.guild.iconURL({ dynamic: true }))
 			.addFields(
-				{ name: '__**THE CONDEMNED SOUL**__ ', value: `**${condemnedData.fetcherTag}**` },
+				{ name: '__THE CONDEMNED SOUL__ ', value: `👹 **${condemnedData.fetcherTag}** 👹` },
 			)
 			.addFields(
-				{ name: '\u200B', value: '\u200B' },
-				{ name: 'Next Appearance', value: `Between ${nextTimeData.formatted}` },
-				{ name: 'Last Appearance', value: `*${guildData.schedule.past.time}*` },
-				{ name: '\u200B', value: '\u200B' });
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'Next Appearance ⏭️', value: `Between ${nextTimeData.formatted}` },
+				{ name: 'Last Appearance ⏮️', value: `*${guildData.schedule.past.time}*` },
+				{ name: '---------------------------------', value: ' ' });
 		
 		try {
-			serverEmbed.addFields({ name: '__**Top Users**__', value: `__**#1 - ${allFetchersData[0].fetcherTag}:**__ ${allFetchersData[0].souls} souls\n__**#2 - ${allFetchersData[1].fetcherTag}:**__ ${allFetchersData[1].souls} souls\n__**#3 - ${allFetchersData[2].fetcherTag}:**__ ${allFetchersData[2].souls} souls` });
+			serverEmbed.addFields({ name: '__**Top Users 📊**__', value: `__**#1 - ${allFetchersData[0].fetcherTag}:**__ ${allFetchersData[0].souls} souls\n__**#2 - ${allFetchersData[1].fetcherTag}:**__ ${allFetchersData[1].souls} souls\n__**#3 - ${allFetchersData[2].fetcherTag}:**__ ${allFetchersData[2].souls} souls` });
 		} catch (error) {
-			serverEmbed.addFields({ name: '__**Top Users**__', value: 'Not Enough Users' });
+			serverEmbed.addFields({ name: '__**Top Users 📊**__', value: 'Not Enough Users' });
 		}
 		serverEmbed.setImage('https://i.imgur.com/bJDpP4T.jpeg');
 		serverEmbed.setTimestamp();

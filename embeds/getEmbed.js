@@ -62,17 +62,16 @@ module.exports = {
 					// Condemned Self Embed
 					return new MessageEmbed()
 						.setColor('DARK_RED')
-						.setTitle(`__**Your Profile**__`)
+						.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
 						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-						.setDescription('*THE CONDEMNED SOUL*')
+						.setDescription('*👹 THE CONDEMNED SOUL 👹*')
 						.setThumbnail('https://imgur.com/MXLHd9R.png')
 						.addFields(
-							{ name: '\u200B', value: '\u200B' },
+							{ name: '---------------------------------', value: ' ' },
 							{ name: '__Your Souls Left__', value: `*👻  ${soulData.souls}*` },
 							{ name: '__Spent Souls__', value: `*💀  ${(100 - soulData.soulsCaught - soulData.souls)}*`, inline: true },
 							{ name: '__Souls Stolen__', value: `🪝  *${soulData.soulsCaught}*`, inline: true },
-							{ name: '\u200B', value: '\u200B' },
-							{ name: '__**Condemned Career Stats 📊**__', value: `\u200B` },
+							{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 							{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
 							{ name: '__Fetcher Rank__', value: `*${soulData.soulXP}*`, inline: true },
 							{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
@@ -89,12 +88,11 @@ module.exports = {
 						.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 						.addFields(
 							{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
-							// { name: '\u200B', value: '\u200B' },
+							{ name: '---------------------------------', value: ' ' },
 							{ name: '__Your Current Souls:__', value: `👻  *${soulData.souls}*` },
 							{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
 							{ name: '__Fetch Count:__', value: `*🪝  ${soulData.fetchCount}*`, inline: true },
-							{ name: '\u200B', value: '\u200B' },
-							{ name: '__***       Career Stats 📊      ***__', value: '\u200B' }, // don't know why just putting a space breaks this
+							{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 							{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 							{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 						)
@@ -102,7 +100,7 @@ module.exports = {
 						.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 				}
 			} else if (userIsCondemned) {
-				// Condemned Other Embed
+				// Condemned Looking at Other Embed
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**${target.username}'s profile**__`)
@@ -111,19 +109,18 @@ module.exports = {
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
-						{ name: '\u200B', value: '\u200B' },
+						{ name: '---------------------------------', value: ' ' },
 						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
 						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
 						{ name: '__Fetch Count:__', value: `*🪝  ${soulData.fetchCount}*`, inline: true },
-						{ name: '\u200B', value: '\u200B' },
-						{ name: '__***       Career Stats 📊      ***__', value: '\u200B' },
+						{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 						{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)
 					.setTimestamp()
 					.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 			} else if (targetIsCondemned) {
-				// Fetcher Looking At Condemned Embed
+				// Fetcher Looking at Condemned Embed
 				return new MessageEmbed()
 					.setColor('DARK_RED')
 					.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
@@ -131,12 +128,10 @@ module.exports = {
 					.setDescription('*👹 THE CONDEMNED SOUL 👹*')
 					.setThumbnail('https://imgur.com/MXLHd9R.png')
 					.addFields(
-						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
-						{ name: '\u200B', value: '\u200B' },
+						{ name: '---------------------------------', value: ' ' },
 						{ name: '__Souls Left__', value: `👻  *${soulData.souls}*`, inline: true},
 						{ name: '__Souls Stolen__', value: `*🪝  ${soulData.soulsCaught}*`, inline: true},
-						{ name: '\u200B', value: '\u200B' },
-						{ name: '__**Condemned Career Stats 📊**__', value: `\u200B` },
+						{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 						{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
 						{ name: '__Fetcher Rank__', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)`, inline: true },
 						{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
@@ -144,7 +139,7 @@ module.exports = {
 					.setTimestamp()
 					.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 			} else {
-				// Fetcher Other Embed
+				// Fetcher Looking at Other Embed
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**The profile of ${target.username}**__`)
@@ -153,12 +148,11 @@ module.exports = {
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
-						// { name: '\u200B', value: '\u200B' },
+						{ name: '---------------------------------', value: ' ' },
 						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
 						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
-						{ name: '__Fetch Count:__', value: `🪝  *${soulData.fetchCount}*`, inline: true },
-						{ name: '\u200B', value: '\u200B' },
-						{ name: '__***       Career Stats 📊      ***__', value: '\u200B' },
+						{ name: '__Fetch Count:__', value: `*🪝  ${soulData.fetchCount}*`, inline: true },
+						{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 						{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)

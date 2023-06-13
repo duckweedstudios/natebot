@@ -64,7 +64,7 @@ module.exports = {
 						.setColor('DARK_RED')
 						.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
 						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-						.setDescription('*👹 THE CONDEMNED SOUL 👹*')
+						.setDescription('**👹 T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ 👹**')
 						.setThumbnail('https://imgur.com/MXLHd9R.png')
 						.addFields(
 							{ name: '---------------------------------', value: ' ' },
@@ -125,7 +125,7 @@ module.exports = {
 					.setColor('DARK_RED')
 					.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
 					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-					.setDescription('*👹 THE CONDEMNED SOUL 👹*')
+					.setDescription('**👹 T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ 👹**')
 					.setThumbnail('https://imgur.com/MXLHd9R.png')
 					.addFields(
 						{ name: '---------------------------------', value: ' ' },

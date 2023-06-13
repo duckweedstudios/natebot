@@ -36,7 +36,7 @@ module.exports = {
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 			.setThumbnail(interaction.guild.iconURL({ dynamic: true }))
 			.addFields(
-				{ name: '__THE CONDEMNED SOUL__ ', value: `👹 **${condemnedData.fetcherTag}** 👹` },
+				{ name: '__**T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**__', value: `👹 **${condemnedData.fetcherTag}** 👹` },
 			)
 			.addFields(
 				{ name: '---------------------------------', value: ' ' },

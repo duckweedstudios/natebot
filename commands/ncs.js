@@ -117,7 +117,7 @@ module.exports = {
 			// 	await condemnedTarget.roles.add(condemnedRole);
 			// }
 			// // Print message with appropriate information
-			interaction.reply({ content: `${condemnedTarget.user.username} has become **THE CONDEMNED**\nFETCH ME THEIR SOULS!`, ephemeral: true });
+			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**`, ephemeral: true });
 		} catch (error) {
 			console.error(error);
 			interaction.reply({ content: 'There was an error', ephemeral: true });

@@ -99,7 +99,13 @@ module.exports = {
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 
-		interaction.client.nateBotData = { ...interaction.client.nateBotData, [interaction.guild.id]: { membersWhoFetched: [] } };
+		interaction.client.nateBotData = {
+			...interaction.client.nateBotData,
+			[interaction.guild.id]: {
+				membersWhoFetched: [],
+				lastSummonTime: null,
+			},
+		};
 
 		// Start the hauntings!
 		guildHauntDriver(interaction.client, interaction.guild, true);

@@ -12,7 +12,7 @@ const { getAudioResourceFromSoul, getWeightedRandomSoulType } = require('../func
 // TODO: Stability testing across different connection problem scenarios.
 
 module.exports = {
-	joinBruhTest: async (guild) => {
+	_joinBruhTest: async (guild) => {
 		// Goal: Playing audio over voice
 		// Define connection
 		const guildChannels = await guild.channels.fetch();

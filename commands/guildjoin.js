@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModelGuild = require('../models/profileSchemaGuild');
-const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
+const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
@@ -50,7 +50,8 @@ module.exports = {
 				return;
 			}
 		}
-		let roleAssignmentSuccess = true;
+		// Assign first condemned (save user id) and assign the role
+
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -71,7 +72,7 @@ module.exports = {
 			} else {
 				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
+			// console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
@@ -82,7 +83,7 @@ module.exports = {
 		try {
 			const profile = await profileModelGuild.create(
 				initializeObject(interaction.guild.id,
-					"0",
+					'0',
 					(await condemnedRole.id),
 					hellspeakChannelString,
 					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),
@@ -91,10 +92,10 @@ module.exports = {
 			profile.save();
 			await interaction.reply({
 				content: `Server Setup Successful
-				${`\n*FETCH ME THEIR SOULS!* \n\nUse /join to join as a player and use /ncs to select the first condemned!`}`, ephemeral: true,
+				${`\n*FETCH ME THEIR SOULS!* \n\nAssign the first condemned soul using the /ncs command!`}`, ephemeral: true,
 			});
 		} catch (error) {
-			console.log(error);
+			console.error(`Setup error: ${error}`);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 

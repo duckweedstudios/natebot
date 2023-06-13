@@ -51,8 +51,6 @@ module.exports = {
 			}
 		}
 		let roleAssignmentSuccess = true;
-		// Assign first condemned (save user id) and assign the role
-
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -93,7 +91,7 @@ module.exports = {
 			profile.save();
 			await interaction.reply({
 				content: `Server Setup Successful
-				${`\n*FETCH ME THEIR SOULS!* \n\nAssign the first condemned soul using the /ncs command!`}`, ephemeral: true,
+				${`\n*FETCH ME THEIR SOULS!* \n\nUse /join to join as a player and use /ncs to select the first condemned!`}`, ephemeral: true,
 			});
 		} catch (error) {
 			console.log(error);

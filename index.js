@@ -10,6 +10,19 @@ console.log(generateDependencyReport());
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS] });
 
+// MONGOOSE PORT
+mongoose.connect(mongodbsrv, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+})
+	.then(() => {
+		console.log('Database Connection Established');
+	})
+	.catch((err) => {
+		console.log('ERROR: Database Connection Failed:');
+		console.log(err);
+	});
+
 // EVENT HANDLER
 client.events = new Collection();
 const eventsPath = path.join(__dirname, 'events');
@@ -45,18 +58,6 @@ for (const file of buttonFiles) {
 	const button = require(filePath);
 	client.buttons.set(button.name, button);
 }
-
-// MONGOOSE PORT
-mongoose.connect(mongodbsrv, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-})
-	.then(() => {
-		console.log('Connected to the Database');
-	})
-	.catch((err) => {
-		console.log(err);
-	});
 
 client.usersCurrentMenuToken = [null];
 client.usersCurrentTarget = [null];

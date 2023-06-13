@@ -63,16 +63,16 @@ module.exports = {
 					return new MessageEmbed()
 						.setColor('DARK_RED')
 						.setTitle(`__**Your Profile**__`)
-						.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
+						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
 						.setDescription('*THE CONDEMNED SOUL*')
 						.setThumbnail('https://imgur.com/MXLHd9R.png')
 						.addFields(
 							{ name: '\u200B', value: '\u200B' },
-							{ name: '__Your Souls Left__', value: `*${soulData.souls}*` },
-							{ name: '__Spent Souls__', value: `*${(100 - soulData.soulsCaught - soulData.souls)}*`, inline: true },
-							{ name: '__Souls Stolen__', value: `*${soulData.soulsCaught}*`, inline: true },
+							{ name: '__Your Souls Left__', value: `*👻  ${soulData.souls}*` },
+							{ name: '__Spent Souls__', value: `*💀  ${(100 - soulData.soulsCaught - soulData.souls)}*`, inline: true },
+							{ name: '__Souls Stolen__', value: `🪝  *${soulData.soulsCaught}*`, inline: true },
 							{ name: '\u200B', value: '\u200B' },
-							{ name: '__**Condemned Career Stats**__', value: `\u200B` },
+							{ name: '__**Condemned Career Stats 📊**__', value: `\u200B` },
 							{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
 							{ name: '__Fetcher Rank__', value: `*${soulData.soulXP}*`, inline: true },
 							{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
@@ -84,17 +84,17 @@ module.exports = {
 					return new MessageEmbed()
 						.setColor('RED')
 						.setTitle(`__**Your Profile**__`)
-						.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
+						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
 						.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
 						.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 						.addFields(
 							{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
 							// { name: '\u200B', value: '\u200B' },
-							{ name: '__Your Current Souls:__', value: `*${soulData.souls}*` },
-							{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
-							{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
+							{ name: '__Your Current Souls:__', value: `👻  *${soulData.souls}*` },
+							{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
+							{ name: '__Fetch Count:__', value: `*🪝  ${soulData.fetchCount}*`, inline: true },
 							{ name: '\u200B', value: '\u200B' },
-							{ name: '__***       Career Stats       ***__', value: '\u200B' }, // don't know why just putting a space breaks this
+							{ name: '__***       Career Stats 📊      ***__', value: '\u200B' }, // don't know why just putting a space breaks this
 							{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 							{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 						)
@@ -106,17 +106,17 @@ module.exports = {
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**${target.username}'s profile**__`)
-					.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
 					.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
 						{ name: '\u200B', value: '\u200B' },
-						{ name: '__Current Souls:__', value: `*${soulData.souls}*` },
-						{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
-						{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
+						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
+						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
+						{ name: '__Fetch Count:__', value: `*🪝  ${soulData.fetchCount}*`, inline: true },
 						{ name: '\u200B', value: '\u200B' },
-						{ name: '__***       Career Stats       ***__', value: '\u200B' },
+						{ name: '__***       Career Stats 📊      ***__', value: '\u200B' },
 						{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)
@@ -126,16 +126,17 @@ module.exports = {
 				// Fetcher Looking At Condemned Embed
 				return new MessageEmbed()
 					.setColor('DARK_RED')
-					.setTitle(`__**${target.username}**__`)
-					.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
-					.setDescription('*THE CONDEMNED SOUL*')
+					.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
+					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setDescription('*👹 THE CONDEMNED SOUL 👹*')
 					.setThumbnail('https://imgur.com/MXLHd9R.png')
 					.addFields(
+						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
 						{ name: '\u200B', value: '\u200B' },
-						{ name: '__Souls Left__', value: `*${soulData.souls}*` },
-						{ name: '__Souls Stolen__', value: `*${soulData.soulsCaught}*` },
+						{ name: '__Souls Left__', value: `👻  *${soulData.souls}*`, inline: true},
+						{ name: '__Souls Stolen__', value: `*🪝  ${soulData.soulsCaught}*`, inline: true},
 						{ name: '\u200B', value: '\u200B' },
-						{ name: '__**Condemned Career Stats**__', value: `\u200B` },
+						{ name: '__**Condemned Career Stats 📊**__', value: `\u200B` },
 						{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
 						{ name: '__Fetcher Rank__', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)`, inline: true },
 						{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
@@ -147,17 +148,17 @@ module.exports = {
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**The profile of ${target.username}**__`)
-					.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
 					.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
 						// { name: '\u200B', value: '\u200B' },
-						{ name: '__Current Souls:__', value: `*${soulData.souls}*` },
-						{ name: '__Souls Caught:__', value: `*${soulData.soulsCaught}*`, inline: true },
-						{ name: '__Fetch Count:__', value: `*${soulData.fetchCount}*`, inline: true },
+						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
+						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
+						{ name: '__Fetch Count:__', value: `🪝  *${soulData.fetchCount}*`, inline: true },
 						{ name: '\u200B', value: '\u200B' },
-						{ name: '__***       Career Stats       ***__', value: '\u200B' },
+						{ name: '__***       Career Stats 📊      ***__', value: '\u200B' },
 						{ name: '__Times as Condemned:__', value: `*${soulData.condemnedCount}*`, inline: true },
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)
@@ -170,7 +171,7 @@ module.exports = {
 			return new MessageEmbed()
 				.setColor('BLUE')
 				.setTitle(`__***EMBED ERROR***__`)
-				.setAuthor({ name: target.tag, iconURL: target.displayAvatarURL({ dynamic: true }) })
+				.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
 				.setDescription('*There was an error when producing this embed*')
 				.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
 				.setTimestamp();

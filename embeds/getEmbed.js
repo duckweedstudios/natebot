@@ -11,20 +11,12 @@ module.exports = {
 		let userIsCondemned = false;
 		let soulData;
 		let guildData;
+		
+		//Getting Guild Data
 		try {
 			guildData = await getGuildData(guild.id);
 			if (!guildData) {
 				interaction.reply({ content:'This guild has not set up the bot yet', ephemeral: true });
-				return;
-			}
-		} catch (err) {
-			interaction.reply({ content: err, ephemeral: true });
-			return;
-		}
-		try {
-			soulData = await getSoulData(interaction, target.id);
-			if (!soulData) {
-				interaction.reply({ content:'This user has not joined the soul fetchers', ephemeral: true });
 				return;
 			}
 		} catch (err) {
@@ -36,6 +28,24 @@ module.exports = {
 		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
+		
+		//Getting target user data
+		try {
+			soulData = await getSoulData(interaction, target.id);
+			if (!soulData) {
+				if (self) {
+					interaction.reply({ content:'You have not joined the soul fetchers, use /join to get started!', ephemeral: true })
+					return;
+				} else {
+					interaction.reply({ content:'This user has not joined the soul fetchers', ephemeral: true });
+					return;
+				}
+			}
+		} catch (err) {
+			interaction.reply({ content: err, ephemeral: true });
+			return;
+		}
+
 	
 		let soulTierData;
 		try {

@@ -1,5 +1,7 @@
 const { MessageButton } = require('discord.js');
-const { joinBruhTest } = require('../actions/hauntings.js');
+const { hauntSomeChannelWithSoul } = require('../actions/hauntings.js');
+const { getWeightedRandomSoulType } = require('../functions/souls.js');
+
 
 module.exports = {
 	name: 'summonButton',
@@ -9,7 +11,7 @@ module.exports = {
 		.setStyle('DANGER'),
         
 	async execute(interaction) {
-		joinBruhTest(interaction.member.guild);
+		hauntSomeChannelWithSoul(interaction.member.guild, getWeightedRandomSoulType(interaction.member.guild.id));
 		await interaction.reply({ content:'A soul was summoned', ephemeral: true });
 	},
 };

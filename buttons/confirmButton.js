@@ -1,7 +1,7 @@
 const { MessageButton } = require('discord.js');
 const { editPrompt } = require('../events/editPrompt');
 const { editInteraction } = require('../events/editInteraction');
-const { increaseValue } = require('../events/inc');
+const { increaseValue } = require('../functions/inc');
 const { getSoulData } = require('../events/query');
 
 module.exports = {
@@ -28,8 +28,8 @@ module.exports = {
 				await editPrompt(interaction, failData);
 				await interaction.deferUpdate();
 			} else {
-				await increaseValue(interaction, target, 'souls', value);
-				await increaseValue(interaction, interaction.user, 'souls', -value);
+				await increaseValue(interaction, target.id, 'souls', value);
+				await increaseValue(interaction, interaction.user.id, 'souls', -value);
 				await editPrompt(interaction, data);
 				await interaction.deferUpdate();
 			}

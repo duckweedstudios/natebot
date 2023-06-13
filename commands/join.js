@@ -10,11 +10,8 @@ module.exports = {
 		const guildData = await getGuildData(interaction);
 		if (guildData != null) {
 			try {
-				const capitalizedFetcherTag =
-					interaction.user.username.charAt(0).toUpperCase()
-					+ interaction.user.username.slice(1)
 				const profile = await profileModel.create({
-					fetcherTag: capitalizedFetcherTag,
+					fetcherTag: interaction.user.username,
 					fetcherID: interaction.user.id,
 					serverID:interaction.guild.id,
 					souls: 0,

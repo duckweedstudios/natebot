@@ -51,7 +51,7 @@ module.exports = {
 		}
 		serverEmbed.setImage('https://i.imgur.com/bJDpP4T.jpeg');
 		serverEmbed.setTimestamp();
-		serverEmbed.setFooter({ text: 'Powered by Parkie LLC' });
+		serverEmbed.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
     
 		const finalComponents = await getActionRow(interaction);
             

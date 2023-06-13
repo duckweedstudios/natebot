@@ -68,7 +68,7 @@ module.exports = {
 							{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 						)
 						.setTimestamp()
-						.setFooter({ text: 'Powered by Parkie LLC' });
+						.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 				} else {
 					// Fetcher Self Embed
 					return new MessageEmbed()
@@ -89,7 +89,7 @@ module.exports = {
 							{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 						)
 						.setTimestamp()
-						.setFooter({ text: 'Powered by Parkie LLC' });
+						.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 				}
 			} else if (userIsCondemned) {
 				// Condemned Other Embed
@@ -111,7 +111,7 @@ module.exports = {
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)
 					.setTimestamp()
-					.setFooter({ text: 'Powered by Parkie LLC' });
+					.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 			} else if (targetIsCondemned) {
 				// Fetcher Looking At Condemned Embed
 				return new MessageEmbed()
@@ -131,7 +131,7 @@ module.exports = {
 						{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 					)
 					.setTimestamp()
-					.setFooter({ text: 'Powered by Parkie LLC' });
+					.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 			} else {
 				// Fetcher Other Embed
 				return new MessageEmbed()
@@ -152,7 +152,7 @@ module.exports = {
 						{ name: '__Was Fooled Count:__', value: `*${soulData.gotFooledCount}*`, inline: true },
 					)
 					.setTimestamp()
-					.setFooter({ text: 'Powered by Parkie LLC' });
+					.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 			}
 		} catch (error) {
 			console.log(error);

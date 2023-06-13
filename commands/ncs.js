@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchema');
 const profileModelGuild = require ('../models/profileSchemaGuild');
 const { isMemberDev, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = require('../functions/privileges.js');
+const { increaseValue } = require('../functions/inc');
+const { setValue } = require('../functions/set');
 const { getGuildData } = require('../events/guildquery.js');
 const { getCondemnedRoleOnServer } = require('../functions/roles.js');
 
@@ -68,55 +70,22 @@ module.exports = {
 				autoLure: false,
 			});
 			profile.save();
-		} catch (error) {
-			console.error('Condemned user exists');
-		}
+		} catch (error) {}
 
-		const condemnedRole = await getCondemnedRoleOnServer(interaction.guild);
+		//Adjusting profile values
 		const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
 		try {
-			for (const tempfetcherID of allfetchers) {
-				const fetcherID = tempfetcherID['fetcherID'];
-				await profileModel.findOneAndUpdate({ fetcherID:fetcherID }, {
-					$set: {
-						souls: 0,
-						soulsCaught: 0,
-					} });
+			for (const fetcher of allfetchers) {
+				setValue(interaction, fetcher.fetcherID, 'souls', 0);
+				setValue(interaction, fetcher.fetcherID, 'soulsCaught', 0);
 			}
+			setValue(interaction, condemnedTarget.id, 'souls', 100);
+			setValue(interaction, condemnedTarget.id, 'soulsCaught', 0);
+			increaseValue(interaction, condemnedTarget.id, 'condemnedCount', 1);
 			await profileModelGuild.findOneAndUpdate({ serverId: interaction.guild.id }, {
 				$set: {
 					condemnedMember: condemnedTarget.id,
 				} });
-			await profileModel.findOneAndUpdate({ fetcherID:condemnedTarget.id }, {
-				$set: {
-					souls: 100,
-					soulsCaught: 0,
-				},
-			});
-			await profileModel.findOneAndUpdate({ fetcherID: condemnedTarget.id }, {
-				$inc: {
-					condemnedCount: 1,
-				},
-			});
-			// Erase the condemned role from all who have it
-			// Depending on permissions, this may fail for certain users
-			// Notify the admin using this command when this has happened so they can manually adjust roles
-			// const roleUpdateFailedIds = [];
-			// for (const oldCSRoleMember of condemnedRole.members.entries()) {
-			// 	console.log(`Trying to remove from ${oldCSRoleMember[1].user.tag}`);
-			// 	// Check if the bot is allowed to remove this person's roles first
-			// 	if (canModerateMember(oldCSRoleMember[1])) {
-			// 		oldCSRoleMember[1].roles.remove(condemnedRole, 'Condemned role was force removed by an admin');
-			// 	} else {
-			// 		roleUpdateFailedIds.push(`<@${oldCSRoleMember[0]}>`);
-			// 	}
-			// }
-			// // Give the condemned role to the new target and update stored data
-			// // TODO: Check if the bot is allowed to add to this person's roles first
-			// if (roleAssignmentSuccess) {
-			// 	await condemnedTarget.roles.add(condemnedRole);
-			// }
-			// // Print message with appropriate information
 			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**`});
 		} catch (error) {
 			console.error(error);

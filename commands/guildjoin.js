@@ -45,16 +45,16 @@ module.exports = {
 		let roleAssignmentSuccess = true;
 		// Assign first condemned (save user id) and assign the role
 		let memberTarget = interaction.options.getMember('first-condemned');
-		try {
-			if (!canModerateMember(memberTarget)) {
-				roleAssignmentSuccess = false;
-			} else {
-				memberTarget.roles.add((await condemnedRole));
-			}
-		} catch(error) {
-			console.log(error)
-			interaction.reply({ content: `Setup failed; Role assignment Error.`, ephemeral: true });
-		}
+		// try {
+		// 	if (!canModerateMember(memberTarget)) {
+		// 		roleAssignmentSuccess = false;
+		// 	} else {
+		// 		memberTarget.roles.add((await condemnedRole));
+		// 	}
+		// } catch(error) {
+		// 	console.log(error)
+		// 	interaction.reply({ content: `Setup failed; Role assignment Error.`, ephemeral: true });
+		// }
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -111,10 +111,8 @@ module.exports = {
 					hellspeakChannelString
 					));
 			guildProfile.save();
-			await interaction.reply({
-				content: `Server Setup Successful
-				${`\n*FETCH ME THEIR SOULS!* \n\nMake sure to use the /join command to play!`}`, ephemeral: true,
-			});
+			await interaction.reply({content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!`});
+
 		} catch (error) {
 			console.error(`Setup error: ${error}`);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });

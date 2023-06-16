@@ -1,6 +1,5 @@
 const { Modal, TextInputComponent, MessageActionRow, MessageButton } = require('discord.js');
 
-
 module.exports = {
 	name: 'giftButton',
 	data: new MessageButton()

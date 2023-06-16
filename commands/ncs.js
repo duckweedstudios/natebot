@@ -3,7 +3,6 @@ const profileModel = require ('../models/profileSchema');
 const profileModelGuild = require ('../models/profileSchemaGuild');
 const { isMemberDev, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = require('../functions/privileges.js');
 const { getGuildData } = require('../events/guildquery.js');
-const { getCondemnedRoleOnServer } = require('../functions/roles.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -46,10 +45,8 @@ module.exports = {
 		// Often, it will not have permission to moderate the server owner
 		// Everything else can still occur (eg assigning them condemned in the database)
 		// But we must ask them to manually assign the role in Discord
-		let roleAssignmentSuccess = true;
 		if (!canModerateMember(condemnedTarget)) {
 			console.log(`Cannot moderate ${condemnedTarget.user.tag}`);
-			roleAssignmentSuccess = false;
 		}
 
 		try {
@@ -72,7 +69,6 @@ module.exports = {
 			console.error('Condemned user exists');
 		}
 
-		const condemnedRole = await getCondemnedRoleOnServer(interaction.guild);
 		const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
 		try {
 			for (const tempfetcherID of allfetchers) {
@@ -98,29 +94,13 @@ module.exports = {
 					condemnedCount: 1,
 				},
 			});
-			// Erase the condemned role from all who have it
-			// Depending on permissions, this may fail for certain users
-			// Notify the admin using this command when this has happened so they can manually adjust roles
-			// const roleUpdateFailedIds = [];
-			// for (const oldCSRoleMember of condemnedRole.members.entries()) {
-			// 	console.log(`Trying to remove from ${oldCSRoleMember[1].user.tag}`);
-			// 	// Check if the bot is allowed to remove this person's roles first
-			// 	if (canModerateMember(oldCSRoleMember[1])) {
-			// 		oldCSRoleMember[1].roles.remove(condemnedRole, 'Condemned role was force removed by an admin');
-			// 	} else {
-			// 		roleUpdateFailedIds.push(`<@${oldCSRoleMember[0]}>`);
-			// 	}
-			// }
-			// // Give the condemned role to the new target and update stored data
-			// // TODO: Check if the bot is allowed to add to this person's roles first
-			// if (roleAssignmentSuccess) {
-			// 	await condemnedTarget.roles.add(condemnedRole);
-			// }
-			// // Print message with appropriate information
-			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**`});
+
+			// TODO: Manage roles for new and old condemned members
+
+			// Print message with appropriate information
+			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**` });
 		} catch (error) {
 			console.error(error);
-			interaction.reply({ content: 'There was an error', ephemeral: true });
 		}
 	},
 };

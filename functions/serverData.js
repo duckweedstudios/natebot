@@ -51,12 +51,6 @@ module.exports = {
 		}
 	},
 
-	updateAppearancesWithMemory: (dayjsObj, soulType, client, guildIdString) => {
-		const serverDataObject = module.exports.getMemory(client, guildIdString);
-		if (serverDataObject === null) throw new Error(`Error in replaceEarlierAppearance: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.memory}`);
-		client.memory[guildIdString].schedule = { ...serverDataObject.schedule, next: { when: dayjsObj, soulType }, past: serverDataObject.schedule.next };
-	},
-
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
 		try {
 			const guildData = await getGuildData(guildIdString);

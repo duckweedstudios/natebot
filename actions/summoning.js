@@ -2,6 +2,7 @@ const dayjs = require('dayjs');
 const { hauntSomeChannelWithSoul } = require('./hauntings');
 const { getWeightedRandomSoulType } = require('../functions/souls');
 const { getGuildData } = require('../events/guildquery');
+const { getMemory } = require('../functions/serverData');
 dayjs.extend(require('dayjs/plugin/duration'));
 dayjs.extend(require('dayjs/plugin/relativeTime'));
 
@@ -26,11 +27,11 @@ module.exports = {
 				cooldown: delayAfterRealHaunting.subtract(currentTimestamp.diff(guildData.schedule.past.time, 'minutes'), 'minute').humanize(),
 			};
 		} else if (
-			!client.memory[guild.id].lastSummonTime
-			|| currentTimestamp.diff(client.memory[guild.id].lastSummonTime, 'minute') >= summoningCooldown.asMinutes()
+			!getMemory(client, guild.id).lastSummonTime
+			|| currentTimestamp.diff(getMemory(client, guild.id).lastSummonTime, 'minute') >= summoningCooldown.asMinutes()
 		) {
 			hauntSomeChannelWithSoul(guild, getWeightedRandomSoulType(guild.id));
-			client.memory[guild.id].lastSummonTime = currentTimestamp;
+			getMemory(client, guild.id).lastSummonTime = currentTimestamp;
 			return {
 				summonSuccess: module.exports.SummonAttemptResults.Success,
 				cooldown: summoningCooldown.humanize(),
@@ -38,7 +39,7 @@ module.exports = {
 		} else {
 			return {
 				summonSuccess: module.exports.SummonAttemptResults.Cooldown,
-				cooldown: summoningCooldown.subtract(currentTimestamp.diff(client.memory[guild.id].lastSummonTime, 'minute'), 'minute').humanize(),
+				cooldown: summoningCooldown.subtract(currentTimestamp.diff(getMemory(client, guild.id).lastSummonTime, 'minute'), 'minute').humanize(),
 			};
 		}
 	},

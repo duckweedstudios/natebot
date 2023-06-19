@@ -36,14 +36,18 @@ module.exports = {
 		};
 	},
 
-	getServerDataFromMemory: (client, guildIdString) => {
-		if (client.nateBotData === null) {
-			return null;
-		}
-		if (guildIdString in client.nateBotData) {
+	getMemory: (client, guildIdString) => {
+		try {
 			return client.nateBotData[guildIdString];
-		} else {
-			return null;
+		} catch (err) {
+			client.nateBotData = {
+				...client.nateBotData,
+				[guildIdString]: {
+					membersWhoFetched: [],
+					lastSummonTime: null,
+				},
+			};
+			return client.nateBotData[guildIdString];
 		}
 	},
 
@@ -55,7 +59,6 @@ module.exports = {
 		// console.log(client.nateBotData['672609929495969813'].schedule);
 	},
 
-	// TODO: check on the database results for this operation
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
 		try {
 			const guildData = await getGuildData(guildIdString);
@@ -63,19 +66,6 @@ module.exports = {
 			guildData.schedule.next.time = dayjsObj.nextAppearance.toDate();
 			guildData.schedule.next.soulTypeId = soulType.id;
 			guildData.save();
-			// await profileModelGuild.findOneAndUpdate({
-			// 	serverID: guildIdString,
-			// }, {
-			// 	$set: {
-			// 		schedule: {
-			// 			next: {
-			// 				time: dayjsObj,
-			// 				soulTypeId: soulType.id,
-			// 			},
-			// 			past: guildData.schedule.next,
-			// 		},
-			// 	},
-			// });
 		} catch (err) {
 			console.error(`Error in replaceEarlierAppearance: Could not update information in database for server ${guildIdString}: ${err}`);
 		}

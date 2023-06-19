@@ -38,25 +38,23 @@ module.exports = {
 
 	getMemory: (client, guildIdString) => {
 		try {
-			return client.nateBotData[guildIdString];
+			return client.memory[guildIdString];
 		} catch (err) {
-			client.nateBotData = {
-				...client.nateBotData,
+			client.memory = {
+				...client.memory,
 				[guildIdString]: {
 					membersWhoFetched: [],
 					lastSummonTime: null,
 				},
 			};
-			return client.nateBotData[guildIdString];
+			return client.memory[guildIdString];
 		}
 	},
 
 	updateAppearancesWithMemory: (dayjsObj, soulType, client, guildIdString) => {
-		const serverDataObject = module.exports.getServerDataFromMemory(client, guildIdString);
-		if (serverDataObject === null) throw new Error(`Error in replaceEarlierAppearance: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.nateBotData}`);
-		client.nateBotData[guildIdString].schedule = { ...serverDataObject.schedule, next: { when: dayjsObj, soulType }, past: serverDataObject.schedule.next };
-		// console.log(`next is ${JSON.stringify(serverDataObject.schedule.next)}, past is ${JSON.stringify(serverDataObject.schedule.past)}`);
-		// console.log(client.nateBotData['672609929495969813'].schedule);
+		const serverDataObject = module.exports.getMemory(client, guildIdString);
+		if (serverDataObject === null) throw new Error(`Error in replaceEarlierAppearance: Server data object does not exist in memory: key ${guildIdString} in data:\n${client.memory}`);
+		client.memory[guildIdString].schedule = { ...serverDataObject.schedule, next: { when: dayjsObj, soulType }, past: serverDataObject.schedule.next };
 	},
 
 	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {

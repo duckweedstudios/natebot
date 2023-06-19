@@ -119,8 +119,8 @@ module.exports = {
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 
-		interaction.client.nateBotData = {
-			...interaction.client.nateBotData,
+		interaction.client.memory = {
+			...interaction.client.memory,
 			[interaction.guild.id]: {
 				membersWhoFetched: [],
 				lastSummonTime: null,

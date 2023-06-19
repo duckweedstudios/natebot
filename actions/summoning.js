@@ -26,11 +26,11 @@ module.exports = {
 				cooldown: delayAfterRealHaunting.subtract(currentTimestamp.diff(guildData.schedule.past.time, 'minutes'), 'minute').humanize(),
 			};
 		} else if (
-			!client.nateBotData[guild.id].lastSummonTime
-			|| currentTimestamp.diff(client.nateBotData[guild.id].lastSummonTime, 'minute') >= summoningCooldown.asMinutes()
+			!client.memory[guild.id].lastSummonTime
+			|| currentTimestamp.diff(client.memory[guild.id].lastSummonTime, 'minute') >= summoningCooldown.asMinutes()
 		) {
 			hauntSomeChannelWithSoul(guild, getWeightedRandomSoulType(guild.id));
-			client.nateBotData[guild.id].lastSummonTime = currentTimestamp;
+			client.memory[guild.id].lastSummonTime = currentTimestamp;
 			return {
 				summonSuccess: module.exports.SummonAttemptResults.Success,
 				cooldown: summoningCooldown.humanize(),
@@ -38,7 +38,7 @@ module.exports = {
 		} else {
 			return {
 				summonSuccess: module.exports.SummonAttemptResults.Cooldown,
-				cooldown: summoningCooldown.subtract(currentTimestamp.diff(client.nateBotData[guild.id].lastSummonTime, 'minute'), 'minute').humanize(),
+				cooldown: summoningCooldown.subtract(currentTimestamp.diff(client.memory[guild.id].lastSummonTime, 'minute'), 'minute').humanize(),
 			};
 		}
 	},

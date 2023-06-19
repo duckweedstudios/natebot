@@ -30,7 +30,7 @@ module.exports = {
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
 		setTimeout(() => {
-			client.nateBotData[guild.id].membersWhoFetched = [];
+			client.memory[guild.id].membersWhoFetched = [];
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!guildData.paused) module.exports.guildHauntDriver(client, guild);
 		}, nextTimeObj.msUntil);

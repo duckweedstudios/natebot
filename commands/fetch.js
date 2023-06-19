@@ -33,7 +33,7 @@ module.exports = {
 		}
 
 		if (Math.abs(currentTimestamp.diff(guildData.schedule.past.time, 'second')) < (20 + 1)) {
-			if (interaction.client.nateBotData[interaction.guild.id].membersWhoFetched.includes(interaction.member.id)) {
+			if (interaction.client.memory[interaction.guild.id].membersWhoFetched.includes(interaction.member.id)) {
 				interaction.reply({ content: 'You\'ve already fetched this soul.', ephemeral: true });
 				return;
 			}
@@ -68,14 +68,14 @@ module.exports = {
 				return;
 			}
 			// Track who has already claimed this soul
-			interaction.client.nateBotData[interaction.guild.id].membersWhoFetched.push(interaction.member.id);
+			interaction.client.memory[interaction.guild.id].membersWhoFetched.push(interaction.member.id);
 			const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 			const soulEmoji = interaction.client.emojis.cache.get(emojiId);
 			interaction.reply({ content: `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}`, ephemeral: true });
 		} else if (
-			interaction.client.nateBotData[interaction.guild.id].lastSummonTime
-			&& currentTimestamp.diff(interaction.client.nateBotData[interaction.guild.id].lastSummonTime, 'second') > 0
-			&& currentTimestamp.diff(interaction.client.nateBotData[interaction.guild.id].lastSummonTime, 'second') < (20 + 1)
+			interaction.client.memory[interaction.guild.id].lastSummonTime
+			&& currentTimestamp.diff(interaction.client.memory[interaction.guild.id].lastSummonTime, 'second') > 0
+			&& currentTimestamp.diff(interaction.client.memory[interaction.guild.id].lastSummonTime, 'second') < (20 + 1)
 		) {
 			// The user was fooled into fetching a summoned soul
 			// Increment the counts of times fooled / fooled others

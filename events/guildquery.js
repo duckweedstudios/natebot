@@ -1,6 +1,5 @@
 const profileModelGuild = require ('../models/profileSchemaGuild');
 
-// 
 module.exports = {
 	getGuildData : async (tempServerId) => {
 		try {

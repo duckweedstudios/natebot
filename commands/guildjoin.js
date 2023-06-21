@@ -44,16 +44,6 @@ module.exports = {
 		}
 		// Assign first condemned (save user id) and assign the role
 		const memberTarget = interaction.options.getMember('first-condemned');
-		// try {
-		// 	if (!canModerateMember(memberTarget)) {
-		// 		roleAssignmentSuccess = false;
-		// 	} else {
-		// 		memberTarget.roles.add((await condemnedRole));
-		// 	}
-		// } catch(error) {
-		// 	console.log(error)
-		// 	interaction.reply({ content: `Setup failed; Role assignment Error.`, ephemeral: true });
-		// }
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -74,7 +64,6 @@ module.exports = {
 			} else {
 				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			// console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);

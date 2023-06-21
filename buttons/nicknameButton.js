@@ -1,6 +1,5 @@
 const { MessageButton } = require('discord.js');
 
-
 module.exports = {
 	name: 'nicknameButton',
 	data: new MessageButton()
@@ -10,6 +9,6 @@ module.exports = {
 		.setDisabled(true),
         
 	async execute(interaction) {
-		await interaction.reply({ content:'Will change a users name for souls', ephemeral:true });
+		await interaction.reply({ content:'🚧 this will change a users name for souls 🚧', ephemeral:true });
 	},
 };

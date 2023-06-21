@@ -7,6 +7,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 // const https = require('https');
 // const path = require('path');
 // const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
+const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,7 +15,11 @@ module.exports = {
 		.addAttachmentOption(attachOption => attachOption
 			.setName('sound').setDescription('The haunting sound to be played').setRequired(true)),
 	async execute(interaction) {
-		await interaction.reply({ message: '🚧 this will be the uploadhauntsound embed 🚧', ephemeral: true });
+		if (!await isGuildSetup(interaction)) {
+			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
+		} else {
+			await interaction.reply({ message: '🚧 this will be the uploadhauntsound embed 🚧', ephemeral: true });
+		}
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());
 		// if (serverDataObject === null) {

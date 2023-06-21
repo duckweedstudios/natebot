@@ -7,6 +7,7 @@ const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../func
 const { createCondemnedRole } = require('../functions/roles.js');
 const { guildHauntDriver } = require('../actions/hauntDrivers');
 const { Permissions } = require('discord.js');
+const { clientId } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -22,7 +23,7 @@ module.exports = {
 		}
 		// Check if target member is a bot
 		if (interaction.options.getMember('first-condemned') && interaction.options.getMember('first-condemned').user.bot) {
-			if (interaction.options.getMember('first-condemned').id === '974345779349184542') {
+			if (interaction.options.getMember('first-condemned').id === clientId) {
 				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
 				return;
 			} else {

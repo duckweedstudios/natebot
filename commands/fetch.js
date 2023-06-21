@@ -29,7 +29,7 @@ module.exports = {
 			} catch (err) {
 				// This will most often happen because the server has not been setup yet. 
 				console.error(`Error in /fetch: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);
-				interaction.reply({ content: 'This command failed. Most likely, the bot has not yet been setup on the server. Use /guildjoin first.', ephemeral: true });
+				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
 				return;
 			}
 

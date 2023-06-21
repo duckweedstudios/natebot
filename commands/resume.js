@@ -10,7 +10,7 @@ module.exports = {
 		.setDescription('[admin] Resume Natebot activities on this server'),
 	async execute(interaction) {
 		// Not intended to be used yet
-		await interaction.reply({ message: '🚧 this will be the resume command 🚧', ephemeral: true });
+		await interaction.reply({ content: '🚧 this will be the resume command 🚧', ephemeral: true });
 
 
 		// Check whether Natebot has already been setup

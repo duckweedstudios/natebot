@@ -11,7 +11,7 @@ module.exports = {
 			return await axios
 				.delete(`https://discord.com/api/v8/webhooks/${clientId}/${interactionToken}/messages/@original`);
 		} catch (error) {
-			console.log('error');
+			return;
 		}
 	},
 };

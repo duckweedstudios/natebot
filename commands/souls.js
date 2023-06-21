@@ -38,7 +38,7 @@ module.exports = {
 					// Saves the Token
 					interaction.client.usersCurrentMenuToken = { ...interaction.client.usersCurrentMenuToken, [interaction.user.id] : interaction.token };
 					interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : target };
-					setTimeout(() => deleteInteraction(interaction.token), 10000);
+					setTimeout(() => deleteInteraction(interaction.token), 870000);
 				} catch (error) {
 					console.log(error);
 				}

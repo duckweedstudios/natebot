@@ -44,7 +44,7 @@ module.exports = {
 			break;
 		case 'helpButton':
 			returnedActionRow = new MessageActionRow()
-				.addComponents(myProfileButton.data);
+				.addComponents(backButton.data);
 			break;
 		case 'souls':
 			if (self) {
@@ -103,7 +103,7 @@ const giftButton = require('../buttons/giftButton');
 const backButton = require('../buttons/backButton');
 const helpButton = require('../buttons/helpButton');
 const muteButton = require('../buttons/muteButton');
-const myProfileButton = require('../buttons/myProfileButton');
+const _myProfileButton = require('../buttons/myProfileButton');
 const nevermindButton = require('../buttons/nevermindButton');
 const newSoulButton = require('../buttons/newSoulButton');
 const nicknameButton = require('../buttons/nicknameButton');

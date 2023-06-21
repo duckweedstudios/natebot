@@ -18,9 +18,9 @@ module.exports = {
 		try {
 			await editInteraction(interaction, data);
 			await interaction.deferUpdate();
-			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.user.id };
+			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.user };
 		} catch (error) {
-			console.error('Error in myProfileButton.js: ' + error);
+			console.log(error);
 			return;
 		}
 	},

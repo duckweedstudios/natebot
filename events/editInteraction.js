@@ -11,7 +11,7 @@ module.exports = {
 			return await axios
 				.patch(`https://discord.com/api/v8/webhooks/${clientId}/${interactionToken}/messages/@original`, data);
 		} catch (error) {
-			console.log('error');
+			return;
 		}
 	},
 };

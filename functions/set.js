@@ -39,7 +39,8 @@ module.exports = {
 					});
 				}
 			} catch (err) {
-				console.log(err);
+				console.error(err);
+				throw new Error(`Error with database query in set.js: ${err}`);
 			}
 		} else {
 			throw new Error(`Error in set.js: invalid setting or type for ${setting}: ${newValue}`);

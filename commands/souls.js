@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getActionRow } = require('../events/getActionRow');
 const { getEmbed } = require('../embeds/getEmbed');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
+const { deleteInteraction } = require('../events/deleteInteraction.js');
 
 module.exports = {
 	// Creating the Command
@@ -30,6 +31,7 @@ module.exports = {
 					// Saves the Token
 					interaction.client.usersCurrentMenuToken = { ...interaction.client.usersCurrentMenuToken, [interaction.user.id] : interaction.token };
 					interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : target };
+					setTimeout(() => deleteInteraction(interaction), 870000);
 				} catch (error) {
 					console.log(error);
 				}

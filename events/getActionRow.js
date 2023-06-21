@@ -18,7 +18,6 @@ module.exports = {
 		if (interactionIdent === 'backButton') {
 			interactionIdent = 'souls';
 		}
-		console.log(interactionIdent);
 		const guild = interaction.guild;
 		let self = false;
 		let targetIsCondemned = false;

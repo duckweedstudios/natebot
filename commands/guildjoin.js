@@ -2,11 +2,13 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require('../models/profileSchema');
 const profileModelGuild = require('../models/profileSchemaGuild');
 const { isMemberDev } = require('../functions/privileges.js');
+const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
 const { guildHauntDriver } = require('../actions/hauntDrivers');
 const { Permissions } = require('discord.js');
+const { clientId } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -22,7 +24,7 @@ module.exports = {
 		}
 		// Check if target member is a bot
 		if (interaction.options.getMember('first-condemned') && interaction.options.getMember('first-condemned').user.bot) {
-			if (interaction.options.getMember('first-condemned').id === '974345779349184542') {
+			if (interaction.options.getMember('first-condemned').id === clientId) {
 				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
 				return;
 			} else {
@@ -44,16 +46,6 @@ module.exports = {
 		}
 		// Assign first condemned (save user id) and assign the role
 		const memberTarget = interaction.options.getMember('first-condemned');
-		// try {
-		// 	if (!canModerateMember(memberTarget)) {
-		// 		roleAssignmentSuccess = false;
-		// 	} else {
-		// 		memberTarget.roles.add((await condemnedRole));
-		// 	}
-		// } catch(error) {
-		// 	console.log(error)
-		// 	interaction.reply({ content: `Setup failed; Role assignment Error.`, ephemeral: true });
-		// }
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -74,7 +66,6 @@ module.exports = {
 			} else {
 				hellspeakChannelString = createHellspeakChannel(interaction.guild, condemnedRole).id;
 			}
-			// console.log(`DEBUG: hellspeakChannelString: ${hellspeakChannelString}`);
 
 		} catch (err) {
 			console.error(`Error in setup.js: Could not create HELLSPEAK channel: ${err}`);
@@ -118,8 +109,8 @@ module.exports = {
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 
-		interaction.client.nateBotData = {
-			...interaction.client.nateBotData,
+		interaction.client.memory = {
+			...interaction.client.memory,
 			[interaction.guild.id]: {
 				membersWhoFetched: [],
 				lastSummonTime: null,

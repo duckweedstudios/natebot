@@ -1,6 +1,6 @@
 const { hauntSomeChannelWithSoul } = require('./hauntings.js');
 const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
-const { updateAppearancesWith } = require('../functions/serverData.js');
+const { updateAppearancesWith, getMemory } = require('../functions/serverData.js');
 const { getWeightedRandomSoulType } = require('../functions/souls.js');
 const dayjs = require('dayjs');
 const { getGuildData } = require('../events/guildquery');
@@ -30,7 +30,7 @@ module.exports = {
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
 		setTimeout(() => {
-			client.nateBotData[guild.id].membersWhoFetched = [];
+			getMemory(client, guild.id).membersWhoFetched = [];
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!guildData.paused) module.exports.guildHauntDriver(client, guild);
 		}, nextTimeObj.msUntil);

@@ -1,6 +1,5 @@
 const { MessageButton } = require('discord.js');
 
-
 module.exports = {
 	name: 'errorButton',
 	data: new MessageButton()

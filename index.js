@@ -62,7 +62,7 @@ for (const file of buttonFiles) {
 client.usersCurrentMenuToken = [null];
 client.usersCurrentTarget = [null];
 client.usersCurrentPrompt - [null];
-client.nateBotData = null;
+client.memory = null;
 
 // Login to Discord with your client's token
 client.login(token);

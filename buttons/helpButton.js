@@ -15,7 +15,9 @@ module.exports = {
 			.setTitle(`__***NEED HELP?***__`)
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 			.setDescription('*Figure it out yourself!*')
-			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg');
+			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
+			.setTimestamp()
+			.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 
 		const finalComponents = await getActionRow(interaction);
         

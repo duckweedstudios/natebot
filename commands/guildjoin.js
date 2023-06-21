@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const profileModel = require('../models/profileSchema');
 const profileModelGuild = require('../models/profileSchemaGuild');
 const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
@@ -11,32 +12,23 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('guildjoin')
 		.setDescription('[owner] Setup the Natebot on the server as desired')
-		.addIntegerOption(intOption => intOption
-			.setName('mean-delay').setDescription('The mean delay between hauntings in minutes. Defaults to 1440 (24 hours).'))
-		.addIntegerOption(intOption => intOption
-			.setName('randomness').setDescription('The randomness metric for hauntings. Higher gives more variation. Defaults to 5.'))
-		.addRoleOption(roleOption => roleOption
-			.setName('mod-role').setDescription('The moderator role which can interact with the bot\'s settings.')),
+		.addUserOption(userOption => userOption
+			.setName('first-condemned').setDescription('Optionally specify the first Condemned Soul user, otherwise it will be you...').setRequired(true)),
 	async execute(interaction) {
 		// Check for admin status (for now only developers have access)
 		if (!isMemberDev(interaction.member.id)) {
 			interaction.reply({ content: 'You must be an admin to use this command!', ephemeral: true });
 			return;
 		}
-		// Check if arguments are valid
-		let meanDelay = interaction.options.getInteger('mean-delay');
-		if (!meanDelay) {
-			meanDelay = 1440;
-		} else if (meanDelay < 2) {
-			interaction.reply({ content: 'The mean delay must be at least two minutes.', ephemeral: true });
-			return;
-		}
-		let randomness = interaction.options.getInteger('randomness');
-		if (!randomness) {
-			randomness = 5;
-		} else if (randomness < 1 || randomness > 10) {
-			interaction.reply({ content: 'Randomness must be an integer between 1 and 10.', ephemeral: true });
-			return;
+		// Check if target member is a bot
+		if (interaction.options.getMember('first-condemned') && interaction.options.getMember('first-condemned').user.bot) {
+			if (interaction.options.getMember('first-condemned').id === '974345779349184542') {
+				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
+				return;
+			} else {
+				interaction.reply({ content: 'A puny bot cannot bear the mantle of Condemned Soul. Choose a user instead.', ephemeral: true });
+				return;
+			}
 		}
 
 		// Create the condemned soul role on the server (or check if it exists)
@@ -51,7 +43,17 @@ module.exports = {
 			}
 		}
 		// Assign first condemned (save user id) and assign the role
-
+		const memberTarget = interaction.options.getMember('first-condemned');
+		// try {
+		// 	if (!canModerateMember(memberTarget)) {
+		// 		roleAssignmentSuccess = false;
+		// 	} else {
+		// 		memberTarget.roles.add((await condemnedRole));
+		// 	}
+		// } catch(error) {
+		// 	console.log(error)
+		// 	interaction.reply({ content: `Setup failed; Role assignment Error.`, ephemeral: true });
+		// }
 
 		// Create the HELLSPEAK voice channel (or check if it exists)
 		// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -81,27 +83,47 @@ module.exports = {
 		}
 
 		try {
-			const profile = await profileModelGuild.create(
+			const profile = await profileModel.create({
+				fetcherTag: memberTarget.user.username,
+				fetcherID: memberTarget.id,
+				serverID: memberTarget.guild.id,
+				souls: 100,
+				soulsCaught: 0,
+				careerSouls: 0,
+				condemnedCount: 1,
+				soulXP: 0,
+				fetchCount: 0,
+				gotFooledCount: 0,
+				fooledCount: 0,
+				autoLure: false,
+			});
+			profile.save();
+		} catch (error) {
+			console.error('Condemned user already exists');
+		}
+
+		try {
+			const guildProfile = await profileModelGuild.create(
 				initializeObject(interaction.guild.id,
-					'0',
+					memberTarget.id,
 					(await condemnedRole.id),
 					hellspeakChannelString,
-					(interaction.options.getRole('mod-role') ? interaction.options.getRole('mod-role') : ''),
-					meanDelay,
-					randomness));
-			profile.save();
-			await interaction.reply({
-				content: `Server Setup Successful
-				${`\n*FETCH ME THEIR SOULS!* \n\nAssign the first condemned soul using the /ncs command!`}`, ephemeral: true,
-			});
+				));
+			guildProfile.save();
+			await interaction.reply({ content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!` });
+			// Start the hauntings!
+			guildHauntDriver(interaction.client, interaction.guild, true);
 		} catch (error) {
 			console.error(`Setup error: ${error}`);
 			await interaction.reply({ content: 'What are you doing? Your server is already setup!', ephemeral: true });
 		}
 
-		interaction.client.nateBotData = { ...interaction.client.nateBotData, [interaction.guild.id]: { membersWhoFetched: [] } };
-
-		// Start the hauntings!
-		guildHauntDriver(interaction.client, interaction.guild, true);
+		interaction.client.nateBotData = {
+			...interaction.client.nateBotData,
+			[interaction.guild.id]: {
+				membersWhoFetched: [],
+				lastSummonTime: null,
+			},
+		};
 	},
 };

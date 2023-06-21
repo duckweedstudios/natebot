@@ -5,7 +5,7 @@ module.exports = {
 	name: 'claimButton',
 	data: new MessageButton()
 		.setCustomId('claimButton')
-		.setLabel('🔥🔥CLAIM🔥🔥')
+		.setLabel('🔥 Claim 🔥')
 		.setStyle('DANGER')
 		.setDisabled(true),
 

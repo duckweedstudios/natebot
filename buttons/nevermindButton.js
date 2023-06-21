@@ -9,7 +9,7 @@ module.exports = {
 		.setStyle('DANGER'),
 
 	async execute(interaction) {
-		const data = { content: `Ok bye bitch`, components : [] };
+		const data = { content: `:( Ok`, components : [] };
 		await editPrompt(interaction, data);
 		await interaction.deferUpdate();
 		console.log('mom said no');

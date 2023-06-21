@@ -89,7 +89,7 @@ module.exports = {
 			});
 			profile.save();
 		} catch (error) {
-			console.error('Condemned user already exists');
+			return;
 		}
 
 		try {

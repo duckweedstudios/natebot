@@ -9,4 +9,13 @@ module.exports = {
 			console.log(err);
 			throw new Error('There was an error pulling server information from the database');
 		}
-	} };
+	},
+	checkGuildDataExists: async (guildId) => {
+		try {
+			return profileModelGuild.exists({ serverID: guildId });
+		} catch (err) {
+			console.log(err);
+			throw new Error('There was an error pulling server information from the database');
+		}
+	},
+};

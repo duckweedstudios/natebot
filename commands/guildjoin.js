@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require('../models/profileSchema');
 const profileModelGuild = require('../models/profileSchemaGuild');
 const { isMemberDev } = require('../functions/privileges.js');
-const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');

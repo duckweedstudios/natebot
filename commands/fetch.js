@@ -13,14 +13,13 @@ module.exports = {
 		.setName('fetch')
 		.setDescription('fetches a soul!'),
 	async execute(interaction) {
-		// TODO: there's a way to cache/optimize this so that it doesn't have to query 
-		// the database on each fetch. We could just store the previous appearance to the
-		// client object in some way. Depends how laggy this gets in a real use-case
-		// This can also incorporate preventing users from duplicate fetching (this part is now implemented)
+		// TODO: look into caching the DB query results for efficiency
 		if (!await isGuildSetup(interaction)) {
 			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
+			return;
 		} else if (!await isUserSetup(interaction, interaction.user.id)) {
 			interaction.reply({ content: 'You have not joined the soul fetchers!\n\nTo get started, use /join.', ephemeral: true });
+			return;
 		} else {
 			const currentTimestamp = dayjs();
 			let guildData;

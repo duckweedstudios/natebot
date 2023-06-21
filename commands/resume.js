@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 // const { getGuildData } = require('../events/guildquery.js');
 // const { isMemberDev } = require('../functions/privileges.js');
 // const profileModelGuild = require('../models/profileSchemaGuild.js');
-const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
+const { isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

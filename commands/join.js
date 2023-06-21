@@ -27,10 +27,10 @@ module.exports = {
 					fooledCount: 0,
 					autoLure: false,
 				});
-				profile.save();					
+				profile.save();
 				await interaction.reply({ content: '**FETCH ME THEIR SOULS!**\n\n Use the /souls command to get started', ephemeral: true });
 			} catch (error) {
-				console.log(`\nThere was an issue creating a new user profile\n${error}`)
+				console.log(`\nThere was an issue creating a new user profile\n${error}`);
 				await interaction.reply({ content:'This command failed. There was an error updating the database', ephemeral: true });
 			}
 		}

@@ -17,7 +17,7 @@ module.exports = {
 		if (!await isGuildSetup(interaction)) {
 			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
 		} else if (condemnedTarget.user.bot) {
-			//Determine if target is a bot or the Condemned Souls Bot
+			// Determine if target is a bot or the Condemned Souls Bot
 			if (condemnedTarget.id === clientId) {
 				interaction.reply({ content: 'I am flattered, but I must refuse. Choose a user instead.', ephemeral: true });
 				return;
@@ -68,7 +68,9 @@ module.exports = {
 					autoLure: false,
 				});
 				profile.save();
-			} catch (error) {}
+			} catch (error) {
+				console.error(`Error in /makecondemned: Could not create profile for ${condemnedTarget.user.tag}: ${error}`);
+			}
 	
 			const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
 			try {

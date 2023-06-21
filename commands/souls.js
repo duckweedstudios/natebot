@@ -26,7 +26,7 @@ module.exports = {
 				const finalEmbed = await getEmbed(interaction, target);
 				const finalComponents = await getActionRow(interaction, target);
 				try {
-					await interaction.reply({ embeds: [finalEmbed], components: [finalComponents], ephemeral: true });			
+					await interaction.reply({ embeds: [finalEmbed], components: [finalComponents], ephemeral: true });
 					// Saves the Token
 					interaction.client.usersCurrentMenuToken = { ...interaction.client.usersCurrentMenuToken, [interaction.user.id] : interaction.token };
 					interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : target };

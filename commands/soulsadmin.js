@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
+const { isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

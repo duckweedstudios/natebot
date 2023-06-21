@@ -44,7 +44,8 @@ module.exports = {
 			break;
 		case 'helpButton':
 			returnedActionRow = new MessageActionRow()
-				.addComponents(backButton.data);
+				.addComponents(backButton.data)
+				.addComponents(serverStatsButton.data);
 			break;
 		case 'souls':
 			if (self) {

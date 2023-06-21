@@ -1,22 +1,12 @@
-const { getSoulData } = require('../events/query');
-const { getGuildData } = require('../events/guildquery');
+const { checkSoulDataExists } = require('../events/query');
+const { checkGuildDataExists } = require('../events/guildquery');
 
 module.exports = {
 	isUserSetup : async (interaction, userId) => {
-		const soulData = await getSoulData(interaction, userId);
-		if (!soulData) {
-			return false;
-		} else {
-			return true;
-		}
+		return await checkSoulDataExists(interaction.guild.id, userId);
 	},
 
 	isGuildSetup : async (interaction) => {
-		const guildData = await getGuildData(interaction);
-		if (!guildData) {
-			return false;
-		} else {
-			return true;
-		}
+		return await checkGuildDataExists(interaction.guild.id);
 	},
 };

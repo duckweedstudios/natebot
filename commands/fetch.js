@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema.js');
 const { increaseValue } = require('../functions/inc');
-const { setValue } = require('../functions/set');
 const { getGuildData } = require('../events/guildquery.js');
 const dayjs = require('dayjs');
 const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
@@ -45,13 +43,13 @@ module.exports = {
 			// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 			let _csSoulsRemaining;
 			try {
-				//Fetcher Values
+				// Fetcher Values
 				increaseValue(interaction, interaction.user.id, 'souls', soulValue);
 				increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
 				increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
 				increaseValue(interaction, interaction.user.id, 'soulXP', soulValue);
 				increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
-				//Condemned Values
+				// Condemned Values
 				increaseValue(interaction, guildData.condemnedMember, 'souls', -1);
 				increaseValue(interaction, guildData.condemnedMember, 'soulsCaught', 1);
 			} catch (err) {

@@ -12,7 +12,7 @@ module.exports = {
 		let soulData;
 		let guildData;
 		
-		//Getting Guild Data
+		// Getting Guild Data
 		try {
 			guildData = await getGuildData(guild.id);
 			if (!guildData) {
@@ -29,12 +29,12 @@ module.exports = {
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
 		
-		//Getting target user data
+		// Getting target user data
 		try {
 			soulData = await getSoulData(interaction, target.id);
 			if (!soulData) {
 				if (self) {
-					interaction.reply({ content:'You have not joined the soul fetchers, use /join to get started!', ephemeral: true })
+					interaction.reply({ content:'You have not joined the soul fetchers, use /join to get started!', ephemeral: true });
 					return;
 				} else {
 					interaction.reply({ content:'This user has not joined the soul fetchers', ephemeral: true });
@@ -129,8 +129,8 @@ module.exports = {
 					.setThumbnail('https://imgur.com/MXLHd9R.png')
 					.addFields(
 						{ name: '---------------------------------', value: ' ' },
-						{ name: '__Souls Left__', value: `👻  *${soulData.souls}*`, inline: true},
-						{ name: '__Souls Stolen__', value: `*🪝  ${soulData.soulsCaught}*`, inline: true},
+						{ name: '__Souls Left__', value: `👻  *${soulData.souls}*`, inline: true },
+						{ name: '__Souls Stolen__', value: `*🪝  ${soulData.soulsCaught}*`, inline: true },
 						{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 						{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
 						{ name: '__Fetcher Rank__', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)`, inline: true },

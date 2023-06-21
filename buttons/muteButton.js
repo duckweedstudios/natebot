@@ -48,13 +48,13 @@ module.exports = {
 			}
 			if (soulData.souls > 0) {
 				increaseValue(interaction, interaction.user.id, 'souls', -1);
-			member.voice.setMute(true);
-			setTimeout(() => {
-				member.voice.setMute(false);
-			}, muteDurationSec * 1000);
-			await interaction.reply({ content:`You spent ${soulCost} soul to mute ${target.username} for ${muteDurationSec} seconds`, ephemeral: true });
+				member.voice.setMute(true);
+				setTimeout(() => {
+					member.voice.setMute(false);
+				}, muteDurationSec * 1000);
+				await interaction.reply({ content:`You spent ${soulCost} soul to mute ${target.username} for ${muteDurationSec} seconds`, ephemeral: true });
 			} else {
-				await interaction.reply({ content:`You do not have enough souls left!!`, ephemeral: true })
+				await interaction.reply({ content:`You do not have enough souls left!!`, ephemeral: true });
 			}
 			
 		} catch (err) {

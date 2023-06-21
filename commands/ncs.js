@@ -5,7 +5,6 @@ const { isMemberDev, isMemberCondemnedSoulWithGuildQuery, canModerateMember } = 
 const { increaseValue } = require('../functions/inc');
 const { setValue } = require('../functions/set');
 const { getGuildData } = require('../events/guildquery.js');
-const { getCondemnedRoleOnServer } = require('../functions/roles.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -48,10 +47,8 @@ module.exports = {
 		// Often, it will not have permission to moderate the server owner
 		// Everything else can still occur (eg assigning them condemned in the database)
 		// But we must ask them to manually assign the role in Discord
-		let roleAssignmentSuccess = true;
 		if (!canModerateMember(condemnedTarget)) {
 			console.log(`Cannot moderate ${condemnedTarget.user.tag}`);
-			roleAssignmentSuccess = false;
 		}
 
 		try {
@@ -70,9 +67,11 @@ module.exports = {
 				autoLure: false,
 			});
 			profile.save();
-		} catch (error) {}
+		} catch (error) {
+			return;
+		}
 
-		//Adjusting profile values
+		// Adjusting profile values
 		const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
 		try {
 			for (const fetcher of allfetchers) {
@@ -86,7 +85,7 @@ module.exports = {
 				$set: {
 					condemnedMember: condemnedTarget.id,
 				} });
-			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**`});
+			interaction.reply({ content: `${condemnedTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**` });
 		} catch (error) {
 			console.error(error);
 			interaction.reply({ content: 'There was an error', ephemeral: true });

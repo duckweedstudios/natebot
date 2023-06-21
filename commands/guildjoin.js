@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema');
+const profileModel = require('../models/profileSchema');
 const profileModelGuild = require('../models/profileSchemaGuild');
-const { isMemberDev, canModerateMember } = require('../functions/privileges.js');
+const { isMemberDev } = require('../functions/privileges.js');
 const { initializeObject } = require('../functions/serverData');
 const { createHellspeakChannel, getHellspeakChannelOnServer } = require('../functions/channels.js');
 const { createCondemnedRole } = require('../functions/roles.js');
@@ -42,9 +42,8 @@ module.exports = {
 				return;
 			}
 		}
-		let roleAssignmentSuccess = true;
 		// Assign first condemned (save user id) and assign the role
-		let memberTarget = interaction.options.getMember('first-condemned');
+		const memberTarget = interaction.options.getMember('first-condemned');
 		// try {
 		// 	if (!canModerateMember(memberTarget)) {
 		// 		roleAssignmentSuccess = false;
@@ -82,7 +81,7 @@ module.exports = {
 			interaction.reply({ content: `Setup failed (could not create a voice channel), please try again later.`, ephemeral: true });
 			return;
 		}
-		
+
 		try {
 			const profile = await profileModel.create({
 				fetcherTag: memberTarget.user.username,
@@ -102,17 +101,17 @@ module.exports = {
 		} catch (error) {
 			console.error('Condemned user already exists');
 		}
-		
+
 		try {
 			const guildProfile = await profileModelGuild.create(
 				initializeObject(interaction.guild.id,
 					memberTarget.id,
 					(await condemnedRole.id),
-					hellspeakChannelString
-					));
+					hellspeakChannelString,
+				));
 			guildProfile.save();
-			await interaction.reply({content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!`});
-			//Start the hauntings!
+			await interaction.reply({ content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!` });
+			// Start the hauntings!
 			guildHauntDriver(interaction.client, interaction.guild, true);
 		} catch (error) {
 			console.error(`Setup error: ${error}`);

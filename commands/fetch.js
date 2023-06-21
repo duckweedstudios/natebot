@@ -46,18 +46,19 @@ module.exports = {
 				let soulCaught = getSoulById(guildData.schedule.past.soulTypeId);
 				if (soulCaught === -1) soulCaught = getDefaultSoul();
 				const soulValue = getSoulValue(soulCaught);
+				console.log(soulValue);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;
 				try {
 					// Fetcher Values
-					increaseValue(interaction, interaction.user, 'souls', soulValue);
-					increaseValue(interaction, interaction.user, 'soulsCaught', soulValue);
-					increaseValue(interaction, interaction.user, 'careersouls', soulValue);
-					increaseValue(interaction, interaction.user, 'soulXP', soulValue);
-					increaseValue(interaction, interaction.user, 'fetchCount', 1);
+					increaseValue(interaction, interaction.user.id, 'souls', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
+					increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue);
+					increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
 					// Condemned Values
-					increaseValue(interaction, guildData.condemnedMember, 'souls', -1);
-					increaseValue(interaction, guildData.condemnedMember, 'soulsCaught', 1);
+					increaseValue(interaction, guildData.condemnedMember, 'souls', -soulValue);
+					increaseValue(interaction, guildData.condemnedMember, 'soulsCaught', soulValue);
 				} catch (err) {
 					console.error(`Error in fetch: could not save to database: ${err}`);
 					interaction.reply({ content: 'An error occurred while processing this command (could not update database values).', ephemeral: true });
@@ -76,7 +77,7 @@ module.exports = {
 				// The user was fooled into fetching a summoned soul
 				// Increment the counts of times fooled / fooled others
 				try {
-					increaseValue(interaction, interaction.user, 'gotFooledCount', 1);
+					increaseValue(interaction, interaction.user.id, 'gotFooledCount', 1);
 					increaseValue(interaction, guildData.condemnedMember, 'fooledCount', 1);
 				} catch (err) {
 					console.error(`Error in fetch: could not save to database: ${err}`);

@@ -84,7 +84,7 @@ module.exports = {
 						.setColor('RED')
 						.setTitle(`__**Your Profile**__`)
 						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-						.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
+						.setDescription(`*${soulTierData.tierName}*`)
 						.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 						.addFields(
 							{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
@@ -105,7 +105,7 @@ module.exports = {
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**${target.username}'s profile**__`)
 					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-					.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
+					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
@@ -144,7 +144,7 @@ module.exports = {
 					.setColor('DARK_ORANGE')
 					.setTitle(`__**The profile of ${target.username}**__`)
 					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
-					.setDescription(`*${soulTierData.tierName} Soul Fetcher*`)
+					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
 						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const profileModel = require ('../models/profileSchema.js');
+const { increaseValue } = require('../functions/inc');
 const { getGuildData } = require('../events/guildquery.js');
 const dayjs = require('dayjs');
 const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
@@ -49,25 +49,15 @@ module.exports = {
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;
 				try {
-					await profileModel.findOneAndUpdate({
-						fetcherID: interaction.user.id,
-					}, {
-						$inc: {
-							souls: soulValue,
-							soulsCaught: soulValue,
-							careersouls: soulValue,
-							soulXP: soulValue,
-							fetchCount: 1,
-						},
-					});
-					await profileModel.findOneAndUpdate({
-						fetcherID: guildData.condemnedMember,
-					}, {
-						$inc: {
-							souls: -soulValue,
-							soulsCaught: soulValue,
-						},
-					});
+					// Fetcher Values
+					increaseValue(interaction, interaction.user.id, 'souls', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
+					increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue);
+					increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
+					// Condemned Values
+					increaseValue(interaction, guildData.condemnedMember, 'souls', -soulValue);
+					increaseValue(interaction, guildData.condemnedMember, 'soulsCaught', soulValue);
 				} catch (err) {
 					console.error(`Error in fetch: could not save to database: ${err}`);
 					interaction.reply({ content: 'An error occurred while processing this command (could not update database values).', ephemeral: true });
@@ -86,20 +76,8 @@ module.exports = {
 				// The user was fooled into fetching a summoned soul
 				// Increment the counts of times fooled / fooled others
 				try {
-					await profileModel.findOneAndUpdate({
-						fetcherID: interaction.user.id,
-					}, {
-						$inc: {
-							gotFooledCount: 1,
-						},
-					});
-					await profileModel.findOneAndUpdate({
-						fetcherID: guildData.condemnedMember,
-					}, {
-						$inc: {
-							fooledCount: 1,
-						},
-					});
+					increaseValue(interaction, interaction.user.id, 'gotFooledCount', 1);
+					increaseValue(interaction, guildData.condemnedMember, 'fooledCount', 1);
 				} catch (err) {
 					console.error(`Error in fetch: could not save to database: ${err}`);
 					interaction.reply({ content: 'An error occurred while processing this command (could not update database values).', ephemeral: true });

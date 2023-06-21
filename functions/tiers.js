@@ -19,67 +19,67 @@
 module.exports = {
 	getSoulTier: (numSouls) => {
 		if (numSouls < 1) {
-			return { tierNum: 0, tierName: 'Fresh', tierColor: '#FFFFFF' };
+			return { tierNum: 0, tierName: 'Fresh Soul Fetcher', tierColor: '#FFFFFF' };
 		} else if (numSouls < 5) {
-			return { tierNum: 1, tierName: 'Newbie', tierColor: -1 };
+			return { tierNum: 1, tierName: 'Newbie Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 9) { // 9 is probably cursed
-			return { tierNum: 2, tierName: 'Rookie', tierColor: -1 };
+			return { tierNum: 2, tierName: 'Rookie Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 13) { // 13 definitely cursed
-			return { tierNum: 3, tierName: 'Babbling', tierColor: -1 };
+			return { tierNum: 3, tierName: 'Babbling Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 25) {
-			return { tierNum: 4, tierName: 'Apprentice', tierColor: -1 };
+			return { tierNum: 4, tierName: 'Apprentice Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 40) {
-			return { tierNum: 5, tierName: 'Trained', tierColor: -1 };
+			return { tierNum: 5, tierName: 'Trained Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 56) { // 56 miles per hour
-			return { tierNum: 6, tierName: 'Journeyman', tierColor: -1 };
+			return { tierNum: 6, tierName: 'Journeyman Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 80) {
-			return { tierNum: 7, tierName: 'Disturbed', tierColor: -1 };
+			return { tierNum: 7, tierName: 'Disturbed Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 100) {
-			return { tierNum: 8, tierName: 'Skilled', tierColor: -1 };
+			return { tierNum: 8, tierName: 'Skilled Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 130) { // 1/30 is Nathan's birthday
-			return { tierNum: 9, tierName: 'Proficient', tierColor: -1 };
+			return { tierNum: 9, tierName: 'Intermediate Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 175) {
-			return { tierNum: 10, tierName: 'Short-Changed', tierColor: -1 };
+			return { tierNum: 10, tierName: 'Short-Changed Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 225) {
-			return { tierNum: 11, tierName: 'Seasoned', tierColor: -1 };
+			return { tierNum: 11, tierName: 'Seasoned Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 285) {
-			return { tierNum: 12, tierName: 'Advanced', tierColor: -1 };
+			return { tierNum: 12, tierName: 'Advanced Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 333) { // Trips
-			return { tierNum: 13, tierName: 'Masterful', tierColor: -1 };
+			return { tierNum: 13, tierName: 'Masterful Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 404) { // Funny error number
-			return { tierNum: 14, tierName: 'Mystic', tierColor: -1 };
+			return { tierNum: 14, tierName: 'Mystic Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 420) { // Funny leaf number
 			return { tierNum: 15, tierName: 'Vanished', tierColor: -1 };
 		} else if (numSouls < 456) {
-			return { tierNum: 16, tierName: 'Hazy', tierColor: -1 };
+			return { tierNum: 16, tierName: 'Hazy Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 503) { // Will birthday
-			return { tierNum: 17, tierName: 'Incomprehensible', tierColor: -1 };
+			return { tierNum: 17, tierName: 'Incomprehensible Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 619) { // Zade and Mav birthday
-			return { tierNum: 18, tierName: 'Aching', tierColor: -1 };
+			return { tierNum: 18, tierName: 'Aching Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 666) { // unlucky
-			return { tierNum: 19, tierName: 'Darkened', tierColor: -1 };
+			return { tierNum: 19, tierName: 'Darkened Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 777) { // lucky
 			return { tierNum: 20, tierName: `"Hell's Janitor"`, tierColor: -1 };
 		} else if (numSouls < 808) {
-			return { tierNum: 21, tierName: 'Shit-Out-of-Luck', tierColor: -1 };
+			return { tierNum: 21, tierName: 'Shit-Out-of-Luck Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 913) { // Corey birthday
 			return { tierNum: 22, tierName: 'Reminiscing', tierColor: -1 };
 		} else if (numSouls < 1013) { // Jacob birthday
 			return { tierNum: 23, tierName: 'Meritorious', tierColor: -1 };
 		} else if (numSouls < 1080) {
-			return { tierNum: 24, tierName: 'Eldritch', tierColor: -1 };
+			return { tierNum: 24, tierName: 'Eldritch Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1111) {
-			return { tierNum: 25, tierName: 'Machinating', tierColor: -1 };
+			return { tierNum: 25, tierName: 'Machinating Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1223) { // Noah birthday
-			return { tierNum: 26, tierName: 'Psychotic', tierColor: -1 };
+			return { tierNum: 26, tierName: 'Psychotic Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1313) {
-			return { tierNum: 27, tierName: 'Illiterate', tierColor: -1 };
+			return { tierNum: 27, tierName: 'Illiterate Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1346) {
-			return { tierNum: 28, tierName: 'Lovecraftian', tierColor: -1 };
+			return { tierNum: 28, tierName: 'Lovecraftian Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1575) {
-			return { tierNum: 29, tierName: 'Disease-Addled', tierColor: -1 };
+			return { tierNum: 29, tierName: 'Disease-Addled Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1618) { // mass death event in chinese history
-			return { tierNum: 30, tierName: 'Unrecognizable', tierColor: -1 };
+			return { tierNum: 30, tierName: 'Unrecognizable Soul Fetcher', tierColor: -1 };
 		} else if (numSouls < 1666) { // it's back
 			return { tierNum: 31, tierName: 'Dynastic', tierColor: -1 };
 		} else if (numSouls < 1692) { // salem witch trials

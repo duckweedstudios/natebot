@@ -23,7 +23,7 @@ module.exports = {
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		// Override the nextTimeObj for a quicker, reliable first appearance if desired
 		if (override) {
-			const nextAppearance = dayjs().add(2, 'minute');
+			const nextAppearance = dayjs().add(1, 'minute');
 			nextTimeObj = { nextAppearance, nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'), msUntil: Math.abs(dayjs().diff(nextAppearance)) };
 			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		}

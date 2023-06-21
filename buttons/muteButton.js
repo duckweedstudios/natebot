@@ -1,6 +1,6 @@
 const { MessageButton } = require('discord.js');
 const { getTarget } = require('../events/getTarget');
-const { increaseValue } = require('../events/inc');
+const { increaseValue } = require('../functions/inc');
 const { getSoulData } = require('../events/query');
 const { isMemberCondemnedSoul } = require('../functions/privileges');
 
@@ -17,7 +17,7 @@ module.exports = {
 		try {
 			const target = getTarget(interaction);
 			const member = interaction.guild.members.cache.get(target.id);
-			const soulData = getSoulData(interaction, interaction.user.id);
+			const soulData = await getSoulData(interaction, interaction.user.id);
 			// Check that member is CS
 			// This check *should* be unnecessary, but...
 			if (!isMemberCondemnedSoul(interaction.member, interaction.guild)) {
@@ -42,7 +42,6 @@ module.exports = {
 				await interaction.reply({ content: 'This user is already muted', ephemeral: true });
 				return;
 			}
-
 			if (soulData.souls > 0) {
 				increaseValue(interaction, interaction.user, 'souls', -1);
 				member.voice.setMute(true);

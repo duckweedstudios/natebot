@@ -25,27 +25,33 @@ module.exports = {
 			}
 
 			let response = '';
-			if (interaction.options.getBoolean('reset-defaults')) {
-				setServerSetting(interaction.guild.id, 'meanDelay', 1440);
-				setServerSetting(interaction.guild.id, 'variation', 6);
-				response = 'Server settings reset to defaults.';
-			} else {
-				if (interaction.options.getInteger('mean-delay')) {
-					if (interaction.options.getInteger('mean-delay') < 2) {
-						response += 'Mean delay must be at least 2 minutes.\n';
-					} else {
-						response += `Mean delay updated to ${interaction.options.getInteger('mean-delay')} minutes.\n}`;
-						setServerSetting(interaction.guild.id, 'meanDelay', interaction.options.getInteger('mean-delay'));
+			try {
+				if (interaction.options.getBoolean('reset-defaults')) {
+					setServerSetting(interaction.guild.id, 'meanDelay', 1440);
+					setServerSetting(interaction.guild.id, 'variation', 6);
+					response = 'Server settings reset to defaults.';
+				} else {
+					if (interaction.options.getInteger('mean-delay')) {
+						if (interaction.options.getInteger('mean-delay') < 2) {
+							response += 'Mean delay must be at least 2 minutes.\n';
+						} else {
+							response += `Mean delay updated to ${interaction.options.getInteger('mean-delay')} minutes.\n}`;
+							setServerSetting(interaction.guild.id, 'meanDelay', interaction.options.getInteger('mean-delay'));
+						}
+					}
+					if (interaction.options.getInteger('variation')) {
+						if (interaction.options.getInteger('variation') < 1 || interaction.options.getInteger('variation') > 10) {
+							response += 'Variation must be between 1 and 10.\n';
+						} else {
+							response += `Variation updated to ${interaction.options.getInteger('variation')}.\n}`;
+							setServerSetting(interaction.guild.id, 'variation', interaction.options.getInteger('variation'));
+						}
 					}
 				}
-				if (interaction.options.getInteger('variation')) {
-					if (interaction.options.getInteger('variation') < 1 || interaction.options.getInteger('variation') > 10) {
-						response += 'Variation must be between 1 and 10.\n';
-					} else {
-						response += `Variation updated to ${interaction.options.getInteger('variation')}.\n}`;
-						setServerSetting(interaction.guild.id, 'variation', interaction.options.getInteger('variation'));
-					}
-				}
+			} catch (err) {
+				console.error(err);
+				interaction.reply({ content: 'Something went wrong when updating server settings.', ephemeral: true });
+				return;
 			}
 			interaction.reply({ content: response, ephemeral: true });
 			return;

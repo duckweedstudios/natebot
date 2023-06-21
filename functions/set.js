@@ -46,4 +46,12 @@ module.exports = {
 			throw new Error(`Error in set.js: invalid setting or type for ${setting}: ${newValue}`);
 		}
 	},
+	getServerSettings(guildId) {
+		try {
+			return profileModelGuild.findOne({ serverId: guildId });
+		} catch (err) {
+			console.error(err);
+			throw new Error(`Error with database query in set.js: ${err}`);
+		}
+	},
 };

@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { isGuildSetup } = require('../functions/isSetup.js');
-const { setServerSetting } = require('../functions/set.js');
+const { setServerSetting, getServerSettings } = require('../functions/set.js');
 const { isMemberDev } = require('../functions/privileges.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('soulsadmin')
-		.setDescription('server admin')
+		.setDescription('Admin options for the bot. Leave all options blank to see current settings.')
 		.addUserOption(userOption => userOption
 			.setName('reset-defaults').setDescription('Reset the server to default settings').setRequired(false))
 		.addUserOption(userOption => userOption
@@ -52,6 +52,10 @@ module.exports = {
 				console.error(err);
 				interaction.reply({ content: 'Something went wrong when updating server settings.', ephemeral: true });
 				return;
+			}
+			if (response === '') {
+				const currentServerSettings = await getServerSettings(interaction.guild.id);
+				response = `Current server settings:\nMean delay: ${currentServerSettings.schedule.meanDelay} minutes\nVariation: ${currentServerSettings.schedule.variation}`;
 			}
 			interaction.reply({ content: response, ephemeral: true });
 			return;

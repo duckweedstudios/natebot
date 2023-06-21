@@ -25,9 +25,9 @@ module.exports = {
 					autoLure: false,
 				});
 				profile.save();
-			await interaction.reply({ content: "**FETCH ME THEIR SOULS!**\n\n Use the /souls command to get started", ephemeral: true });
+				await interaction.reply({ content: '**FETCH ME THEIR SOULS!**\n\n Use the /souls command to get started', ephemeral: true });
 			} catch (error) {
-				console.log("User attempted to join but was found in the database")
+				console.log('User attempted to join but was found in the database');
 				await interaction.reply({ content:'What are you doing? You\'re already a soul fetcher! FETCH ME THEIR SOULS!', ephemeral: true });
 			}
 		} else {

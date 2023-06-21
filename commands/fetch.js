@@ -6,7 +6,7 @@ const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/soul
 const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
-const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js')
+const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,10 +17,10 @@ module.exports = {
 		// the database on each fetch. We could just store the previous appearance to the
 		// client object in some way. Depends how laggy this gets in a real use-case
 		// This can also incorporate preventing users from duplicate fetching (this part is now implemented)
-		if (! await isGuildSetup(interaction)) {
-			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true })
-		} else if (! await isUserSetup(interaction, interaction.user.id)) {
-			interaction.reply({ content: 'You have not joined the soul fetchers!\n\nTo get started, use /join.', ephemeral: true })
+		if (!await isGuildSetup(interaction)) {
+			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
+		} else if (!await isUserSetup(interaction, interaction.user.id)) {
+			interaction.reply({ content: 'You have not joined the soul fetchers!\n\nTo get started, use /join.', ephemeral: true });
 		} else {
 			const currentTimestamp = dayjs();
 			let guildData;

@@ -17,13 +17,13 @@ module.exports = {
 	settingsAvailable: {
 		'paused': 'boolean',
 		'condemnedRoleId': 'string',
-		'schedule.meanDelay': 'number',
-		'schedule.variation': 'number',
+		'meanDelay': 'number',
+		'variation': 'number',
 	},
 	setServerSetting: async (guildId, setting, newValue) => {
 		if (setting in module.exports.settingsAvailable && typeof newValue === module.exports.settingsAvailable[setting]) {
 			try {
-				if (setting.contains('schedule.')) {
+				if (setting === 'meanDelay' || setting === 'variation') {
 					await profileModelGuild.findOneAndUpdate({ serverId: guildId }, {
 						$set: {
 							'schedule': {
@@ -43,7 +43,7 @@ module.exports = {
 				throw new Error(`Error with database query in set.js: ${err}`);
 			}
 		} else {
-			throw new Error(`Error in set.js: invalid setting or type for ${setting}: ${newValue}`);
+			throw new Error(`Error in set.js: invalid setting or type for setting: ${setting} = ${newValue}`);
 		}
 	},
 	getServerSettings(guildId) {

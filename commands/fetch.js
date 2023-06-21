@@ -46,7 +46,6 @@ module.exports = {
 				let soulCaught = getSoulById(guildData.schedule.past.soulTypeId);
 				if (soulCaught === -1) soulCaught = getDefaultSoul();
 				const soulValue = getSoulValue(soulCaught);
-				console.log(soulValue);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;
 				try {

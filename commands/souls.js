@@ -12,6 +12,13 @@ module.exports = {
 		.addUserOption(option => option.setName('target').setDescription('The target user')),
 
 	async execute(interaction) {
+		try {
+			if (interaction.client.usersCurrentMenuToken[interaction.user.id]) {
+				deleteInteraction(interaction.client.usersCurrentMenuToken[interaction.user.id]);
+			}
+		} catch (error) {
+			return;
+		}
 		let target = interaction.options.getUser('target');
 		if (!interaction.options.getUser('target')) {
 			target = interaction.user;
@@ -31,7 +38,7 @@ module.exports = {
 					// Saves the Token
 					interaction.client.usersCurrentMenuToken = { ...interaction.client.usersCurrentMenuToken, [interaction.user.id] : interaction.token };
 					interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : target };
-					setTimeout(() => deleteInteraction(interaction), 870000);
+					setTimeout(() => deleteInteraction(interaction.token), 10000);
 				} catch (error) {
 					console.log(error);
 				}

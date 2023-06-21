@@ -15,6 +15,10 @@ module.exports = {
 		if (interactionIdent === 'myProfileButton') {
 			interactionIdent = 'souls';
 		}
+		if (interactionIdent === 'backButton') {
+			interactionIdent = 'souls';
+		}
+		console.log(interactionIdent);
 		const guild = interaction.guild;
 		let self = false;
 		let targetIsCondemned = false;
@@ -31,7 +35,7 @@ module.exports = {
 		switch (interactionIdent) {
 		case 'serverStatsButton':
 			returnedActionRow = new MessageActionRow()
-				.addComponents(myProfileButton.data)
+				.addComponents(backButton.data)
 				.addComponents(helpButton.data);
 			break;
 		case 'giftModal':
@@ -97,6 +101,7 @@ const cleanseButton = require('../buttons/cleanseButton');
 const confirmButton = require('../buttons/confirmButton');
 const errorButton = require('../buttons/errorButton');
 const giftButton = require('../buttons/giftButton');
+const backButton = require('../buttons/backButton');
 const helpButton = require('../buttons/helpButton');
 const muteButton = require('../buttons/muteButton');
 const myProfileButton = require('../buttons/myProfileButton');

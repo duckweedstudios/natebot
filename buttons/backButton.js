@@ -4,23 +4,23 @@ const { editInteraction } = require('../events/editInteraction');
 const { getActionRow } = require('../events/getActionRow');
 
 module.exports = {
-	name: 'myProfileButton',
+	name: 'backButton',
 	data: new MessageButton()
-		.setCustomId('myProfileButton')
-		.setLabel('My Profile')
+		.setCustomId('backButton')
+		.setLabel('⬅ Back')
 		.setStyle('SUCCESS'),
 	
 	async execute(interaction) {
-		const finalEmbed = await getEmbed(interaction, interaction.user);
-		const finalComponents = await getActionRow(interaction);
+		const target = interaction.client.usersCurrentTarget[interaction.user.id];
+		const finalEmbed = await getEmbed(interaction, target);
+		const finalComponents = await getActionRow(interaction, target);
 
 		const data = { embeds : [finalEmbed], components : [finalComponents] };
 		try {
 			await editInteraction(interaction, data);
 			await interaction.deferUpdate();
-			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.user };
 		} catch (error) {
-			console.log(error);
+			console.error('Error in myProfileButton.js: ' + error);
 			return;
 		}
 	},

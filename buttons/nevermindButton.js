@@ -1,5 +1,5 @@
 const { MessageButton } = require('discord.js');
-const { editPrompt } = require('../events/editPrompt');
+const { deletePrompt } = require('../events/deletePrompt');
 
 module.exports = {
 	name: 'nevermindButton',
@@ -9,8 +9,7 @@ module.exports = {
 		.setStyle('DANGER'),
 
 	async execute(interaction) {
-		const data = { content: `:( Ok`, components : [] };
-		await editPrompt(interaction, data);
+		await deletePrompt(interaction.client.usersCurrentPrompt[interaction.user.id]);
 		await interaction.deferUpdate();
 	},
 };

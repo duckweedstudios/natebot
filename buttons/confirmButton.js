@@ -21,7 +21,7 @@ module.exports = {
 		} else {
 			plural = 'souls';
 		}
-		const failData = { content: `ERROR: You do not have enough souls!`, components : [] };
+		const failData = { content: `You do not have enough souls!`, components : [] };
 		const data = { content: `You have given **${target.username}** a total of **${value} ${plural}!**`, components : [] };
 		try {
 			if (value > senderSouls.souls) {

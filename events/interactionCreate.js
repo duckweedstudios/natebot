@@ -63,6 +63,7 @@ module.exports = {
 							console.log('');
 						}
 						interaction.client.usersCurrentPrompt = { ...interaction.client.usersCurrentPrompt, [interaction.user.id] : interaction.token };
+						setTimeout(() => deletePrompt(interaction.token), 300000);
 						return interaction.reply({ content: `Do you want give **${target.username}** a total of **${value} ${plural}**?`, components: [finalComponents], ephemeral: true });
 					}
 				}

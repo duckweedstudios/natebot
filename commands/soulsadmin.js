@@ -31,7 +31,7 @@ module.exports = {
 					setServerSetting(interaction.guild.id, 'variation', 5);
 					response = 'Server settings reset to defaults.\n';
 				} else {
-					if (interaction.options.getInteger('mean-delay')) {
+					if (interaction.options.getInteger('mean-delay') || interaction.options.getInteger('mean-delay') === 0) {
 						if (interaction.options.getInteger('mean-delay') < 2) {
 							response += 'Mean delay must be at least 2 minutes.\n';
 						} else {
@@ -39,7 +39,7 @@ module.exports = {
 							setServerSetting(interaction.guild.id, 'meanDelay', interaction.options.getInteger('mean-delay'));
 						}
 					}
-					if (interaction.options.getInteger('variation')) {
+					if (interaction.options.getInteger('variation') || interaction.options.getInteger('variation') === 0) {
 						if (interaction.options.getInteger('variation') < 1 || interaction.options.getInteger('variation') > 10) {
 							response += 'Variation must be between 1 and 10.\n';
 						} else {

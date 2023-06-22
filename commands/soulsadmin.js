@@ -29,21 +29,21 @@ module.exports = {
 				if (interaction.options.getBoolean('reset-defaults')) {
 					setServerSetting(interaction.guild.id, 'meanDelay', 1440);
 					setServerSetting(interaction.guild.id, 'variation', 5);
-					response = 'Server settings reset to defaults.\n';
+					response = '✅ Server settings reset to defaults.\n';
 				} else {
 					if (interaction.options.getInteger('mean-delay') || interaction.options.getInteger('mean-delay') === 0) {
 						if (interaction.options.getInteger('mean-delay') < 2) {
-							response += 'Mean delay must be at least 2 minutes.\n';
+							response += '❌ Mean delay must be at least **2** minutes.\n';
 						} else {
-							response += `Mean delay updated to ${interaction.options.getInteger('mean-delay')} minutes.\n`;
+							response += `✅ Mean delay updated to **${interaction.options.getInteger('mean-delay')}** minutes.\n`;
 							setServerSetting(interaction.guild.id, 'meanDelay', interaction.options.getInteger('mean-delay'));
 						}
 					}
 					if (interaction.options.getInteger('variation') || interaction.options.getInteger('variation') === 0) {
 						if (interaction.options.getInteger('variation') < 1 || interaction.options.getInteger('variation') > 10) {
-							response += 'Variation must be between 1 and 10.\n';
+							response += '❌ Variation must be between 1 and 10.\n';
 						} else {
-							response += `Variation updated to ${interaction.options.getInteger('variation')}.\n`;
+							response += `✅ Variation updated to **${interaction.options.getInteger('variation')}**.\n`;
 							setServerSetting(interaction.guild.id, 'variation', interaction.options.getInteger('variation'));
 						}
 					}
@@ -57,7 +57,7 @@ module.exports = {
 				const currentServerSettings = await getServerSettings(interaction.guild.id);
 				response = `Current server settings:\nMean delay: ${currentServerSettings.schedule.meanDelay} minutes\nVariation: ${currentServerSettings.schedule.variation}`;
 			} else {
-				response += 'Note that this does not affect currently scheduled hauntings, but will apply to future ones.';
+				response += '*Note that this does not affect currently scheduled hauntings, but will apply to future ones.*';
 			}
 			interaction.reply({ content: response, ephemeral: true });
 			return;

@@ -5,6 +5,7 @@ const path = require('node:path');
 const mongoose = require('mongoose');
 const { mongodbsrv } = require('./config.json');
 const { generateDependencyReport } = require('@discordjs/voice');
+const { regenerateMissedHauntings } = require('./actions/hauntDrivers');
 console.log(generateDependencyReport());
 
 // Create a new client instance
@@ -66,3 +67,6 @@ client.memory = null;
 
 // Login to Discord with your client's token
 client.login(token);
+
+// Regenerate missed or otherwise invalid hauntings
+regenerateMissedHauntings(client);

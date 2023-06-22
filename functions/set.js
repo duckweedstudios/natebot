@@ -26,9 +26,7 @@ module.exports = {
 				if (setting === 'meanDelay' || setting === 'variation') {
 					await profileModelGuild.findOneAndUpdate({ serverId: guildId }, {
 						$set: {
-							'schedule': {
-								[setting]: newValue,
-							},
+							[`schedule.${setting}`]: newValue,
 						},
 					});
 				} else {

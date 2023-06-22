@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 
-const getRandomizedNextTime = (now, mean = 1440, variation = 6) => {
-	const hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * variation / 2 + mean / 60;
+const getRandomizedNextTime = (now, mean = 1440, variation = 5) => {
+	const hoursFromNow = (Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 6) * mean / 60 / variation / 2;
 	const nextAppearance = now.add(hoursFromNow, 'hour');
 	return {
 		nextAppearance: nextAppearance,

@@ -89,6 +89,11 @@ module.exports = {
 		return false;
 	},
 
+	getSoulByIdOrDefault: (soulTypeId, guildId) => {
+		const result = module.exports.getSoulById(soulTypeId, guildId);
+		return result ? result : module.exports.getDefaultSoul();
+	},
+
 	// TODO: revise soul value calculation method
 	getSoulValue: (soul) => {
 		return soul.rarity;

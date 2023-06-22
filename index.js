@@ -68,5 +68,7 @@ client.memory = null;
 // Login to Discord with your client's token
 client.login(token);
 
-// Regenerate missed or otherwise invalid hauntings
-regenerateMissedHauntings(client);
+client.on('ready', () => {
+	// Regenerate missed or otherwise invalid hauntings
+	regenerateMissedHauntings(client);
+});

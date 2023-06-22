@@ -18,4 +18,12 @@ module.exports = {
 			throw new Error('There was an error pulling server information from the database');
 		}
 	},
+	getAllGuildsData: async () => {
+		try {
+			return await profileModelGuild.find({});
+		} catch (err) {
+			console.log(err);
+			throw new Error('There was an error pulling server information from the database');
+		}
+	},
 };

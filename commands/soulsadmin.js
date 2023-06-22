@@ -56,7 +56,7 @@ module.exports = {
 			if (response === '') {
 				const currentServerSettings = await getServerSettings(interaction.guild.id);
 				response = `Current server settings:\nMean delay: ${currentServerSettings.schedule.meanDelay} minutes\nVariation: ${currentServerSettings.schedule.variation}`;
-			} else {
+			} else if (response.includes('✅')) {
 				response += '*Note that this does not affect currently scheduled hauntings, but will apply to future ones.*';
 			}
 			interaction.reply({ content: response, ephemeral: true });

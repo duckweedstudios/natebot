@@ -20,7 +20,7 @@ const profileSchemaGuild = new mongoose.Schema({
 			soulTypeId : { type: String },
 		},
 		meanDelay: { type: Number, default: 1440 },
-		variaton: { type: Number, default: 5 },
+		variation: { type: Number, default: 5 },
 	},
 	stats: {
 		serverSoulsCaught: { type: Number, default: 0 },

@@ -29,11 +29,16 @@ module.exports = {
 		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
+		module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextTimeObj.msUntil);
+	},
+
+	scheduleHaunting: async (client, guild, upcomingSoulType, msUntil) => {
 		setTimeout(() => {
+			const guildData = getGuildData(guild.id);
 			getMemory(client, guild.id).membersWhoFetched = [];
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!guildData.paused) module.exports.guildHauntDriver(client, guild);
-		}, nextTimeObj.msUntil);
+		}, msUntil);
 	},
 
 	regenerateMissedHauntings: async (client) => {

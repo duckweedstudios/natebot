@@ -37,6 +37,7 @@ module.exports = {
 	},
 
 	scheduleHaunting: async (client, guild, upcomingSoulType, msUntil) => {
+		getMemory(client, guild.id); // Initialize memory if it doesn't exist
 		client.memory[guild.id].nextHauntTimeoutId = setTimeout(() => {
 			const guildData = getGuildData(guild.id);
 			getMemory(client, guild.id).membersWhoFetched = [];

@@ -50,7 +50,7 @@ module.exports = {
 						return interaction.reply({ content: `Please enter a whole positive integer`, ephemeral: true });
 					}
 					if ((target) && !(value)) {
-						return interaction.reply({ content:`Please insert a value to give to ${target.username}!`, ephemeral: true });
+						return interaction.reply({ content:`Please insert a value to give to ${target.user.username}!`, ephemeral: true });
 					} else if (!(target) && (value)) {
 						return interaction.reply({ content: `Please provide a user to give ${value} ${plural} to!`, ephemeral: true });
 					} else if ((target) && (value)) {
@@ -64,7 +64,7 @@ module.exports = {
 						}
 						interaction.client.usersCurrentPrompt = { ...interaction.client.usersCurrentPrompt, [interaction.user.id] : interaction.token };
 						setTimeout(() => deletePrompt(interaction.token), 300000);
-						return interaction.reply({ content: `Do you want give **${target.username}** a total of **${value} ${plural}**?`, components: [finalComponents], ephemeral: true });
+						return interaction.reply({ content: `Do you want give **${target.user.username}** a total of **${value} ${plural}**?`, components: [finalComponents], ephemeral: true });
 					}
 				}
 					

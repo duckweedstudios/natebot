@@ -15,8 +15,7 @@ module.exports = {
 		const muteDurationSec = 30;
 		const soulCost = 1;
 		try {
-			const target = getTarget(interaction);
-			const member = interaction.guild.members.cache.get(target.id);
+			const member = getTarget(interaction);
 			const soulData = await getSoulData(interaction, interaction.user.id);
 			// Check that member is CS
 			// This check *should* be unnecessary, but...
@@ -48,7 +47,7 @@ module.exports = {
 				setTimeout(() => {
 					member.voice.setMute(false);
 				}, muteDurationSec * 1000);
-				await interaction.reply({ content:`You spent ${soulCost} soul to mute ${target.username} for ${muteDurationSec} seconds`, ephemeral: true });
+				await interaction.reply({ content:`You spent ${soulCost} soul to mute ${member.user.username} for ${muteDurationSec} seconds`, ephemeral: true });
 			} else {
 				await interaction.reply({ content:`You do not have enough souls left!!`, ephemeral: true });
 			}

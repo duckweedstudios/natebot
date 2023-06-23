@@ -4,7 +4,7 @@ const { getGuildData } = require('../events/guildquery');
 const { getSoulTier } = require('../functions/tiers');
 
 module.exports = {
-	getEmbed : async (interaction, target) => {
+	getEmbed : async (interaction, member) => {
 		const guild = interaction.guild;
 		let self = false;
 		let targetIsCondemned = false;
@@ -25,13 +25,13 @@ module.exports = {
 		}
 
 		// Determinations
-		if (target === interaction.user) { self = true; }
-		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
+		if (member.id === interaction.member) { self = true; }
+		if (guildData.condemnedMember === member.id) { targetIsCondemned = true; }
 		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
 		
 		// Getting target user data
 		try {
-			soulData = await getSoulData(interaction, target.id);
+			soulData = await getSoulData(interaction, member.id);
 			if (!soulData) {
 				if (self) {
 					interaction.reply({ content:'You have not joined the soul fetchers, use /join to get started!', ephemeral: true });
@@ -54,7 +54,7 @@ module.exports = {
 			console.error('Error in getEmbed.js: Could not get soul tier data (eg fetcher tier): ' + err);
 			return;
 		}
-		
+		const target = member.user;
 		// Outputting the Embed
 		try {
 			if (self) {

@@ -1,4 +1,10 @@
 const { getGuildData } = require('../events/guildquery.js');
+const { getVagueTimeRange } = require('./time.js');
+
+const updateAppearanceBoundsInMemory = async (client, guildIdString, dayjsObj, meanDelay, variation) => {
+	module.exports.getMemory(client, guildIdString); // Ensure memory exists
+	client.memory[guildIdString].nextAppearanceBounds = getVagueTimeRange(dayjsObj.nextAppearance, meanDelay, variation).formatted;
+};
 
 module.exports = {
 	initializeObject: (serverId, condemnedMember, condemnedRoleId, channelId, modRole, meanDelay = 1440, variation = 5) => {
@@ -55,6 +61,8 @@ module.exports = {
 			guildData.schedule.next.time = dayjsObj.nextAppearance.toDate();
 			guildData.schedule.next.soulTypeId = soulType.id;
 			guildData.save();
+
+			updateAppearanceBoundsInMemory(client, guildIdString, dayjsObj, guildData.schedule.meanDelay, guildData.schedule.variation);
 		} catch (err) {
 			console.error(`Error in replaceEarlierAppearance: Could not update information in database for server ${guildIdString}: ${err}`);
 		}

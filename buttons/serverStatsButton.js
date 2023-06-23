@@ -30,7 +30,7 @@ module.exports = {
 		} catch (err) {
 			nextAppearanceBounds = '???';
 		}
-		const pastTime = dayjs(guildData.schedule.past.time).format('MM/DD/YYYY h:mm A');
+		const pastTime = guildData.schedule.past.time ? dayjs(guildData.schedule.past.time).format('MM/DD/YYYY h:mm A') : 'None yet...';
 
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')

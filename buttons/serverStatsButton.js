@@ -5,6 +5,7 @@ const { getSoulData } = require('../events/query');
 const { getGuildData } = require('../events/guildquery');
 const profileModel = require ('../models/profileSchema');
 const { getVagueTimeRange } = require('../functions/time');
+const dayjs = require('dayjs');
 
 module.exports = {
 	name: 'serverStatsButton',
@@ -30,6 +31,8 @@ module.exports = {
 			console.error('Error in serverStatsButton: could not get time range: ' + err);
 			return;
 		}
+		const pastTime = dayjs(guildData.schedule.past.time).format('MM/DD/YYYY h:mm A');
+
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')
 			.setTitle(`__***${interaction.guild.name}'s Stats***__`)
@@ -41,7 +44,7 @@ module.exports = {
 			.addFields(
 				{ name: '---------------------------------', value: ' ' },
 				{ name: 'Next Appearance ⏭️', value: `Between ${nextTimeData.formatted}` },
-				{ name: 'Last Appearance ⏮️', value: `*${guildData.schedule.past.time}*` },
+				{ name: 'Last Appearance ⏮️', value: `*${pastTime}*` },
 				{ name: '---------------------------------', value: ' ' });
 		
 		try {

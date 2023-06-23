@@ -6,7 +6,7 @@ const dayjs = require('dayjs');
 const { getGuildData, getAllGuildsData } = require('../events/guildquery');
 
 module.exports = {
-	guildHauntDriver: async (client, guild, override = false) => {
+	guildHauntDriver: async (client, guild, fasterFirstHaunting = false, replaceExistingNextOnly = false) => {
 		// Given a guild, decide a randomized next time to haunt it,
 		// wait to haunt,
 		// then haunt it and schedule the next haunting recursively
@@ -22,13 +22,13 @@ module.exports = {
 		let nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), guildData.schedule.meanDelay, guildData.schedule.variation);
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		// Override the nextTimeObj for a quicker, reliable first appearance if desired
-		if (override) {
+		if (fasterFirstHaunting) {
 			const nextAppearance = dayjs().add(1, 'minute');
 			nextTimeObj = { nextAppearance, nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'), msUntil: Math.abs(dayjs().diff(nextAppearance)) };
 			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
-		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
+		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString, replaceExistingNextOnly);
 		// Cancel a next haunting setTimeout if it exists
 		if (getMemory(client, guild.id).nextHauntTimeoutId) {
 			clearTimeout(client.memory[guild.id].nextHauntTimeoutId);
@@ -59,7 +59,7 @@ module.exports = {
 				// Query for Discord.js guild object by ID
 				guild = await guild;
 				console.log(`DEBUG: The server ${guild.name} was missed at ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-				module.exports.guildHauntDriver(client, guild, false);
+				module.exports.guildHauntDriver(client, guild, false, true);
 			} else {
 				guild = await guild;
 				console.log(`DEBUG: The server ${guild.name} will have haunting regenerated for ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);

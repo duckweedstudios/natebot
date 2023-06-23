@@ -1,8 +1,8 @@
-/* eslint-disable no-case-declarations */
 const { MessageActionRow } = require('discord.js');
 const { getTarget } = require('../events/getTarget');
 const confirmButton = require('../buttons/confirmButton');
 const nevermindButton = require('../buttons/nevermindButton');
+const { deletePrompt } = require('../events/deletePrompt');
 
 
 module.exports = {
@@ -37,7 +37,7 @@ module.exports = {
 		} else if (interaction.isModalSubmit()) {
 			try {
 				switch (interaction.customId) {
-				case 'giftModal':
+				case 'giftModal': {
 					const target = getTarget(interaction);
 					const value = interaction.fields.getTextInputValue('giftInput');
 					let plural = '';
@@ -57,15 +57,23 @@ module.exports = {
 						const finalComponents = new MessageActionRow()
 							.addComponents(confirmButton.data)
 							.addComponents(nevermindButton.data);
+						try {
+							deletePrompt(interaction.client.usersCurrentPrompt[interaction.user.id]);
+						} catch (error) {
+							console.log('');
+						}
 						interaction.client.usersCurrentPrompt = { ...interaction.client.usersCurrentPrompt, [interaction.user.id] : interaction.token };
+						setTimeout(() => deletePrompt(interaction.token), 300000);
 						return interaction.reply({ content: `Do you want give **${target.username}** a total of **${value} ${plural}**?`, components: [finalComponents], ephemeral: true });
 					}
 				}
-				// console.log(interaction)
+					
+				}
 				interaction.reply({ content: `There was an error identifying this modal!`, ephemeral: true });
 			} catch (error) {
 				console.error(error);
 				interaction.reply({ content: 'There was an error while submitting this modal!', ephemeral: true });
 			}
 		}
-	} };
+	},
+};

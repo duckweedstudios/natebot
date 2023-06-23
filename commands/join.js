@@ -1,14 +1,17 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const profileModel = require ('../models/profileSchema');
-const { getGuildData } = require('../events/guildquery');
+const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('join')
 		.setDescription('join the soul fetchers'),
 	async execute(interaction) {
-		const guildData = await getGuildData(interaction);
-		if (guildData != null) {
+		if (!await isGuildSetup(interaction)) {
+			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
+		} else if (await isUserSetup(interaction, interaction.user.id)) {
+			interaction.reply({ content: 'What are you doing? You\'re already a soul fetcher! \n\n**FETCH ME THEIR SOULS!**', ephemeral: true });
+		} else {
 			try {
 				const profile = await profileModel.create({
 					fetcherTag: interaction.user.username,
@@ -27,11 +30,9 @@ module.exports = {
 				profile.save();
 				await interaction.reply({ content: '**FETCH ME THEIR SOULS!**\n\n Use the /souls command to get started', ephemeral: true });
 			} catch (error) {
-				console.log('User attempted to join but was found in the database');
-				await interaction.reply({ content:'What are you doing? You\'re already a soul fetcher! FETCH ME THEIR SOULS!', ephemeral: true });
+				console.log(`\nThere was an issue creating a new user profile\n${error}`);
+				await interaction.reply({ content:'This command failed. There was an error updating the database', ephemeral: true });
 			}
-		} else {
-			await interaction.reply({ content:'This server is not setup yet!\nTell an admin to use the /guildjoin command to start', ephemeral: true });
 		}
 	},
 };

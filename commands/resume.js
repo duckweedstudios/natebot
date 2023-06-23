@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 // const { getGuildData } = require('../events/guildquery.js');
 // const { isMemberDev } = require('../functions/privileges.js');
 // const profileModelGuild = require('../models/profileSchemaGuild.js');
+const { isGuildSetup } = require('../functions/isSetup.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,8 +11,11 @@ module.exports = {
 		.setDescription('[admin] Resume Natebot activities on this server'),
 	async execute(interaction) {
 		// Not intended to be used yet
-		await interaction.reply({ message: '🚧 this will be the resume command 🚧', ephemeral: true });
-
+		if (!await isGuildSetup(interaction)) {
+			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: '🚧 this will be the resume command 🚧', ephemeral: true });
+		}
 
 		// Check whether Natebot has already been setup
 		// const serverDataObject = getServerDataFromMemory(interaction.client, interaction.guild.id.toString());

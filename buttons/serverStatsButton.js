@@ -45,9 +45,9 @@ module.exports = {
 				{ name: '---------------------------------', value: ' ' });
 		
 		try {
-			serverEmbed.addFields({ name: '__**Top Users 📊**__', value: `__**#1 - ${allFetchersData[0].fetcherTag}:**__ ${allFetchersData[0].souls} souls\n__**#2 - ${allFetchersData[1].fetcherTag}:**__ ${allFetchersData[1].souls} souls\n__**#3 - ${allFetchersData[2].fetcherTag}:**__ ${allFetchersData[2].souls} souls` });
+			serverEmbed.addFields({ name: '__**Top Fetchers 📊**__', value: `__**#1 - ${allFetchersData[0].fetcherTag}:**__ ${allFetchersData[0].souls} souls\n__**#2 - ${allFetchersData[1].fetcherTag}:**__ ${allFetchersData[1].souls} souls\n__**#3 - ${allFetchersData[2].fetcherTag}:**__ ${allFetchersData[2].souls} souls` });
 		} catch (error) {
-			serverEmbed.addFields({ name: '__**Top Users 📊**__', value: 'Not Enough Users' });
+			serverEmbed.addFields({ name: '__**Top Fetchers 📊**__', value: 'Not Enough Fetchers' });
 		}
 		serverEmbed.setImage('https://i.imgur.com/bJDpP4T.jpeg');
 		serverEmbed.setTimestamp();

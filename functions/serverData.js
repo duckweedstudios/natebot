@@ -48,10 +48,10 @@ module.exports = {
 		}
 	},
 
-	updateAppearancesWith: async (dayjsObj, soulType, guildIdString) => {
+	updateAppearancesWith: async (dayjsObj, soulType, guildIdString, nextBecomesPast = true) => {
 		try {
 			const guildData = await getGuildData(guildIdString);
-			guildData.schedule.past = guildData.schedule.next;
+			if (nextBecomesPast) guildData.schedule.past = guildData.schedule.next;
 			guildData.schedule.next.time = dayjsObj.nextAppearance.toDate();
 			guildData.schedule.next.soulTypeId = soulType.id;
 			guildData.save();

@@ -29,11 +29,15 @@ module.exports = {
 		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
 		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
+		// Cancel a next haunting setTimeout if it exists
+		if (getMemory(client, guild.id).nextHauntTimeoutId) {
+			clearTimeout(client.memory[guild.id].nextHauntTimeoutId);
+		}
 		module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextTimeObj.msUntil);
 	},
 
 	scheduleHaunting: async (client, guild, upcomingSoulType, msUntil) => {
-		setTimeout(() => {
+		client.memory[guild.id].nextHauntTimeoutId = setTimeout(() => {
 			const guildData = getGuildData(guild.id);
 			getMemory(client, guild.id).membersWhoFetched = [];
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);

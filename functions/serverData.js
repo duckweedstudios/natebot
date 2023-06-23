@@ -48,7 +48,7 @@ module.exports = {
 		}
 	},
 
-	updateAppearancesWith: async (dayjsObj, soulType, guildIdString, replaceExistingNextOnly = false) => {
+	updateAppearances: async (client, guildIdString, dayjsObj, soulType, replaceExistingNextOnly = false) => {
 		try {
 			const guildData = await getGuildData(guildIdString);
 			if (!replaceExistingNextOnly) guildData.schedule.past = guildData.schedule.next;

@@ -1,6 +1,6 @@
 const { hauntSomeChannelWithSoul } = require('./hauntings.js');
 const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
-const { updateAppearancesWith, getMemory } = require('../functions/serverData.js');
+const { updateAppearances, getMemory } = require('../functions/serverData.js');
 const { getWeightedRandomSoulType, getSoulByIdOrDefault } = require('../functions/souls.js');
 const dayjs = require('dayjs');
 const { getGuildData, getAllGuildsData } = require('../events/guildquery');
@@ -28,7 +28,7 @@ module.exports = {
 			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
-		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString, replaceExistingNextOnly);
+		updateAppearances(client, guild.id, nextTimeObj, upcomingSoulType, replaceExistingNextOnly);
 		// Cancel a next haunting setTimeout if it exists
 		if (getMemory(client, guild.id).nextHauntTimeoutId) {
 			clearTimeout(client.memory[guild.id].nextHauntTimeoutId);

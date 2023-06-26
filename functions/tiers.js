@@ -135,7 +135,7 @@ module.exports = {
 		}
 		let levelUps = '';
 		for (let i = oldSoulTier.level + 1; i <= newSoulTier.level; i++) {
-			levelUps += `⬆️ Promoted! Level ${soulTiers[i].level} ${soulTiers[i].tierName}\n`;
+			levelUps += `⬆️ **Promoted! Level ${soulTiers[i].level} ${soulTiers[i].tierName}**\n`;
 		}
 		return levelUps += '\n';
 	},

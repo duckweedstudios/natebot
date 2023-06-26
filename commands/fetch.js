@@ -7,6 +7,7 @@ const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges
 const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
+const { getSoulData } = require('../events/query');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -28,6 +29,14 @@ module.exports = {
 			} catch (err) {
 				// This will most often happen because the server has not been setup yet. 
 				console.error(`Error in /fetch: Server data could not be retrieved from the database for guild ${interaction.guild.id}: ${err}`);
+				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
+				return;
+			}
+			let fetcherData;
+			try {
+				fetcherData = getSoulData(interaction, interaction.member.id);
+			} catch (err) {
+				console.error(`Error in /fetch: Fetcher data could not be retrieved from the database for fetcher ${interaction.member.id}: ${err}`);
 				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
 				return;
 			}
@@ -66,7 +75,8 @@ module.exports = {
 				getMemory(interaction.client, interaction.guild.id).membersWhoFetched.push(interaction.member.id);
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
-				interaction.reply({ content: `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}`, ephemeral: true });
+				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}\n\n${getXPBar((await fetcherData).soulXP + soulValue)}`;
+				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (
 				getMemory(interaction.client, interaction.guild.id).lastSummonTime
 				&& currentTimestamp.diff(getMemory(interaction.client, interaction.guild.id).lastSummonTime, 'second') > 0

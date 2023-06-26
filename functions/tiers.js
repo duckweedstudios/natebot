@@ -102,7 +102,7 @@ const soulTiers = [
 
 module.exports = {
 	getSoulTier: (xp) => {
-		for (const soulTier of soulTiers) {
+		for (const soulTier of soulTiers.slice().reverse()) { // .toReversed(), the non-mutating reverse method, wasn't working here
 			if (xp >= soulTier.xp) {
 				return soulTier;
 			}
@@ -111,7 +111,7 @@ module.exports = {
 
 	getXPBar(xp) {
 		const soulTier = module.exports.getSoulTier(xp);
-		const nextSoulTier = soulTier.level + 1;
+		const nextSoulTier = soulTiers[soulTiers.indexOf(soulTier) + 1];
 		const xpInTier = xp - soulTier.xp;
 		const xpToNextTier = nextSoulTier.xp - soulTier.xp;
 		const xpPercentage = xpInTier / xpToNextTier;
@@ -124,6 +124,6 @@ module.exports = {
 			}
 		}
 		xpBar += ']';
-		return `${soulTier.tierName} ${xpBar} ${nextSoulTier.tierName} *(${xpInTier}/${xpToNextTier} XP)*`;
+		return `${soulTier.tierName} ${xpBar} ${nextSoulTier.tierName} *(${xp}/${nextSoulTier.xp} XP)*`;
 	},
 };

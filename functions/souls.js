@@ -74,22 +74,23 @@ module.exports = {
 	},
 
 	getSoulById: (soulTypeId, guildId) => {
-		const soulsFileContents = module.exports.getSoulTypesJSON(guildId);
-		if (!soulsFileContents) {
-			return -1;
-		}
+		try {
+			const soulsFileContents = module.exports.getSoulTypesJSON(guildId);
 
-		for (const soulType of soulsFileContents.souls) {
-			if (soulType.id === soulTypeId) {
-				return soulType;
+			for (const soulType of soulsFileContents.souls) {
+				if (soulType.id === soulTypeId) {
+					return soulType;
+				}
 			}
-		}
 
-		console.log(`Warning in getSoulById: Found a non-empty souls file, but did not find a soul with id ${soulTypeId} in server ${guildId}`);
-		return false;
+			console.log(`Warning in getSoulById: Found a non-empty souls file, but did not find a soul with id ${soulTypeId} in server ${guildId}`);
+		} catch (err) {
+			return;
+		}
 	},
 
 	getSoulByIdOrDefault: (soulTypeId, guildId) => {
+		if (soulTypeId < 0) return module.exports.getDefaultSoul(); // temporary fix for issue #77
 		const result = module.exports.getSoulById(soulTypeId, guildId);
 		return result ? result : module.exports.getDefaultSoul();
 	},

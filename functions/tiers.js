@@ -101,11 +101,29 @@ const soulTiers = [
 ];
 
 module.exports = {
-	getSoulTier: (numSouls) => {
+	getSoulTier: (xp) => {
 		for (const soulTier of soulTiers) {
-			if (numSouls >= soulTier.xp) {
+			if (xp >= soulTier.xp) {
 				return soulTier;
 			}
 		}
+	},
+
+	getXPBar(xp) {
+		const soulTier = module.exports.getSoulTier(xp);
+		const nextSoulTier = soulTier.level + 1;
+		const xpInTier = xp - soulTier.xp;
+		const xpToNextTier = nextSoulTier.xp - soulTier.xp;
+		const xpPercentage = xpInTier / xpToNextTier;
+		let xpBar = '[';
+		for (let i = 0; i < 10; i++) {
+			if (xpPercentage * 10 >= i) {
+				xpBar += '█';
+			} else {
+				xpBar += '░';
+			}
+		}
+		xpBar += ']';
+		return `${soulTier.tierName} ${xpBar} ${nextSoulTier.tierName} *(${xpInTier}/${xpToNextTier} XP)*`;
 	},
 };

@@ -84,7 +84,7 @@ module.exports = {
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
 				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth **${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}**\n\n`;
-				replyContent += `${multiplierMessages}\n`;
+				replyContent += `${multiplierMessages}🏦 = **__+${soulValue * earnedSoulXPMultiplier} XP__**\n\n`;
 				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier);
 				replyContent += `${levelUps ? levelUps : ''}`;
 				replyContent += `${getXPBar((await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier)}`;

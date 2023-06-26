@@ -8,7 +8,7 @@ const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 const { getSoulData } = require('../events/query');
-const { getXPBar } = require('../functions/tiers.js');
+const { getXPBar, getLevelUps } = require('../functions/tiers.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -80,6 +80,8 @@ module.exports = {
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
 				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}\n\n`;
 				replyContent += `${(isFirstFetch ? '**First fetch!** *x2 XP*\n\n' : '')}`;
+				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + earnedSoulXP);
+				replyContent += `${levelUps ? levelUps : ''}`;
 				replyContent += `${getXPBar((await fetcherData).soulXP + earnedSoulXP)}`;
 				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (

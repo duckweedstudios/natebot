@@ -126,4 +126,17 @@ module.exports = {
 		xpBar += ']';
 		return `${soulTier.tierName} ${xpBar} ${nextSoulTier.tierName} *(${xp}/${nextSoulTier.xp} XP)*`;
 	},
+
+	getLevelUps(oldXP, newXP) {
+		const oldSoulTier = module.exports.getSoulTier(oldXP);
+		const newSoulTier = module.exports.getSoulTier(newXP);
+		if (oldSoulTier.level === newSoulTier.level) {
+			return '';
+		}
+		let levelUps = '';
+		for (let i = oldSoulTier.level + 1; i <= newSoulTier.level; i++) {
+			levelUps += `⬆️ Promoted! Level ${soulTiers[i].level} ${soulTiers[i].tierName}\n`;
+		}
+		return levelUps += '\n';
+	},
 };

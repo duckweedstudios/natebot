@@ -87,7 +87,7 @@ module.exports = {
 						.setDescription(`*${soulTierData.tierName}*`)
 						.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 						.addFields(
-							{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
+							{ name: 'Rank:', value: `**${soulTierData.level}** (${soulData.soulXP} XP)` },
 							{ name: '---------------------------------', value: ' ' },
 							{ name: '__Your Current Souls:__', value: `👻  *${soulData.souls}*` },
 							{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
@@ -108,7 +108,7 @@ module.exports = {
 					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
-						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
+						{ name: 'Rank:', value: `**${soulTierData.level}** (${soulData.soulXP} XP)` },
 						{ name: '---------------------------------', value: ' ' },
 						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
 						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },
@@ -133,7 +133,7 @@ module.exports = {
 						{ name: '__Souls Stolen__', value: `*🪝  ${soulData.soulsCaught}*`, inline: true },
 						{ name: '---------------------------------', value: '__***Career Stats 📊***__' },
 						{ name: '__Times as Condemned__', value: `*${soulData.condemnedCount}*` },
-						{ name: '__Fetcher Rank__', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)`, inline: true },
+						{ name: '__Fetcher Rank__', value: `**${soulTierData.level}** (${soulData.soulXP} XP)`, inline: true },
 						{ name: '__Fooled Count__', value: `*${soulData.fooledCount}*`, inline: true },
 					)
 					.setTimestamp()
@@ -147,7 +147,7 @@ module.exports = {
 					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
-						{ name: 'Rank:', value: `**${soulTierData.tierNum}** (${soulData.soulXP} XP)` },
+						{ name: 'Rank:', value: `**${soulTierData.level}** (${soulData.soulXP} XP)` },
 						{ name: '---------------------------------', value: ' ' },
 						{ name: '__Current Souls:__', value: `👻  *${soulData.souls}*` },
 						{ name: '__Souls Caught:__', value: `🎣  *${soulData.soulsCaught}*`, inline: true },

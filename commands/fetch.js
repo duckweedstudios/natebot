@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { increaseValue } = require('../functions/inc');
 const { getGuildData } = require('../events/guildquery.js');
 const dayjs = require('dayjs');
-const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
+const { getSoulValue, getSoulByIdOrDefault } = require('../functions/souls');
 const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
@@ -43,8 +43,7 @@ module.exports = {
 					interaction.reply({ content: 'You\'ve already fetched this soul.', ephemeral: true });
 					return;
 				}
-				let soulCaught = getSoulById(guildData.schedule.past.soulTypeId);
-				if (soulCaught === -1) soulCaught = getDefaultSoul();
+				const soulCaught = getSoulByIdOrDefault(guildData.schedule.past.soulTypeId);
 				const soulValue = getSoulValue(soulCaught);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;

@@ -64,6 +64,10 @@ module.exports = {
 					earnedSoulXPMultiplier *= 2;
 					multiplierMessages += '🕚 **Buzzer-beater!** *x2 XP*\n';
 				}
+				if ((await condemnedData).souls > 0 && (await condemnedData).souls - soulValue <= 0) {
+					earnedSoulXPMultiplier *= 4;
+					multiplierMessages += '☠️ **Condemned soul defeated!** *x4 XP*\n';
+				}
 				try {
 					// Fetcher Values
 					increaseValue(interaction, interaction.user.id, 'souls', soulValue);

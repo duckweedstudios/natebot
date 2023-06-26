@@ -41,6 +41,14 @@ module.exports = {
 				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
 				return;
 			}
+			let condemnedData;
+			try {
+				condemnedData = getSoulData(interaction, guildData.condemnedMember);
+			} catch (err) {
+				console.error(`Error in /fetch: Condemned data could not be retrieved from the database for condemned ${guildData.condemnedMember}: ${err}`);
+				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
+				return;
+			}
 
 			// Check if the member is the condemned soul
 			if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) {
@@ -56,7 +64,6 @@ module.exports = {
 				const soulCaught = getSoulByIdOrDefault(guildData.schedule.past.soulTypeId);
 				const soulValue = getSoulValue(soulCaught);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
-				let _csSoulsRemaining;
 				const isFirstFetch = getMemory(interaction.client, interaction.guild.id).membersWhoFetched.length === 0;
 				let earnedSoulXPMultiplier = isFirstFetch ? 2 : soulValue;
 				let multiplierMessages = `${isFirstFetch ? '🕐 **First fetch!** *x2 XP*\n' : ''}`;
@@ -92,6 +99,9 @@ module.exports = {
 				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier);
 				replyContent += `${levelUps ? levelUps : ''}`;
 				replyContent += `${getXPBar((await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier)}`;
+				if ((await condemnedData).souls - soulValue <= 0) {
+					replyContent += `\n\n👑 **The Condemned Soul can be dethroned!** Use \`/souls \`<@${guildData.condemnedMember}> to claim!`;
+				}
 				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (
 				getMemory(interaction.client, interaction.guild.id).lastSummonTime

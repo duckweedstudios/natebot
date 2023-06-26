@@ -8,6 +8,7 @@ const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 const { getSoulData } = require('../events/query');
+const { getXPBar } = require('../functions/tiers.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -56,12 +57,14 @@ module.exports = {
 				const soulValue = getSoulValue(soulCaught);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;
+				const isFirstFetch = getMemory(interaction.client, interaction.guild.id).membersWhoFetched.length === 0;
+				const earnedSoulXP = isFirstFetch ? soulValue * 2 : soulValue;
 				try {
 					// Fetcher Values
 					increaseValue(interaction, interaction.user.id, 'souls', soulValue);
 					increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
 					increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
-					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulXP', earnedSoulXP);
 					increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
 					// Condemned Values
 					increaseValue(interaction, guildData.condemnedMember, 'souls', -soulValue);
@@ -75,7 +78,9 @@ module.exports = {
 				getMemory(interaction.client, interaction.guild.id).membersWhoFetched.push(interaction.member.id);
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
-				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}\n\n${getXPBar((await fetcherData).soulXP + soulValue)}`;
+				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}\n\n`;
+				replyContent += `${(isFirstFetch ? '**First fetch!** *x2 XP*\n\n' : '')}`;
+				replyContent += `${getXPBar((await fetcherData).soulXP + earnedSoulXP)}`;
 				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (
 				getMemory(interaction.client, interaction.guild.id).lastSummonTime

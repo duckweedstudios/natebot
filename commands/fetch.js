@@ -13,7 +13,7 @@ const { getXPBar, getLevelUps } = require('../functions/tiers.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('fetch')
-		.setDescription('fetches a soul!'),
+		.setDescription('Fetches a soul!'),
 	async execute(interaction) {
 		// TODO: look into caching the DB query results for efficiency
 		if (!await isGuildSetup(interaction)) {
@@ -58,13 +58,18 @@ module.exports = {
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
 				let _csSoulsRemaining;
 				const isFirstFetch = getMemory(interaction.client, interaction.guild.id).membersWhoFetched.length === 0;
-				const earnedSoulXP = isFirstFetch ? soulValue * 2 : soulValue;
+				let earnedSoulXPMultiplier = isFirstFetch ? 2 : soulValue;
+				let multiplierMessages = `${isFirstFetch ? '🕐 **First fetch!** *x2 XP*\n' : ''}`;
+				if (Math.abs(currentTimestamp.diff(guildData.schedule.past.time, 'second')) > (18 + 1)) {
+					earnedSoulXPMultiplier *= 2;
+					multiplierMessages += '🕚 **Buzzer-beater!** *x2 XP*\n';
+				}
 				try {
 					// Fetcher Values
 					increaseValue(interaction, interaction.user.id, 'souls', soulValue);
 					increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
 					increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
-					increaseValue(interaction, interaction.user.id, 'soulXP', earnedSoulXP);
+					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue * earnedSoulXPMultiplier);
 					increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
 					// Condemned Values
 					increaseValue(interaction, guildData.condemnedMember, 'souls', -soulValue);
@@ -79,10 +84,10 @@ module.exports = {
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
 				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth **${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}**\n\n`;
-				replyContent += `${(isFirstFetch ? '🕐 **First fetch!** *x2 XP*\n\n' : '')}`;
-				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + earnedSoulXP);
+				replyContent += `${multiplierMessages}\n`;
+				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier);
 				replyContent += `${levelUps ? levelUps : ''}`;
-				replyContent += `${getXPBar((await fetcherData).soulXP + earnedSoulXP)}`;
+				replyContent += `${getXPBar((await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier)}`;
 				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (
 				getMemory(interaction.client, interaction.guild.id).lastSummonTime

@@ -78,8 +78,8 @@ module.exports = {
 				getMemory(interaction.client, interaction.guild.id).membersWhoFetched.push(interaction.member.id);
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
-				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}\n\n`;
-				replyContent += `${(isFirstFetch ? '**First fetch!** *x2 XP*\n\n' : '')}`;
+				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth **${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}**\n\n`;
+				replyContent += `${(isFirstFetch ? '🕐 **First fetch!** *x2 XP*\n\n' : '')}`;
 				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + earnedSoulXP);
 				replyContent += `${levelUps ? levelUps : ''}`;
 				replyContent += `${getXPBar((await fetcherData).soulXP + earnedSoulXP)}`;

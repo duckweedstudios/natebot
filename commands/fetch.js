@@ -118,7 +118,7 @@ module.exports = {
 					interaction.reply({ content: 'An error occurred while processing this command (could not update database values).', ephemeral: true });
 					return;
 				}
-				interaction.reply({ content: 'You were fooled into fetching a summoned soul!', ephemeral: true });
+				interaction.reply({ content: `🃏 You were fooled into fetching a summoned soul!\nYou've been fooled **${(await fetcherData).gotFooledCount + 1}** times.`, ephemeral: true });
 			} else {
 				interaction.reply({ content: `There were no souls to be fetched.`, ephemeral: true });
 			}

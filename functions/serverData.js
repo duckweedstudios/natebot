@@ -39,7 +39,7 @@ module.exports = {
 		};
 	},
 
-	_getMemory: (client, guildIdString) => {
+	getMemory: (client, guildIdString) => {
 		try {
 			const guildMemory = client.memory[guildIdString];
 			if (guildMemory) {

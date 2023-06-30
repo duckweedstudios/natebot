@@ -4,7 +4,7 @@ const { getGuildData } = require('../events/guildquery');
 const { getSoulTier } = require('../functions/tiers');
 
 module.exports = {
-	getEmbed : async (interaction, member) => {
+	getEmbed : async (interaction, target) => {
 		const guild = interaction.guild;
 		let self = false;
 		let targetIsCondemned = false;
@@ -25,13 +25,13 @@ module.exports = {
 		}
 
 		// Determinations
-		if (member.id === interaction.member) { self = true; }
-		if (guildData.condemnedMember === member.id) { targetIsCondemned = true; }
+		if (target.id === interaction.member.id) { self = true; }
+		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (guildData.condemnedMember === interaction.user.id) { userIsCondemned = true; }
 		
 		// Getting target user data
 		try {
-			soulData = await getSoulData(interaction, member.id);
+			soulData = await getSoulData(interaction, target.id);
 			if (!soulData) {
 				if (self) {
 					interaction.reply({ content:'You have not joined the soul fetchers, use /join to get started!', ephemeral: true });
@@ -54,7 +54,7 @@ module.exports = {
 			console.error('Error in getEmbed.js: Could not get soul tier data (eg fetcher tier): ' + err);
 			return;
 		}
-		const target = member.user;
+		const targetUser = target.user;
 		// Outputting the Embed
 		try {
 			if (self) {
@@ -62,8 +62,8 @@ module.exports = {
 					// Condemned Self Embed
 					return new MessageEmbed()
 						.setColor('DARK_RED')
-						.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
-						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+						.setTitle(`__**🔥 ${targetUser.username.toUpperCase()} 🔥**__`)
+						.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 						.setDescription('**👹 T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ 👹**')
 						.setThumbnail('https://imgur.com/MXLHd9R.png')
 						.addFields(
@@ -83,7 +83,7 @@ module.exports = {
 					return new MessageEmbed()
 						.setColor('RED')
 						.setTitle(`__**Your Profile**__`)
-						.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+						.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 						.setDescription(`*${soulTierData.tierName}*`)
 						.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 						.addFields(
@@ -103,8 +103,8 @@ module.exports = {
 				// Condemned Looking at Other Embed
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
-					.setTitle(`__**${target.username}'s profile**__`)
-					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setTitle(`__**${targetUser.username}'s profile**__`)
+					.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
@@ -123,8 +123,8 @@ module.exports = {
 				// Fetcher Looking at Condemned Embed
 				return new MessageEmbed()
 					.setColor('DARK_RED')
-					.setTitle(`__**🔥 ${target.username.toUpperCase()} 🔥**__`)
-					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setTitle(`__**🔥 ${targetUser.username.toUpperCase()} 🔥**__`)
+					.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 					.setDescription('**👹 T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ 👹**')
 					.setThumbnail('https://imgur.com/MXLHd9R.png')
 					.addFields(
@@ -142,8 +142,8 @@ module.exports = {
 				// Fetcher Looking at Other Embed
 				return new MessageEmbed()
 					.setColor('DARK_ORANGE')
-					.setTitle(`__**The profile of ${target.username}**__`)
-					.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+					.setTitle(`__**The profile of ${targetUser.username}**__`)
+					.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 					.setDescription(`*${soulTierData.tierName}*`)
 					.setThumbnail('https://i.imgur.com/rgbM2hX.jpg')
 					.addFields(
@@ -165,7 +165,7 @@ module.exports = {
 			return new MessageEmbed()
 				.setColor('BLUE')
 				.setTitle(`__***EMBED ERROR***__`)
-				.setAuthor({ name: target.username, iconURL: target.displayAvatarURL({ dynamic: true }) })
+				.setAuthor({ name: targetUser.username, iconURL: targetUser.displayAvatarURL({ dynamic: true }) })
 				.setDescription('*There was an error when producing this embed*')
 				.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
 				.setTimestamp();

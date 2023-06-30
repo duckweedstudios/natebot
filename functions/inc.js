@@ -4,7 +4,7 @@ module.exports = {
 	name: 'inc',
 	increaseValue : async (interaction, id, datapoint, value) => {
 		try {
-			await profileModel.findOneAndUpdate({ fetcherID: id }, {
+			await profileModel.findOneAndUpdate({ fetcherId: id }, {
 				$inc: {
 					[datapoint]: value,
 				},

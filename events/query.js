@@ -4,8 +4,8 @@ module.exports = {
 	getSoulData: async (interaction, userId) => {
 		try {
 			const soulData = await profileModel.findOne({
-				fetcherID: userId,
-				serverID: interaction.guild.id,
+				fetcherId: userId,
+				serverId: interaction.guild.id,
 			});
 			return soulData;
 		} catch (err) {
@@ -16,8 +16,8 @@ module.exports = {
 	checkSoulDataExists: async (guildId, userId) => {
 		try {
 			return await profileModel.exists({
-				fetcherID: userId,
-				serverID: guildId,
+				fetcherId: userId,
+				serverId: guildId,
 			});
 		} catch (err) {
 			console.log(err);

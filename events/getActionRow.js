@@ -25,8 +25,8 @@ module.exports = {
 		const guildData = await getGuildData(guild.id);
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
 		const userData = await getSoulData(interaction, interaction.user.id);
-		const allFetchersData = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
-		if (target.id === interaction.member.id) { self = true; }
+		const allFetchersData = await profileModel.find({ serverId: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
+		if (target === interaction.user) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) { userIsCondemned = true; }
 		let returnedActionRow = new MessageActionRow()

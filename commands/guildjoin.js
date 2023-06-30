@@ -80,8 +80,8 @@ module.exports = {
 			try {
 				const profile = await profileModel.create({
 					fetcherTag: memberTarget.user.username,
-					fetcherID: memberTarget.id,
-					serverID: memberTarget.guild.id,
+					fetcherId: memberTarget.id,
+					serverId: memberTarget.guild.id,
 					souls: 100,
 					soulsCaught: 0,
 					careerSouls: 0,

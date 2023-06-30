@@ -6,7 +6,7 @@ const profileModel = require ('../models/profileSchema');
 module.exports = {
 	getActionRow : async (interaction, target) => {
 		if (!target) {
-			target = interaction.user;
+			target = interaction.member;
 		}
 		let interactionIdent = interaction.customId;
 		if (!interactionIdent) {
@@ -26,7 +26,7 @@ module.exports = {
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
 		const userData = await getSoulData(interaction, interaction.user.id);
 		const allFetchersData = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
-		if (target === interaction.user) { self = true; }
+		if (target.id === interaction.member.id) { self = true; }
 		if (guildData.condemnedMember === target.id) { targetIsCondemned = true; }
 		if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) { userIsCondemned = true; }
 		let returnedActionRow = new MessageActionRow()

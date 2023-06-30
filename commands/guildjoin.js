@@ -49,7 +49,7 @@ module.exports = {
 				}
 			}
 			// Assign first condemned (save user id) and assign the role
-			const memberTarget = interaction.options.getMember('first-condemned');
+			const target = interaction.options.getMember('first-condemned');
 
 			// Create the HELLSPEAK voice channel (or check if it exists)
 			// Check whether the bot has permission to do so (this doesn't seem to work)
@@ -79,9 +79,9 @@ module.exports = {
 
 			try {
 				const profile = await profileModel.create({
-					fetcherTag: memberTarget.user.username,
-					fetcherID: memberTarget.id,
-					serverID: memberTarget.guild.id,
+					fetcherTag: target.user.username,
+					fetcherID: target.id,
+					serverID: interaction.guild.id,
 					souls: 100,
 					soulsCaught: 0,
 					careerSouls: 0,
@@ -100,12 +100,12 @@ module.exports = {
 			try {
 				const guildProfile = await profileModelGuild.create(
 					initializeObject(interaction.guild.id,
-						memberTarget.id,
+						target.id,
 						(await condemnedRole.id),
 						hellspeakChannelString,
 					));
 				guildProfile.save();
-				await interaction.reply({ content: `${memberTarget.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!` });
+				await interaction.reply({ content: `${target.user.username} has become **T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓**\n\n**FETCH ME THEIR SOULS!**\n\nUse the /join command to play!` });
 				// Start the hauntings!
 				guildHauntDriver(interaction.client, interaction.guild, true);
 			} catch (error) {

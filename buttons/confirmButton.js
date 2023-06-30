@@ -22,7 +22,7 @@ module.exports = {
 			plural = 'souls';
 		}
 		const failData = { content: `You do not have enough souls!`, components : [] };
-		const data = { content: `You have given **${target.username}** a total of **${value} ${plural}!**`, components : [] };
+		const data = { content: `You have given **${target.user.username}** a total of **${value} ${plural}!**`, components : [] };
 		try {
 			if (value > senderSouls.souls) {
 				await editPrompt(interaction, failData);

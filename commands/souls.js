@@ -19,9 +19,9 @@ module.exports = {
 		} catch (error) {
 			return;
 		}
-		let target = interaction.options.getUser('target');
-		if (!interaction.options.getUser('target')) {
-			target = interaction.user;
+		let target = interaction.options.getMember('target');
+		if (!interaction.options.getMember('target')) {
+			target = interaction.member;
 		}
 		if (!await isGuildSetup(interaction)) {
 			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });

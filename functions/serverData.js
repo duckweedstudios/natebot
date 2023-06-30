@@ -41,7 +41,12 @@ module.exports = {
 
 	getMemory: (client, guildIdString) => {
 		try {
-			return client.memory[guildIdString];
+			const guildMemory = client.memory[guildIdString];
+			if (guildMemory) {
+				return guildMemory;
+			} else {
+				throw new Error('Guild memory unitialized');
+			}
 		} catch (err) {
 			client.memory = {
 				...client.memory,

@@ -20,7 +20,7 @@ module.exports = {
 			const condemnedRole = module.exports.createCondemnedRole(guild);
 			try {
 				await profileModelGuild.findOneAndUpdate({
-					serverID: guild.id,
+					serverId: guild.id,
 				}, {
 					$set: {
 						settings: {

@@ -4,7 +4,8 @@ const { getActionRow } = require('../events/getActionRow');
 const { getSoulData } = require('../events/query');
 const { getGuildData } = require('../events/guildquery');
 const profileModel = require ('../models/profileSchema');
-const { getVagueTimeRange } = require('../functions/time');
+const { getMemory } = require('../functions/serverData');
+const dayjs = require('dayjs');
 
 module.exports = {
 	name: 'serverStatsButton',
@@ -23,13 +24,14 @@ module.exports = {
 				allFetchersData.push(allFetchersDataOne[i]);
 			}
 		}
-		let nextTimeData;
+		let nextAppearanceBounds;
 		try {
-			nextTimeData = getVagueTimeRange(guildData.schedule.next.time);
+			nextAppearanceBounds = getMemory(interaction.client, interaction.guild.id).nextAppearanceBounds;
 		} catch (err) {
-			console.error('Error in serverStatsButton: could not get time range: ' + err);
-			return;
+			nextAppearanceBounds = '???';
 		}
+		const pastTime = guildData.schedule.past.time ? dayjs(guildData.schedule.past.time).format('MM/DD/YYYY h:mm A') : 'None yet...';
+
 		const serverEmbed = new MessageEmbed()
 			.setColor('GREEN')
 			.setTitle(`__***${interaction.guild.name}'s Stats***__`)
@@ -40,8 +42,8 @@ module.exports = {
 			)
 			.addFields(
 				{ name: '---------------------------------', value: ' ' },
-				{ name: 'Next Appearance ⏭️', value: `Between ${nextTimeData.formatted}` },
-				{ name: 'Last Appearance ⏮️', value: `*${guildData.schedule.past.time}*` },
+				{ name: 'Next Appearance ⏭️', value: `Between ${nextAppearanceBounds}` },
+				{ name: 'Last Appearance ⏮️', value: `*${pastTime}*` },
 				{ name: '---------------------------------', value: ' ' });
 		
 		try {

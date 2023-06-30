@@ -5,7 +5,7 @@ module.exports = {
 	name: 'set',
 	setValue : async (interaction, id, datapoint, value) => {
 		try {
-			await profileModel.findOneAndUpdate({ fetcherID: id }, {
+			await profileModel.findOneAndUpdate({ fetcherId: id }, {
 				$set: {
 					[datapoint]: value,
 				},

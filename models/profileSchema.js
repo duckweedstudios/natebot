@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const profileSchema = new mongoose.Schema({
 	fetcherTag:{ type: String, require: true },
-	fetcherID: { type: String, require: true, unique: true },
-	serverID:{ type: String, require:true, unique: false },
+	fetcherId: { type: String, require: true, unique: true },
+	serverId:{ type: String, require:true, unique: false },
 	// Souls is the amount of souls a user has
 	souls:{ type: Number, default: 0 },
 
@@ -31,6 +31,8 @@ const profileSchema = new mongoose.Schema({
 	// VC setting
 	autoLure: { type: Boolean, default: false },
 });
+
+profileSchema.index({ fetcherId: 1, serverId: 1 }, { unique: true });
 
 const model = mongoose.model('ProfileModels', profileSchema);
 

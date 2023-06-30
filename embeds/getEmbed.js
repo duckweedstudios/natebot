@@ -201,10 +201,10 @@ module.exports = {
 	getServerStatsEmbed : async (interaction) => {
 		const guildData = await getGuildData(interaction);
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
-		const allFetchersDataOne = await profileModel.find({ serverID: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
+		const allFetchersDataOne = await profileModel.find({ serverId: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		const allFetchersData = [];
 		for (const i in allFetchersDataOne) {
-			if (allFetchersDataOne[i].fetcherID !== condemnedData.fetcherID) {
+			if (allFetchersDataOne[i].fetcherId !== condemnedData.fetcherId) {
 				allFetchersData.push(allFetchersDataOne[i]);
 			}
 		}

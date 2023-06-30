@@ -171,4 +171,28 @@ module.exports = {
 				.setTimestamp();
 		}
 	},
+	// Help Embed Creation
+	getHelpEmbed : async (interaction) => {
+		return new MessageEmbed()
+			.setColor('BLUE')
+			.setTitle(`__***FAQ***__`)
+			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+			.setDescription('*Welcome to the Condemned Souls Bot!*')
+			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
+			.addFields(
+				{ name: 'What is it?', value: `The Condemned Souls bot is an economy/engagement JavaScript game that "haunts" voice channels. Each time it haunts, a sound effect is played and users can "fetch" the soul for points.` },
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'How do I play?', value: `First you use the /join command to become a soul fetcher. Once you join, you can use /souls to interact with the bot and see your profile and stats! When a haunting occurs, use the /fetch command to catch the soul and gain points!` },
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'What is T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓?', value: `Each server has a user who is T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ . This user has admin-like privileges and can change nicknames, mute server members, and play sound effects in exchange for their souls.` },
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'How do I win?', value: `Souls such as yours exist in eternal torment (AKA There is no winning). However, once a fetcher has collected more souls than T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ , they can use the Claim button on T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓  users profile to replace them and gain admin privileges.` },
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'How does this work?', value: `Our bot uses custom-developed ephemeral menu embeds. It updates the ephemeral message whenever you press a button through webhooks, keeping your actions confidential. Keep in mind, menus delete themselves after 14 minutes to keep things running smoothly.` },
+				{ name: '---------------------------------', value: ' ' },
+				{ name: 'Have more questions?', value: `Our bot uses custom-developed ephemeral menu embeds. It updates th)
+			.setTimestamp()
+			.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
+
+	},
 };

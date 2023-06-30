@@ -12,10 +12,7 @@ module.exports = {
 	},
 	checkGuildDataExists: async (guildId) => {
 		try {
-			console.log(`checking for Guild ${guildId}`);
-			const GuildExists = await profileModelGuild.exists({ serverId: guildId });
-			console.log(GuildExists);
-			return GuildExists;
+			return await profileModelGuild.exists({ serverId: guildId });
 		} catch (err) {
 			console.log(err);
 			throw new Error('There was an error pulling server information from the database');

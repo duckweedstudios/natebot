@@ -15,7 +15,7 @@ module.exports = {
 	},
 	checkSoulDataExists: async (guildId, userId) => {
 		try {
-			return profileModel.exists({
+			return await profileModel.exists({
 				fetcherID: userId,
 				serverID: guildId,
 			});

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getActionRow } = require('../events/getActionRow');
-const { getEmbed } = require('../embeds/getEmbed');
+const { getUserEmbed } = require('../embeds/getEmbed');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 const { deleteInteraction } = require('../events/deleteInteraction.js');
 
@@ -31,7 +31,7 @@ module.exports = {
 			interaction.reply({ content: 'This user has not joined the soul fetchers!\n\nPerhaps they are too weak', ephemeral: true });
 		} else {
 			try {
-				const finalEmbed = await getEmbed(interaction, target);
+				const finalEmbed = await getUserEmbed(interaction, target);
 				const finalComponents = await getActionRow(interaction, target);
 				try {
 					await interaction.reply({ embeds: [finalEmbed], components: [finalComponents], ephemeral: true });

@@ -1,5 +1,5 @@
 const { MessageButton } = require('discord.js');
-const { getEmbed } = require('../embeds/getEmbed');
+const { getUserEmbed } = require('../embeds/getEmbed');
 const { editInteraction } = require('../events/editInteraction');
 const { getActionRow } = require('../events/getActionRow');
 
@@ -12,7 +12,7 @@ module.exports = {
 	
 	async execute(interaction) {
 		const target = interaction.client.usersCurrentTarget[interaction.user.id];
-		const finalEmbed = await getEmbed(interaction, target);
+		const finalEmbed = await getUserEmbed(interaction, target);
 		const finalComponents = await getActionRow(interaction, target);
 
 		const data = { embeds : [finalEmbed], components : [finalComponents] };

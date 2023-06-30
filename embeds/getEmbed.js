@@ -4,7 +4,7 @@ const { getGuildData } = require('../events/guildquery');
 const { getSoulTier } = require('../functions/tiers');
 
 module.exports = {
-	getEmbed : async (interaction, target) => {
+	getUserEmbed : async (interaction, target) => {
 		const guild = interaction.guild;
 		let self = false;
 		let targetIsCondemned = false;

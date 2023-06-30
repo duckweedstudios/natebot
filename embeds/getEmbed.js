@@ -199,7 +199,7 @@ module.exports = {
 	},
 	// Server Stats Embed Creation
 	getServerStatsEmbed : async (interaction) => {
-		const guildData = await getGuildData(interaction);
+		const guildData = await getGuildData(interaction.guild.id);
 		const condemnedData = await getSoulData(interaction, guildData.condemnedMember);
 		const allFetchersDataOne = await profileModel.find({ serverId: interaction.guild.id }).sort({ souls: -1, soulsCaught: -1 });
 		const allFetchersData = [];

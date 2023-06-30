@@ -178,7 +178,7 @@ module.exports = {
 			.setTitle(`__***FAQ***__`)
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 			.setDescription('*Welcome to the Condemned Souls Bot!*')
-			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
+			.setThumbnail('https://i.imgur.com/qbCKk3C.jpg')
 			.addFields(
 				{ name: 'What is it?', value: `The Condemned Souls bot is an economy/engagement JavaScript game that "haunts" voice channels. Each time it haunts, a sound effect is played and users can "fetch" the soul for points.` },
 				{ name: '---------------------------------', value: ' ' },
@@ -188,9 +188,7 @@ module.exports = {
 				{ name: '---------------------------------', value: ' ' },
 				{ name: 'How do I win?', value: `Souls such as yours exist in eternal torment (AKA There is no winning). However, once a fetcher has collected more souls than T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓ , they can use the Claim button on T̸̪́Ḥ̷̞̏̔Ē̵̦ ̶̰̍̀C̴̟͇͒̑O̸͈̊Ņ̸̱̀D̵̼͌Ĕ̴̝̕M̶̢̎̀Ń̵̦͆Ĕ̷̡͈͝D̵̬͗̓  users profile to replace them and gain admin privileges.` },
 				{ name: '---------------------------------', value: ' ' },
-				{ name: 'How does this work?', value: `Our bot uses custom-developed ephemeral menu embeds. It updates the ephemeral message whenever you press a button through webhooks, keeping your actions confidential. Keep in mind, menus delete themselves after 14 minutes to keep things running smoothly.` },
-				{ name: '---------------------------------', value: ' ' },
-				{ name: 'Have more questions?', value: `Our bot uses custom-developed ephemeral menu embeds. It updates th)
+				{ name: 'How does this work?', value: `If you want to learn more about how this bot works, contact our developers through our Discord Server!` })
 			.setTimestamp()
 			.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
 

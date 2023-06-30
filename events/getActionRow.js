@@ -45,7 +45,9 @@ module.exports = {
 		case 'helpButton':
 			returnedActionRow = new MessageActionRow()
 				.addComponents(backButton.data)
-				.addComponents(serverStatsButton.data);
+				.addComponents(serverStatsButton.data)
+				.addComponents(discordServerButton.data)
+				.addComponents(patreonButton.data);
 			break;
 		case 'souls':
 			if (self) {
@@ -100,10 +102,12 @@ const claimButton = require('../buttons/claimButton');
 const cleanseButton = require('../buttons/cleanseButton');
 const confirmButton = require('../buttons/confirmButton');
 const errorButton = require('../buttons/errorButton');
+const discordServerButton = require('../buttons/discordServerButton');
 const giftButton = require('../buttons/giftButton');
 const backButton = require('../buttons/backButton');
 const helpButton = require('../buttons/helpButton');
 const muteButton = require('../buttons/muteButton');
+const patreonButton = require('../buttons/patreonButton');
 const _myProfileButton = require('../buttons/myProfileButton');
 const nevermindButton = require('../buttons/nevermindButton');
 const newSoulButton = require('../buttons/newSoulButton');

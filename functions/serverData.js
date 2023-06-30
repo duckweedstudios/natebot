@@ -39,9 +39,15 @@ module.exports = {
 		};
 	},
 
-	getMemory: (client, guildIdString) => {
+	_getMemory: (client, guildIdString) => {
 		try {
-			return client.memory[guildIdString];
+			const guildMemory = client.memory[guildIdString];
+			if (guildMemory) {
+				// eslint-disable-next-line no-mixed-spaces-and-tabs
+				return guildMemory;
+			} else {
+				throw new Error('Guild memory unitialized');
+			}
 		} catch (err) {
 			client.memory = {
 				...client.memory,
@@ -52,6 +58,12 @@ module.exports = {
 			};
 			return client.memory[guildIdString];
 		}
+	},
+	get getMemory() {
+		return this._getMemory;
+	},
+	set getMemory(value) {
+		this._getMemory = value;
 	},
 
 	updateAppearances: async (client, guildIdString, nextAppearance, soulType, replaceExistingNextOnly = false) => {

@@ -57,8 +57,8 @@ module.exports = {
 			try {
 				const profile = await profileModel.create({
 					fetcherTag: condemnedTarget.user.username,
-					fetcherID: condemnedTarget.id,
-					serverID: interaction.guild.id,
+					fetcherId: condemnedTarget.id,
+					serverId: condemnedTarget.guild.id,
 					souls: 100,
 					soulsCaught: 0,
 					careerSouls: 0,
@@ -74,11 +74,11 @@ module.exports = {
 				console.error(`Error in /makecondemned: Could not create profile for ${condemnedTarget.user.tag}: ${error}`);
 			}
 	
-			const allfetchers = await profileModel.find({ serverID: interaction.guild.id });
+			const allfetchers = await profileModel.find({ serverId: interaction.guild.id });
 			try {
 				for (const fetcher of allfetchers) {
-					setValue(interaction, fetcher.fetcherID, 'souls', 0);
-					setValue(interaction, fetcher.fetcherID, 'soulsCaught', 0);
+					setValue(interaction, fetcher.fetcherId, 'souls', 0);
+					setValue(interaction, fetcher.fetcherId, 'soulsCaught', 0);
 				}
 				setValue(interaction, condemnedTarget.id, 'souls', 100);
 				setValue(interaction, condemnedTarget.id, 'soulsCaught', 0);

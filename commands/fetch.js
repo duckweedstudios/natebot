@@ -2,16 +2,18 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { increaseValue } = require('../functions/inc');
 const { getGuildData } = require('../events/guildquery.js');
 const dayjs = require('dayjs');
-const { getSoulById, getSoulValue, getDefaultSoul } = require('../functions/souls');
+const { getSoulValue, getSoulByIdOrDefault } = require('../functions/souls');
 const { isMemberCondemnedSoulWithGuildQuery } = require('../functions/privileges.js');
 const { getDiscordEmojiNameAndId } = require('../functions/emojis.js');
 const { getMemory } = require('../functions/serverData.js');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
+const { getSoulData } = require('../events/query');
+const { getXPBar, getLevelUps } = require('../functions/tiers.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('fetch')
-		.setDescription('fetches a soul!'),
+		.setDescription('Fetches a soul!'),
 	async execute(interaction) {
 		// TODO: look into caching the DB query results for efficiency
 		if (!await isGuildSetup(interaction)) {
@@ -31,6 +33,22 @@ module.exports = {
 				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
 				return;
 			}
+			let fetcherData;
+			try {
+				fetcherData = getSoulData(interaction, interaction.member.id);
+			} catch (err) {
+				console.error(`Error in /fetch: Fetcher data could not be retrieved from the database for fetcher ${interaction.member.id}: ${err}`);
+				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
+				return;
+			}
+			let condemnedData;
+			try {
+				condemnedData = getSoulData(interaction, guildData.condemnedMember);
+			} catch (err) {
+				console.error(`Error in /fetch: Condemned data could not be retrieved from the database for condemned ${guildData.condemnedMember}: ${err}`);
+				interaction.reply({ content: 'This command failed. The bot was unable to reach our servers', ephemeral: true });
+				return;
+			}
 
 			// Check if the member is the condemned soul
 			if (isMemberCondemnedSoulWithGuildQuery(interaction.member, guildData)) {
@@ -43,17 +61,26 @@ module.exports = {
 					interaction.reply({ content: 'You\'ve already fetched this soul.', ephemeral: true });
 					return;
 				}
-				let soulCaught = getSoulById(guildData.schedule.past.soulTypeId);
-				if (soulCaught === -1) soulCaught = getDefaultSoul();
+				const soulCaught = getSoulByIdOrDefault(guildData.schedule.past.soulTypeId);
 				const soulValue = getSoulValue(soulCaught);
 				// TODO: check if the user has enough souls to become the condemned soul and the CS is out of souls. If so, notify them in this message.
-				let _csSoulsRemaining;
+				const isFirstFetch = getMemory(interaction.client, interaction.guild.id).membersWhoFetched.length === 0;
+				let earnedSoulXPMultiplier = isFirstFetch ? 2 : soulValue;
+				let multiplierMessages = `${isFirstFetch ? '🕐 **First fetch!** *x2 XP*\n' : ''}`;
+				if (Math.abs(currentTimestamp.diff(guildData.schedule.past.time, 'second')) > (18 + 1)) {
+					earnedSoulXPMultiplier *= 2;
+					multiplierMessages += '🕚 **Buzzer-beater!** *x2 XP*\n';
+				}
+				if ((await condemnedData).souls > 0 && (await condemnedData).souls - soulValue <= 0) {
+					earnedSoulXPMultiplier *= 4;
+					multiplierMessages += '☠️ **Condemned soul defeated!** *x4 XP*\n';
+				}
 				try {
 					// Fetcher Values
 					increaseValue(interaction, interaction.user.id, 'souls', soulValue);
 					increaseValue(interaction, interaction.user.id, 'soulsCaught', soulValue);
 					increaseValue(interaction, interaction.user.id, 'careersouls', soulValue);
-					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue);
+					increaseValue(interaction, interaction.user.id, 'soulXP', soulValue * earnedSoulXPMultiplier);
 					increaseValue(interaction, interaction.user.id, 'fetchCount', 1);
 					// Condemned Values
 					increaseValue(interaction, guildData.condemnedMember, 'souls', -soulValue);
@@ -67,7 +94,15 @@ module.exports = {
 				getMemory(interaction.client, interaction.guild.id).membersWhoFetched.push(interaction.member.id);
 				const emojiId = getDiscordEmojiNameAndId(soulCaught.emoji)[1];
 				const soulEmoji = interaction.client.emojis.cache.get(emojiId);
-				interaction.reply({ content: `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth ${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}`, ephemeral: true });
+				let replyContent = `You have fetched a ${soulEmoji} ${soulCaught.name} ${soulEmoji} soul worth **${soulValue} ${soulValue === 1 ? 'soul!' : 'souls!'}**\n\n`;
+				replyContent += `${multiplierMessages}🏦 = **__+${soulValue * earnedSoulXPMultiplier} XP__**\n\n`;
+				const levelUps = getLevelUps((await fetcherData).soulXP, (await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier);
+				replyContent += `${levelUps ? levelUps : ''}`;
+				replyContent += `${getXPBar((await fetcherData).soulXP + soulValue * earnedSoulXPMultiplier)}`;
+				if ((await condemnedData).souls - soulValue <= 0) {
+					replyContent += `\n\n👑 **The Condemned Soul can be dethroned!** Use \`/souls \`<@${guildData.condemnedMember}> to claim!`;
+				}
+				interaction.reply({ content: replyContent, ephemeral: true });
 			} else if (
 				getMemory(interaction.client, interaction.guild.id).lastSummonTime
 				&& currentTimestamp.diff(getMemory(interaction.client, interaction.guild.id).lastSummonTime, 'second') > 0
@@ -83,7 +118,7 @@ module.exports = {
 					interaction.reply({ content: 'An error occurred while processing this command (could not update database values).', ephemeral: true });
 					return;
 				}
-				interaction.reply({ content: 'You were fooled into fetching a summoned soul!', ephemeral: true });
+				interaction.reply({ content: `🃏 You were fooled into fetching a summoned soul!\nYou've been fooled **${(await fetcherData).gotFooledCount + 1}** times.`, ephemeral: true });
 			} else {
 				interaction.reply({ content: `There were no souls to be fetched.`, ephemeral: true });
 			}

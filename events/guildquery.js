@@ -3,7 +3,7 @@ const profileModelGuild = require ('../models/profileSchemaGuild');
 module.exports = {
 	getGuildData : async (tempServerId) => {
 		try {
-			const guildData = await profileModelGuild.findOne({ serverID: tempServerId });
+			const guildData = await profileModelGuild.findOne({ serverId: tempServerId });
 			return guildData;
 		} catch (err) {
 			console.log(err);
@@ -12,7 +12,7 @@ module.exports = {
 	},
 	checkGuildDataExists: async (guildId) => {
 		try {
-			return profileModelGuild.exists({ serverID: guildId });
+			return await profileModelGuild.exists({ serverId: guildId });
 		} catch (err) {
 			console.log(err);
 			throw new Error('There was an error pulling server information from the database');

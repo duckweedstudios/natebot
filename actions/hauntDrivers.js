@@ -53,19 +53,26 @@ module.exports = {
 		// For each guild, check if it has a nextAppearance in the past
 		// If so, schedule the next haunting
 		for (const guildRecord of guildRecords) {
-			let guild = client.guilds.fetch(guildRecord.serverId);
-			const nextAppearance = dayjs(guildRecord.schedule.next.time);
-			if (nextAppearance.isBefore(currentTime)) {
-				// Query for Discord.js guild object by ID
-				guild = await guild;
-				console.log(`DEBUG: The server ${guild.name} was missed at ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-				module.exports.guildHauntDriver(client, guild, false, true);
-			} else {
-				guild = await guild;
-				console.log(`DEBUG: The server ${guild.name} will have haunting regenerated for ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-				const upcomingSoulType = getSoulByIdOrDefault(guildRecord.schedule.next.soulTypeId);
-				module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextAppearance, true);
+			try {
+				let guild = client.guilds.fetch(guildRecord.serverId);
+				const nextAppearance = dayjs(guildRecord.schedule.next.time);
+				if (nextAppearance.isBefore(currentTime)) {
+					// Query for Discord.js guild object by ID
+					guild = await guild;
+					console.log(`DEBUG: The server ${guild.name} was missed at ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+					module.exports.guildHauntDriver(client, guild, false, true);
+				} else {
+					guild = await guild;
+					console.log(`DEBUG: The server ${guild.name} will have haunting regenerated for ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+					const upcomingSoulType = getSoulByIdOrDefault(guildRecord.schedule.next.soulTypeId);
+					module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextAppearance, true);
+				}
+			} catch (err) {
+				// Typically, this means the bot is not in the server (stale DB record)
+				// Skip this server and continue
+				continue;
 			}
+			
 		}
 	},
 };

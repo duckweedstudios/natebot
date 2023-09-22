@@ -1,7 +1,7 @@
-const { MessageEmbed, MessageButton } = require('discord.js');
+const { MessageButton } = require('discord.js');
 const { editInteraction } = require('../events/editInteraction');
 const { getActionRow } = require('../events/getActionRow');
-
+const { getHelpEmbed } = require('../embeds/getEmbed');
 module.exports = {
 	name: 'helpButton',
 	data: new MessageButton()
@@ -10,15 +10,7 @@ module.exports = {
 		.setStyle('PRIMARY'),
     
 	async execute(interaction) {
-		const helpEmbed = new MessageEmbed()
-			.setColor('BLUE')
-			.setTitle(`__***NEED HELP?***__`)
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-			.setDescription('*Figure it out yourself!*')
-			.setThumbnail('https://i.imgur.com/T9HDICa.jpeg')
-			.setTimestamp()
-			.setFooter({ text: 'Developed by Zade Dohan and Corey Briscoe' });
-
+		const helpEmbed = await getHelpEmbed(interaction);
 		const finalComponents = await getActionRow(interaction);
         
 		const data = { embeds : [helpEmbed], components: [finalComponents] };

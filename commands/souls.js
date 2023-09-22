@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getActionRow } = require('../events/getActionRow');
-const { getEmbed } = require('../embeds/getEmbed');
+const { getUserEmbed } = require('../embeds/getEmbed');
 const { isUserSetup, isGuildSetup } = require('../functions/isSetup.js');
 const { deleteInteraction } = require('../events/deleteInteraction.js');
 
@@ -19,9 +19,9 @@ module.exports = {
 		} catch (error) {
 			return;
 		}
-		let target = interaction.options.getUser('target');
-		if (!interaction.options.getUser('target')) {
-			target = interaction.user;
+		let target = interaction.options.getMember('target');
+		if (!interaction.options.getMember('target')) {
+			target = interaction.member;
 		}
 		if (!await isGuildSetup(interaction)) {
 			interaction.reply({ content: 'This bot has not been setup yet.\n\nTell an admin to use /guildjoin first!', ephemeral: true });
@@ -31,7 +31,7 @@ module.exports = {
 			interaction.reply({ content: 'This user has not joined the soul fetchers!\n\nPerhaps they are too weak', ephemeral: true });
 		} else {
 			try {
-				const finalEmbed = await getEmbed(interaction, target);
+				const finalEmbed = await getUserEmbed(interaction, target);
 				const finalComponents = await getActionRow(interaction, target);
 				try {
 					await interaction.reply({ embeds: [finalEmbed], components: [finalComponents], ephemeral: true });

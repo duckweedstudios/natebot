@@ -1,5 +1,5 @@
 const { MessageButton } = require('discord.js');
-const { getEmbed } = require('../embeds/getEmbed');
+const { getUserEmbed } = require('../embeds/getEmbed');
 const { editInteraction } = require('../events/editInteraction');
 const { getActionRow } = require('../events/getActionRow');
 
@@ -11,14 +11,14 @@ module.exports = {
 		.setStyle('SUCCESS'),
 	
 	async execute(interaction) {
-		const finalEmbed = await getEmbed(interaction, interaction.user);
+		const finalEmbed = await getUserEmbed(interaction, interaction.user);
 		const finalComponents = await getActionRow(interaction);
 
 		const data = { embeds : [finalEmbed], components : [finalComponents] };
 		try {
 			await editInteraction(interaction, data);
 			await interaction.deferUpdate();
-			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.user };
+			interaction.client.usersCurrentTarget = { ...interaction.client.usersCurrentTarget, [interaction.user.id] : interaction.member };
 		} catch (error) {
 			console.log(error);
 			return;

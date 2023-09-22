@@ -1,12 +1,12 @@
 const { hauntSomeChannelWithSoul } = require('./hauntings.js');
 const { getRandomizedNextTimeInFuture } = require('../functions/time.js');
-const { updateAppearancesWith, getMemory } = require('../functions/serverData.js');
+const { updateAppearances, getMemory } = require('../functions/serverData.js');
 const { getWeightedRandomSoulType, getSoulByIdOrDefault } = require('../functions/souls.js');
 const dayjs = require('dayjs');
 const { getGuildData, getAllGuildsData } = require('../events/guildquery');
 
 module.exports = {
-	guildHauntDriver: async (client, guild, override = false) => {
+	guildHauntDriver: async (client, guild, fasterFirstHaunting = false, replaceExistingNextOnly = false) => {
 		// Given a guild, decide a randomized next time to haunt it,
 		// wait to haunt,
 		// then haunt it and schedule the next haunting recursively
@@ -22,23 +22,28 @@ module.exports = {
 		let nextTimeObj = getRandomizedNextTimeInFuture(dayjs(), guildData.schedule.meanDelay, guildData.schedule.variation);
 		console.log(`The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		// Override the nextTimeObj for a quicker, reliable first appearance if desired
-		if (override) {
+		if (fasterFirstHaunting) {
 			const nextAppearance = dayjs().add(1, 'minute');
 			nextTimeObj = { nextAppearance, nextAppearanceFormatted: nextAppearance.format('MM/DD/YYYY hh:mm:ss A'), msUntil: Math.abs(dayjs().diff(nextAppearance)) };
 			console.log(`Override: The server ${guild.name} will be haunted at ${nextTimeObj.nextAppearanceFormatted}`);
 		}
 		const upcomingSoulType = getWeightedRandomSoulType(guild.id);
-		updateAppearancesWith(nextTimeObj, upcomingSoulType, guildIdString);
-		module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextTimeObj.msUntil);
+		// Cancel a next haunting setTimeout if it exists
+		if (getMemory(client, guild.id).nextHauntTimeoutId) {
+			clearTimeout(client.memory[guild.id].nextHauntTimeoutId);
+		}
+		module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextTimeObj.nextAppearance, replaceExistingNextOnly);
 	},
 
-	scheduleHaunting: async (client, guild, upcomingSoulType, msUntil) => {
-		setTimeout(() => {
+	scheduleHaunting: async (client, guild, upcomingSoulType, nextAppearance, replaceExistingNextOnly = false) => {
+		getMemory(client, guild.id); // Initialize memory if it doesn't exist
+		updateAppearances(client, guild.id, nextAppearance, upcomingSoulType, replaceExistingNextOnly);
+		client.memory[guild.id].nextHauntTimeoutId = setTimeout(() => {
 			const guildData = getGuildData(guild.id);
 			getMemory(client, guild.id).membersWhoFetched = [];
 			hauntSomeChannelWithSoul(guild, upcomingSoulType);
 			if (!guildData.paused) module.exports.guildHauntDriver(client, guild);
-		}, msUntil);
+		}, Math.abs(dayjs().diff(nextAppearance), 'ms'));
 	},
 
 	regenerateMissedHauntings: async (client) => {
@@ -48,19 +53,26 @@ module.exports = {
 		// For each guild, check if it has a nextAppearance in the past
 		// If so, schedule the next haunting
 		for (const guildRecord of guildRecords) {
-			let guild = client.guilds.fetch(guildRecord.serverId);
-			const nextAppearance = dayjs(guildRecord.schedule.next.time);
-			if (nextAppearance.isBefore(currentTime)) {
-				// Query for Discord.js guild object by ID
-				guild = await guild;
-				console.log(`DEBUG: The server ${guild.name} was missed at ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-				module.exports.guildHauntDriver(client, guild, false);
-			} else {
-				guild = await guild;
-				console.log(`DEBUG: The server ${guild.name} will have haunting regenerated for ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
-				const upcomingSoulType = getSoulByIdOrDefault(guildRecord.schedule.next.soulTypeId);
-				module.exports.scheduleHaunting(client, guild, upcomingSoulType, Math.abs(currentTime.diff(nextAppearance)));
+			try {
+				let guild = client.guilds.fetch(guildRecord.serverId);
+				const nextAppearance = dayjs(guildRecord.schedule.next.time);
+				if (nextAppearance.isBefore(currentTime)) {
+					// Query for Discord.js guild object by ID
+					guild = await guild;
+					console.log(`DEBUG: The server ${guild.name} was missed at ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+					module.exports.guildHauntDriver(client, guild, false, true);
+				} else {
+					guild = await guild;
+					console.log(`DEBUG: The server ${guild.name} will have haunting regenerated for ${nextAppearance.format('MM/DD/YYYY hh:mm:ss A')}`);
+					const upcomingSoulType = getSoulByIdOrDefault(guildRecord.schedule.next.soulTypeId);
+					module.exports.scheduleHaunting(client, guild, upcomingSoulType, nextAppearance, true);
+				}
+			} catch (err) {
+				// Typically, this means the bot is not in the server (stale DB record)
+				// Skip this server and continue
+				continue;
 			}
+			
 		}
 	},
 };
